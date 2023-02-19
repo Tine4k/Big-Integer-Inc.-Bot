@@ -1,0 +1,16 @@
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\publish\epic_discord_battles.exe
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\publish\epic_discord_battles.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\publish\epic_discord_battles.deps.json
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\publish\epic_discord_battles.runtimeconfig.json
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\publish\epic_discord_battles.pdb
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\publish\Discord.Net.Commands.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\publish\Discord.Net.Core.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\publish\Discord.Net.Interactions.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\publish\Discord.Net.Rest.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\publish\Discord.Net.Webhook.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\publish\Discord.Net.WebSocket.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\publish\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\publish\Newtonsoft.Json.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\publish\System.Interactive.Async.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\publish\System.Linq.Async.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\publish\System.Reactive.dll
