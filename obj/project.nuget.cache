@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "LhFca4wnLlEjEvP+W/K+y7pVi19LACp4hOQ4zTsoKhMtFsxD80IgR6QrL1I9aXYyl/2uTf6F+PyEyf7lkXL7MQ==",
+  "dgSpecHash": "anBGTqKC38m/88HiZDiFvP0XbYn7ixKx4EKaIE2g3o1sMDAB8DEs2TGyISvOJbAWFPylM6kbdhe7FNJcdknX7Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Infinity\\OneDrive - Alpen-Adria Gymnasium Völkermarkt\\Informatik\\5. Klasse\\c#\\epic_discord_battles\\epic_discord_battles\\epic_discord_battles.csproj",
+  "projectFilePath": "D:\\Markus_2\\Code\\C#\\Discord Bot\\epic_discord_battles\\epic_discord_battles.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Infinity\\.nuget\\packages\\discord.net\\3.9.0\\discord.net.3.9.0.nupkg.sha512",
     "C:\\Users\\Infinity\\.nuget\\packages\\discord.net.commands\\3.9.0\\discord.net.commands.3.9.0.nupkg.sha512",
