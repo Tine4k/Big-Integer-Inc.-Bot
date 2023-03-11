@@ -5,19 +5,16 @@ static class Program
 {
     public static void Main(string[] args)
     {
-        if (args.Length > 0)
-        {
-            if (args[0] == "debug")
-            {
-                Console.WriteLine("Debugging");
-                Program.DebugStartup().GetAwaiter().GetResult();
-            }
-            else if (args[0] == "test")
-            {
-                Test();
-            }
-        }
-        else Program.Startup().GetAwaiter().GetResult();
+        // if (args.Length > 0)
+        // {
+        //     if (args[0] == "restore")
+        //     {
+        //         Console.WriteLine("Restoring all files!");
+        //         Restorer.Restore();
+        //     }
+        // }
+        // else 
+        Program.Startup().GetAwaiter().GetResult();
     }
     public static DiscordSocketClient client = new DiscordSocketClient(new DiscordSocketConfig()
     {
@@ -30,6 +27,7 @@ static class Program
     });
     static async Task Startup()
     {
+        // new Restorer().Restore();
         client.Log += Log;
         Program.client.MessageReceived += CommandHandler.HandleCommand;
         await client.LoginAsync(TokenType.Bot, File.ReadAllText("config/token.txt"));
@@ -40,18 +38,5 @@ static class Program
     {
         Console.WriteLine(msg.ToString());
         return Task.CompletedTask;
-    }
-    static async Task DebugStartup()
-    {
-        client.Log += Log;
-        Program.client.MessageReceived += CommandHandler.HandleCommand;
-        await client.LoginAsync(TokenType.Bot, File.ReadAllText("config/token.txt"));
-        await client.StartAsync();
-        // debug here
-        await Task.Delay(-1);
-    }
-    static void Test()
-    {
-        
     }
 }

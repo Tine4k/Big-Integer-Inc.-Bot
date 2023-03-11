@@ -20,4 +20,8 @@ partial class Command
     {
         channel.SendMessageAsync("Rauchst du an Jone, bist du da Mane");
     }
+    public static void Insult(ISocketMessageChannel channel)
+    {
+        channel.SendMessageAsync("ADRIAN IST EIN KLEINER HURENSOHN!");
+    }
 }

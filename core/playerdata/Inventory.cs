@@ -1,7 +1,7 @@
 namespace PfannenkuchenBot;
 class Inventory{
-    Dictionary<ItemIndex, int> data = new Dictionary<ItemIndex, int>();
-    public void Add(ItemIndex item, int count = 1)
+    Dictionary<string, int> data = new Dictionary<string, int>();
+    public void Add(string item, int count = 1)
     {
         if (data.ContainsKey(item))
         {
@@ -9,7 +9,7 @@ class Inventory{
         }
         else data.Add(item, count);
     }
-    public void Remove(ItemIndex item, int count = 1)
+    public void Remove(string item, int count = 1)
     {
         if (data.ContainsKey(item) && data[item]<=count)
         {
@@ -19,6 +19,6 @@ class Inventory{
     }
     public void Clear()
     {
-        data = new Dictionary<ItemIndex,int>();
+        data = new Dictionary<string,int>();
     }
 }

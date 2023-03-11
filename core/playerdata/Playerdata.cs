@@ -1,77 +1,29 @@
-namespace PfannenkuchenBot;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
 using Newtonsoft.Json;
-partial class Playerdata
+namespace PfannenkuchenBot.Core;
+class Playerdata
 {
-    static Playerdata()
-    {
-        LoadedPlayerdatas = new Dictionary<string, Playerdata>();
-        if (Config.autoUnload) StartAutoUnload(Config.autoUnloadInterval);
-    }
-    public static Playerdata GetPlayerdata(string id)
-    {
-        if (LoadedPlayerdatas.ContainsKey(id))
-        {
-            Playerdata pd = LoadedPlayerdatas[id];
-            pd.lastReferenced = DateTime.Now;
-            return pd;
-        }
-        else if (File.Exists($"playerdata/{id}.dat"))
-        {
-            Playerdata? pd = JsonConvert.DeserializeObject<Playerdata>(File.ReadAllText($"playerdata/{id}.dat"));
-            if (pd == null) pd = new Playerdata(id);
-            return pd;
-        }
-        else return new Playerdata(id);
-    }
-    static async void StartAutoUnload(ushort autoSaveTime)
-    {
-        while (await new PeriodicTimer(TimeSpan.FromSeconds(autoSaveTime)).WaitForNextTickAsync())
-        {
-            await UnloadAllPlayerdatas();
-        }
-    }
-    static Task UnloadAllPlayerdatas()
-    {
-        foreach (Playerdata pd in LoadedPlayerdatas.Values)
-        {
-            if (Config.forceUnload || pd.lastReferenced - DateTime.Now < TimeSpan.FromSeconds(Config.idleUnloadTime)) pd.Unload();
-        }
-        return Task.CompletedTask;
-    }
-    static Dictionary<string, Playerdata> LoadedPlayerdatas;
-
-    // * INSTANCES BEGIN HERE !!!
-
-    Playerdata(string _userId)
+    public Playerdata(string _userId)
     {
         this.userId = _userId;
-        this.inv = new Inventory();
+        this.inventory = new Inventory();
         this.stats = new Dictionary<Stat, int>();
-        this.lastReferenced = DateTime.Now;
-        this.Load();
     }
-    void Load()
+    public static Playerdata GetPlayerdata(string userId)
     {
-        if (!LoadedPlayerdatas.ContainsKey(userId))
+        if (File.Exists($"playerdata/{userId}.dat"))
         {
-            LoadedPlayerdatas.Add(userId, this);
+            Playerdata? pd = JsonConvert.DeserializeObject<Playerdata>(File.ReadAllText($"playerdata/{userId}.dat"));
+            if (pd == null) pd = new Playerdata(userId);
+            return pd;
         }
+        else return new Playerdata(userId);
     }
-    void Unload()
-    {
-        LoadedPlayerdatas.Remove(this.userId);
-        Save();
-    }
-    void Save()
+    public void Save()
     {
         File.WriteAllText($"playerdata/{userId}.dat", JsonConvert.SerializeObject(this));
     }
-    public Inventory inv;
+    public Inventory inventory;
     public Dictionary<Stat, int> stats;
     public string userId;
-    public DateTime lastReferenced;
     public long balance;
 }

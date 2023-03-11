@@ -1,5 +1,5 @@
 using System.Reflection;
-namespace PfannenkuchenBot.Core;
+namespace PfannenkuchenBot;
 static class Config
 {
     static Config()

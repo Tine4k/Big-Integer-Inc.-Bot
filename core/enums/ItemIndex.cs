@@ -1,5 +1,0 @@
-namespace PfannenkuchenBot;
-enum ItemIndex
-{
-    
-}
