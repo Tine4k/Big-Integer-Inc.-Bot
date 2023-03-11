@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\epic_discord_battles.exe
 C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\epic_discord_battles.deps.json
 C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\epic_discord_battles.runtimeconfig.json
@@ -25,3 +26,59 @@ C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Kl
 C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\System.Linq.Async.dll
 C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\System.Reactive.dll
 C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\obj\Debug\net6.0\epic_discord_battles.csproj.CopyComplete
+=======
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\epic_discord_battles.exe
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\epic_discord_battles.deps.json
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\epic_discord_battles.runtimeconfig.json
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\epic_discord_battles.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\epic_discord_battles.pdb
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\obj\Debug\net6.0\epic_discord_battles.csproj.AssemblyReference.cache
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\obj\Debug\net6.0\epic_discord_battles.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\obj\Debug\net6.0\epic_discord_battles.AssemblyInfoInputs.cache
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\obj\Debug\net6.0\epic_discord_battles.AssemblyInfo.cs
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\obj\Debug\net6.0\epic_discord_battles.csproj.CoreCompileInputs.cache
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\obj\Debug\net6.0\epic_discord_battles.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\obj\Debug\net6.0\refint\epic_discord_battles.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\obj\Debug\net6.0\epic_discord_battles.pdb
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\obj\Debug\net6.0\epic_discord_battles.genruntimeconfig.cache
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\obj\Debug\net6.0\ref\epic_discord_battles.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\Discord.Net.Commands.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\Discord.Net.Core.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\Discord.Net.Interactions.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\Discord.Net.Rest.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\Discord.Net.Webhook.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\Discord.Net.WebSocket.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\System.Interactive.Async.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\System.Linq.Async.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\bin\Debug\net6.0\System.Reactive.dll
+C:\Users\Infinity\OneDrive - Alpen-Adria Gymnasium Völkermarkt\Informatik\5. Klasse\c#\epic_discord_battles\epic_discord_battles\obj\Debug\net6.0\epic_discord_battles.csproj.CopyComplete
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\bin\Debug\net6.0\epic_discord_battles.exe
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\bin\Debug\net6.0\epic_discord_battles.deps.json
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\bin\Debug\net6.0\epic_discord_battles.runtimeconfig.json
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\bin\Debug\net6.0\epic_discord_battles.dll
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\bin\Debug\net6.0\epic_discord_battles.pdb
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\bin\Debug\net6.0\Discord.Net.Commands.dll
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\bin\Debug\net6.0\Discord.Net.Core.dll
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\bin\Debug\net6.0\Discord.Net.Interactions.dll
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\bin\Debug\net6.0\Discord.Net.Rest.dll
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\bin\Debug\net6.0\Discord.Net.Webhook.dll
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\bin\Debug\net6.0\Discord.Net.WebSocket.dll
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\bin\Debug\net6.0\System.Interactive.Async.dll
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\bin\Debug\net6.0\System.Linq.Async.dll
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\bin\Debug\net6.0\System.Reactive.dll
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\obj\Debug\net6.0\epic_discord_battles.csproj.AssemblyReference.cache
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\obj\Debug\net6.0\epic_discord_battles.GeneratedMSBuildEditorConfig.editorconfig
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\obj\Debug\net6.0\epic_discord_battles.AssemblyInfoInputs.cache
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\obj\Debug\net6.0\epic_discord_battles.AssemblyInfo.cs
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\obj\Debug\net6.0\epic_discord_battles.csproj.CoreCompileInputs.cache
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\obj\Debug\net6.0\epic_discord_battles.csproj.CopyComplete
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\obj\Debug\net6.0\epic_discord_battles.dll
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\obj\Debug\net6.0\refint\epic_discord_battles.dll
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\obj\Debug\net6.0\epic_discord_battles.pdb
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\obj\Debug\net6.0\epic_discord_battles.genruntimeconfig.cache
+D:\Markus_2\Code\C#\Discord Bot\epic_discord_battles\obj\Debug\net6.0\ref\epic_discord_battles.dll
+>>>>>>> master

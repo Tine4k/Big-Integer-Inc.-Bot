@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "version": 2,
   "dgSpecHash": "LhFca4wnLlEjEvP+W/K+y7pVi19LACp4hOQ4zTsoKhMtFsxD80IgR6QrL1I9aXYyl/2uTf6F+PyEyf7lkXL7MQ==",
@@ -20,4 +21,28 @@
     "C:\\Users\\Infinity\\.nuget\\packages\\system.valuetuple\\4.5.0\\system.valuetuple.4.5.0.nupkg.sha512"
   ],
   "logs": []
+=======
+{
+  "version": 2,
+  "dgSpecHash": "aid7bJBQZs3miuCvcoIeUf+nm2qyzcjHPq1EYbnC1mzJwpSAaVXZshxXi2b45UW0e+HGRxjMj6VUCSi4Znkkig==",
+  "success": true,
+  "projectFilePath": "D:\\Markus_2\\Code\\C#\\Discord Bot\\epic_discord_battles\\epic_discord_battles.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Infinity\\.nuget\\packages\\discord.net\\3.9.0\\discord.net.3.9.0.nupkg.sha512",
+    "C:\\Users\\Infinity\\.nuget\\packages\\discord.net.commands\\3.9.0\\discord.net.commands.3.9.0.nupkg.sha512",
+    "C:\\Users\\Infinity\\.nuget\\packages\\discord.net.core\\3.9.0\\discord.net.core.3.9.0.nupkg.sha512",
+    "C:\\Users\\Infinity\\.nuget\\packages\\discord.net.interactions\\3.9.0\\discord.net.interactions.3.9.0.nupkg.sha512",
+    "C:\\Users\\Infinity\\.nuget\\packages\\discord.net.rest\\3.9.0\\discord.net.rest.3.9.0.nupkg.sha512",
+    "C:\\Users\\Infinity\\.nuget\\packages\\discord.net.webhook\\3.9.0\\discord.net.webhook.3.9.0.nupkg.sha512",
+    "C:\\Users\\Infinity\\.nuget\\packages\\discord.net.websocket\\3.9.0\\discord.net.websocket.3.9.0.nupkg.sha512",
+    "C:\\Users\\Infinity\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\5.0.0\\microsoft.extensions.dependencyinjection.abstractions.5.0.0.nupkg.sha512",
+    "C:\\Users\\Infinity\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\Infinity\\.nuget\\packages\\system.collections.immutable\\5.0.0\\system.collections.immutable.5.0.0.nupkg.sha512",
+    "C:\\Users\\Infinity\\.nuget\\packages\\system.interactive.async\\5.0.0\\system.interactive.async.5.0.0.nupkg.sha512",
+    "C:\\Users\\Infinity\\.nuget\\packages\\system.linq.async\\5.0.0\\system.linq.async.5.0.0.nupkg.sha512",
+    "C:\\Users\\Infinity\\.nuget\\packages\\system.reactive\\5.0.0\\system.reactive.5.0.0.nupkg.sha512",
+    "C:\\Users\\Infinity\\.nuget\\packages\\system.valuetuple\\4.5.0\\system.valuetuple.4.5.0.nupkg.sha512"
+  ],
+  "logs": []
+>>>>>>> master
 }
