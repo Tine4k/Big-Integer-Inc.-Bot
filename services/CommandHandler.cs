@@ -1,4 +1,4 @@
-namespace PfannenkuchenBot;
+namespace PfannenkuchenBot.Core;
 using Discord;
 using Discord.WebSocket;
 using System.Reflection;

@@ -1,4 +1,4 @@
-﻿namespace PfannenkuchenBot;
+﻿namespace PfannenkuchenBot.Core;
 using Discord;
 using Discord.WebSocket;
 static class Program
@@ -32,7 +32,7 @@ static class Program
     {
         client.Log += Log;
         Program.client.MessageReceived += CommandHandler.HandleCommand;
-        await client.LoginAsync(TokenType.Bot, File.ReadAllText("services/token.txt"));
+        await client.LoginAsync(TokenType.Bot, File.ReadAllText("config/token.txt"));
         await client.StartAsync();
         await Task.Delay(-1);
     }
@@ -45,7 +45,7 @@ static class Program
     {
         client.Log += Log;
         Program.client.MessageReceived += CommandHandler.HandleCommand;
-        await client.LoginAsync(TokenType.Bot, File.ReadAllText("services/config/token.txt"));
+        await client.LoginAsync(TokenType.Bot, File.ReadAllText("config/token.txt"));
         await client.StartAsync();
         // debug here
         await Task.Delay(-1);
