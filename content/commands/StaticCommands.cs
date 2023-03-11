@@ -3,6 +3,7 @@ using Discord;
 using Discord.WebSocket;
 partial class Command
 {
+    // * Any commands that don't require the reference of playerdata belong here
     public static void Unknown(ISocketMessageChannel channel)
     {
         channel.SendMessageAsync($"Unknown Command, please use {Config.prefix}help for a list of available commands!");
@@ -19,9 +20,5 @@ partial class Command
     public static void Jone(ISocketMessageChannel channel)
     {
         channel.SendMessageAsync("Rauchst du an Jone, bist du da Mane");
-    }
-    public static void Insult(ISocketMessageChannel channel)
-    {
-        channel.SendMessageAsync("ADRIAN IST EIN KLEINER HURENSOHN!");
     }
 }

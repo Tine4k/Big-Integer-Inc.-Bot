@@ -6,7 +6,8 @@ static class Config
     {
         foreach (FieldInfo fieldInfo in typeof(Config).GetFields(BindingFlags.DeclaredOnly))
         {
-            if (File.Exists($"config/{fieldInfo.Name}.json")) fieldInfo.SetValue(null, File.ReadAllText($"config/{fieldInfo.Name}.json"));
+            string path = $"config/{fieldInfo.Name}.txt";
+            if (File.Exists(path)) fieldInfo.SetValue(null, File.ReadAllText(path));
         }
     }
     public static readonly string prefix = "*";
