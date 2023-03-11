@@ -1,0 +1,5 @@
+namespace PfannenkuchenBot;
+enum ItemIndex
+{
+    
+}
