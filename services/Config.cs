@@ -1,18 +1,26 @@
+using System.Configuration;
 using System.Reflection;
-namespace PfannenkuchenBot;
+using System.ComponentModel;
 static class Config
 {
-    static Config()
+    public static void ReloadConfig()
     {
-        foreach (FieldInfo fieldInfo in typeof(Config).GetFields(BindingFlags.DeclaredOnly))
+        foreach (FieldInfo fieldInfo in typeof(Config).GetFields(BindingFlags.DeclaredOnly | BindingFlags.Public))
         {
-            string path = $"config/{fieldInfo.Name}.txt";
-            if (File.Exists(path)) fieldInfo.SetValue(null, File.ReadAllText(path));
+            string? configValue = ConfigurationManager.AppSettings[fieldInfo.Name];
+            if (String.IsNullOrWhiteSpace(configValue)) return;
+            if (fieldInfo.FieldType == typeof(string)) fieldInfo.SetValue(null, configValue);
+            else
+            {
+                TypeConverter converter = TypeDescriptor.GetConverter(fieldInfo.FieldType);
+                object? convertedValue = Convert.ChangeType(converter.ConvertFromString(configValue), fieldInfo.FieldType);
+                fieldInfo.SetValue(null, convertedValue);
+            }            
         }
     }
-    public static readonly string prefix = "*";
-    public static readonly ushort autoUnloadInterval = 60;
-    public static readonly ushort idleUnloadTime = 60;
-    public static readonly bool autoUnload = true;
-    public static readonly bool forceUnload = true;
+    public static string prefix = "*";
+    public static bool autoUnload = true;
+    public static bool forceUnload = false;
+    public static ushort autoUnloadInterval = 60;
+    public static ushort idleUnloadTime = 60;
 }
