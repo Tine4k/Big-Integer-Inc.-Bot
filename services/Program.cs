@@ -5,16 +5,15 @@ static class Program
 {
     public static void Main(string[] args)
     {
-        // if (args.Length > 0)
-        // {
-        //     if (args[0] == "restore")
-        //     {
-        //         Console.WriteLine("Restoring all files!");
-        //         Restorer.Restore();
-        //     }
-        // }
-        // else 
-        Program.Startup().GetAwaiter().GetResult();
+        if (args.Length > 0)
+        {
+            if (args[0] == "test")
+            {
+                Console.WriteLine("Test running...");
+            }
+        }
+        else 
+        DiscordLogin().GetAwaiter().GetResult();
     }
     public static DiscordSocketClient client = new DiscordSocketClient(new DiscordSocketConfig()
     {
@@ -25,9 +24,8 @@ static class Program
         GatewayIntents.GuildMessageReactions |
         GatewayIntents.MessageContent
     });
-    static async Task Startup()
+    static async Task DiscordLogin()
     {
-        // new Restorer().Restore();
         client.Log += Log;
         Program.client.MessageReceived += CommandHandler.HandleCommand;
         await client.LoginAsync(TokenType.Bot, File.ReadAllText("config/token.txt"));

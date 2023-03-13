@@ -19,6 +19,10 @@ partial class Command
     }
     public static void Jone(ISocketMessageChannel channel)
     {
-        channel.SendMessageAsync("Rauchst du an Jone, bist du da Mane");
+        channel.SendMessageAsync(
+        Format.BlockQuote(Format.Bold(
+        "Rauchst du an Jone, bist du da Mane!\nRauchst du kan, brauchst du an!\n") +
+        "Kontaktieren Sie die Jone GmbH gerne unter " +
+        Format.Italics(Format.Underline("+43 67689807553"))));
     }
 }
