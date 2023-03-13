@@ -1,18 +1,46 @@
 using System.Reflection;
-namespace PfannenkuchenBot;
+using System.ComponentModel;
 static class Config
 {
+    static FieldInfo[] configFields;
     static Config()
     {
-        foreach (FieldInfo fieldInfo in typeof(Config).GetFields(BindingFlags.DeclaredOnly))
+        configFields = typeof(Config).GetFields(BindingFlags.DeclaredOnly | BindingFlags.Public);
+        ReloadConfig();
+    }
+    public static void ReloadConfig()
+    {
+        foreach (FieldInfo fieldInfo in configFields)
         {
-            string path = $"config/{fieldInfo.Name}.txt";
-            if (File.Exists(path)) fieldInfo.SetValue(null, File.ReadAllText(path));
+            ApplyConfigToField(fieldInfo);
         }
     }
-    public static readonly string prefix = "*";
-    public static readonly ushort autoUnloadInterval = 60;
-    public static readonly ushort idleUnloadTime = 60;
-    public static readonly bool autoUnload = true;
-    public static readonly bool forceUnload = true;
+    static void ApplyConfigToField(FieldInfo fieldInfo)
+    {
+        string? configValue = GetConfigValue(fieldInfo.Name);
+        if (String.IsNullOrWhiteSpace(configValue)) return;
+        if (fieldInfo.FieldType == typeof(string)) fieldInfo.SetValue(null, configValue);
+        else
+        {
+            object? convertedValue = CastFieldValueToFieldType(fieldInfo, configValue);
+            fieldInfo.SetValue(null, convertedValue);
+        }
+        return;
+        object? CastFieldValueToFieldType(FieldInfo fieldInfo, string configValue)
+        {
+            TypeConverter converter = TypeDescriptor.GetConverter(fieldInfo.FieldType);
+            object? convertedValue = Convert.ChangeType(converter.ConvertFromString(configValue), fieldInfo.FieldType);
+            return convertedValue;
+        }
+    }
+    static string? GetConfigValue(string fieldName)
+    {
+        return String.Empty;
+    }
+
+    public static string prefix = "*";
+    public static bool autoUnload = true;
+    public static bool forceUnload = false;
+    public static ushort autoUnloadInterval = 60;
+    public static ushort idleUnloadTime = 60;
 }
