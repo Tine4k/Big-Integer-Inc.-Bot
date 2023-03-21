@@ -1,4 +1,4 @@
-﻿namespace PfannenkuchenBot.Core;
+﻿﻿namespace PfannenkuchenBot.Core;
 using Discord;
 using Discord.WebSocket;
 static class Program
