@@ -1,2 +1,3 @@
 # Big-Integer-Inc.-Bot
-Big Chungus
+Big Jack Horner
+
