@@ -25,7 +25,6 @@ static class Config
             object? convertedValue = CastFieldValueToFieldType(fieldInfo, configValue);
             fieldInfo.SetValue(null, convertedValue);
         }
-        return;
         object? CastFieldValueToFieldType(FieldInfo fieldInfo, string configValue)
         {
             TypeConverter converter = TypeDescriptor.GetConverter(fieldInfo.FieldType);
@@ -33,9 +32,10 @@ static class Config
             return convertedValue;
         }
     }
-    static string? GetConfigValue(string fieldName)
+    static string GetConfigValue(string fieldName)
     {
-        return String.Empty;
+        if (File.Exists(fieldName)) return File.ReadAllText(fieldName);
+        else return String.Empty;
     }
 
     public static string prefix = "*";
