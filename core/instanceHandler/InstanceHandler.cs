@@ -25,7 +25,7 @@ class InstanceHandler
             await UnloadAllInstanceHandlers();
         }
     }
-    static Task UnloadAllInstanceHandlers()
+    public static Task UnloadAllInstanceHandlers()
     {
         foreach (InstanceHandler pd in LoadedInstanceHandlers.Values)
         {
@@ -45,15 +45,11 @@ class InstanceHandler
     }
     void Load()
     {
-        if (!LoadedInstanceHandlers.ContainsKey(playerdata.userId))
-        {
-            LoadedInstanceHandlers.Add(playerdata.userId, this);
-        }
+        if (!LoadedInstanceHandlers.ContainsKey(playerdata.userId)) LoadedInstanceHandlers.Add(playerdata.userId, this);
     }
     void Unload()
     {
         LoadedInstanceHandlers.Remove(this.playerdata.userId);
-        playerdata.Save();
     }
     public DateTime lastReferenced;
     public Playerdata playerdata;

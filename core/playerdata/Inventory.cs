@@ -1,24 +1,33 @@
 namespace PfannenkuchenBot;
-class Inventory{
-    Dictionary<string, int> data = new Dictionary<string, int>();
-    public void Add(string item, int count = 1)
+class Inventory
+{
+    Dictionary<string, ulong> data = new Dictionary<string, ulong>();
+    public void Add(string item, ulong amount = 1)
     {
         if (data.ContainsKey(item))
         {
-            data[item] += count;
+            data[item] += amount;
         }
-        else data.Add(item, count);
+        else data.Add(item, amount);
     }
-    public void Remove(string item, int count = 1)
+    public bool Remove(string item, ulong amount = 1) // Returns true if player has enough Items;
     {
-        if (data.ContainsKey(item) && data[item]<=count)
+        if (!Item.LoadedItems.ContainsKey(item)) throw new KeyNotFoundException();
+        if (!data.ContainsKey(item)) return false;
+        if (amount > data[item])
         {
-            data[item] -= count;
+            data[item] -= amount;
+            return true;
         }
-        else data.Remove(item);
+        else if (data[item] == amount)
+        {
+            data.Remove(item);
+            return true;
+        }
+        else return false;
     }
     public void Clear()
     {
-        data = new Dictionary<string,int>();
+        data = new Dictionary<string, ulong>();
     }
 }

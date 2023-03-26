@@ -3,7 +3,7 @@ using PfannenkuchenBot.Core;
 namespace PfannenkuchenBot;
 partial class Command
 {
-    // * All comments that reference playerdata belong here
+    // * All commands that reference playerdata belong here
     public Command(SocketMessage _socketmsg)
     {
         this.channel = _socketmsg.Channel;
@@ -17,15 +17,11 @@ partial class Command
     readonly SocketUser author;
     public void Daily()
     {
-        playerdata.balance += 1000;
-        channel.SendMessageAsync($"Added 1000$ to your balance, which now contains {playerdata.balance}$");
+        playerdata.Gain(1000);
+        channel.SendMessageAsync($"Added 1000$ to your balance, which now contains {playerdata.Balance}$");
     }
     public void Balance()
     {
-        channel.SendMessageAsync($"Your current balance is {playerdata.balance}$");
-    }
-    public void Clear()
-    {
-        playerdata.inventory.Clear();
+        channel.SendMessageAsync($"Your current balance is {playerdata.Balance}$");
     }
 }

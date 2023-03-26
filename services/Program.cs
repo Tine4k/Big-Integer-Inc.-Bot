@@ -10,6 +10,8 @@ static class Program
             if (args[0] == "test")
             {
                 Console.WriteLine("Test running...");
+                var pd = Playerdata.GetPlayerdata("500953493918449674");
+                pd.Gain("Gunpowder", 10);
             }
         }
         else 
