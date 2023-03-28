@@ -9,7 +9,7 @@
 	"Create Command": {
 		"prefix": "stcmd",
 		"body": [
-			"public static void ${1:name}(ISocketMessageChannel channel)",
+			"public static void ${1:name}(ISocketMessageChannel channel, string[] command = default!)",
 			"{",
 			"    $0",
 			"}"

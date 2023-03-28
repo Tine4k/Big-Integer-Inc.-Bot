@@ -13,7 +13,7 @@ public static class CommandHandler
     {
         var socketMessage = _socketMessage as SocketUserMessage;
         if (socketMessage == null) return Task.CompletedTask;
-        if ( !(
+        if (!(
         socketMessage.Content.StartsWith(Config.prefix)) ||
         socketMessage.Author.IsBot ||
         socketMessage.Content.Length <= Config.prefix.Length
@@ -24,11 +24,17 @@ public static class CommandHandler
     }
     static void EvaluateCommand(string[] command, SocketUserMessage socketmsg)
     {
-        foreach (MethodBase methodBase in StaticCommands) if (ProcessablifyMessage(command[0]) == methodBase.Name.ToLower()) { methodBase.Invoke(null, new object[] { socketmsg.Channel }); return; }
-        foreach (MethodBase methodBase in InstanceCommands) if (ProcessablifyMessage(command[0]) == methodBase.Name.ToLower()) { methodBase.Invoke(new Command(socketmsg), new object[] { }); return; } // debug m.Invoke(typeof(Command).GetConstructor(new Type[]{typeof(SocketMessage)}).Invoke(new Object[]{socketmsg}), new object[] { }); return;
+        foreach (MethodBase methodBase in StaticCommands) if (MakeMessageProcessable(command[0]) == methodBase.Name.ToLower())
+            {
+                methodBase.Invoke(null, new object[] { socketmsg.Channel, command }); return;
+            }
+        foreach (MethodBase methodBase in InstanceCommands) if (MakeMessageProcessable(command[0]) == methodBase.Name.ToLower())
+            {
+                methodBase.Invoke(new Command(socketmsg, command), new object[] { }); return;
+            }
         Command.Unknown(socketmsg.Channel);
     }
-    public static string ProcessablifyMessage(string msg) => Format.StripMarkDown(msg).ToLower();
-    static readonly MethodInfo[] StaticCommands;
-    static readonly MethodInfo[] InstanceCommands;
+    public static string MakeMessageProcessable(string msg) => Format.StripMarkDown(msg).ToLower();
+    public static readonly MethodInfo[] StaticCommands;
+    public static readonly MethodInfo[] InstanceCommands;
 }

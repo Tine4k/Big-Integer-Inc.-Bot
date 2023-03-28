@@ -1,3 +1,4 @@
+using System.Security.AccessControl;
 using Newtonsoft.Json;
 
 namespace PfannenkuchenBot;
@@ -5,11 +6,11 @@ class Item : GameObject
 {
     static Item()
     {
-        LoadedItems = new Dictionary<string, Item>();
+        loadedItems = new Dictionary<string, Item>();
         LoadAllItems();
     }
 
-    private static void LoadAllItems()
+    static void LoadAllItems()
     {
         string itemsDirectory = "content/items";
         foreach (string itemPath in Directory.GetFiles(itemsDirectory, "*json", SearchOption.AllDirectories))
@@ -20,13 +21,18 @@ class Item : GameObject
         static void LoadItem(string itemPath)
         {
             Item? item = JsonConvert.DeserializeObject<Item>(File.ReadAllText(itemPath));
-            if (item == null) throw new JsonSerializationException($"Invalid item detected at: {itemPath}");
-            LoadedItems.Add(item.Name,item);
+            if (item == null) throw new JsonSerializationException($"Tried to laod invalid item from file: {itemPath}");
+            loadedItems.Add(item.Name, item);
         }
     }
+    static public bool GetItem(string itemName, out Item item)
+    {
+        bool successfull = !loadedItems.TryGetValue(itemName, out Item? _item);
+        item = (_item is not null) ? _item : throw new KeyNotFoundException($"Invalid item detected at: {itemName}");
+        return successfull;
+    }
+    static Dictionary<string, Item> loadedItems;
 
     public Rarity Rarity
-    {get; private set;}
-    public static Dictionary<string, Item> LoadedItems
     { get; private set; }
 }

@@ -8,16 +8,6 @@ class InstanceHandler
         LoadedInstanceHandlers = new Dictionary<string, InstanceHandler>();
         if (Config.autoUnload) StartAutoUnload(Config.autoUnloadInterval);
     }
-    public static InstanceHandler GetInstanceHandler(string userId)
-    {
-        if (LoadedInstanceHandlers.ContainsKey(userId))
-        {
-            InstanceHandler instanceHandler = LoadedInstanceHandlers[userId];
-            instanceHandler.lastReferenced = DateTime.Now;
-            return instanceHandler;
-        }
-        else return new InstanceHandler(userId);
-    }
     static async void StartAutoUnload(ushort autoSaveTime)
     {
         while (await new PeriodicTimer(TimeSpan.FromSeconds(autoSaveTime)).WaitForNextTickAsync())
@@ -35,6 +25,13 @@ class InstanceHandler
     }
     static Dictionary<string, InstanceHandler> LoadedInstanceHandlers;
 
+    public static InstanceHandler GetInstanceHandler(string userId)
+    {
+        if (!LoadedInstanceHandlers.TryGetValue(userId, out InstanceHandler? instanceHandler)) return new InstanceHandler(userId);
+        instanceHandler ??= new InstanceHandler(userId);
+        instanceHandler.lastReferenced = DateTime.Now;
+        return instanceHandler;
+    }
     // * INSTANCES BEGIN HERE !!!
 
     InstanceHandler(string userId)

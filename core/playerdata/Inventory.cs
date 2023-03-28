@@ -1,18 +1,20 @@
 namespace PfannenkuchenBot;
+using System.Text;
 class Inventory
 {
-    Dictionary<string, ulong> data = new Dictionary<string, ulong>();
-    public void Add(string item, ulong amount = 1)
+    Dictionary<Item, ulong> data = new Dictionary<Item, ulong>();
+    public void Add(string itemName, uint amount = 1)
     {
+        if (!Item.GetItem(itemName, out Item item)) throw new KeyNotFoundException();
         if (data.ContainsKey(item))
         {
             data[item] += amount;
         }
         else data.Add(item, amount);
     }
-    public bool Remove(string item, ulong amount = 1) // Returns true if player has enough Items;
+    public bool Remove(string itemName, uint amount = 1) // Returns true if player has enough Items;
     {
-        if (!Item.LoadedItems.ContainsKey(item)) throw new KeyNotFoundException();
+        if (!Item.GetItem(itemName, out Item item)) throw new KeyNotFoundException();
         if (!data.ContainsKey(item)) return false;
         if (amount > data[item])
         {
@@ -28,6 +30,12 @@ class Inventory
     }
     public void Clear()
     {
-        data = new Dictionary<string, ulong>();
+        data = new Dictionary<Item, ulong>();
+    }
+    public string PrintContent()
+    {
+        StringBuilder message = new StringBuilder();
+        foreach (KeyValuePair<Item, ulong> pair in data) message.Append($"\n{pair.Value} of {pair.Key}");
+        return message.ToString();
     }
 }

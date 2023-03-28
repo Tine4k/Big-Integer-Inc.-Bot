@@ -22,10 +22,10 @@ static class Config
         if (fieldInfo.FieldType == typeof(string)) fieldInfo.SetValue(null, configValue);
         else
         {
-            object? convertedValue = CastFieldValueToFieldType(fieldInfo, configValue);
+            object? convertedValue = SetFieldToConfigValue(fieldInfo, configValue);
             fieldInfo.SetValue(null, convertedValue);
         }
-        object? CastFieldValueToFieldType(FieldInfo fieldInfo, string configValue)
+        object? SetFieldToConfigValue(FieldInfo fieldInfo, string configValue)
         {
             TypeConverter converter = TypeDescriptor.GetConverter(fieldInfo.FieldType);
             object? convertedValue = Convert.ChangeType(converter.ConvertFromString(configValue), fieldInfo.FieldType);
