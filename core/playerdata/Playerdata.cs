@@ -25,19 +25,35 @@ class Playerdata
             return playerdata;
         }
     }
-    public void Gain(string item, uint amount = 1)
+    public void Gain(string itemName, uint amount = 1)
+    {
+        inventory.Add(itemName, amount);
+    }
+    public void Gain(Item item, uint amount = 1)
     {
         inventory.Add(item, amount);
     }
-    public bool Lose(string item, uint amount = 1)
+    public void Gain(Inventory items)
     {
-        return inventory.Remove(item, amount);
+        foreach (KeyValuePair<Item, ulong> pair in items) inventory.Add(pair.Key, (uint)pair.Value);
     }
     public void Gain(int amount)
     {
         Balance += amount;
     }
-    public bool Lose(int amount, bool causeDepths = false)
+    public bool Lose(string itemName, uint amount = 1)
+    {
+        return inventory.Remove(itemName, amount);
+    }
+    public bool Lose(Inventory items)
+    {
+        foreach (KeyValuePair<Item, ulong> pair in items)
+        {
+            if (!inventory.Remove(pair.Key, (uint)pair.Value)) return false;
+        }
+        return true;
+    }
+    public bool Lose(uint amount, bool causeDepths = false)
     {
         if (causeDepths || amount >= balance)
         {
@@ -46,19 +62,20 @@ class Playerdata
         }
         else return false;
     }
-    public void Clear()
+    public void Reset()
     {
         inventory.Clear();
         balance = 0;
+        Stats = new Dictionary<Stat, int>();
     }
-    public string PrintContent() => inventory.PrintContent();   
-    
+    public string PrintContent() => inventory.PrintContent();
+
     void Save()
     {
         File.WriteAllText($"playerdata/{userId}.dat", JsonConvert.SerializeObject(this));
     }
     public Dictionary<Stat, int> Stats
-    {get;set;}
+    { get; set; }
     public string userId;
     public long Balance
     { get; private set; }

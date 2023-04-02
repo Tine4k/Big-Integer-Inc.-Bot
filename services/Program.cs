@@ -15,7 +15,7 @@ static class Program
             }
         }
         else 
-        DiscordLogin().GetAwaiter().GetResult();
+        StartUp().GetAwaiter().GetResult();
     }
     public static DiscordSocketClient client = new DiscordSocketClient(new DiscordSocketConfig()
     {
@@ -26,7 +26,7 @@ static class Program
         GatewayIntents.GuildMessageReactions |
         GatewayIntents.MessageContent
     });
-    static async Task DiscordLogin()
+    static async Task StartUp()
     {
         client.Log += Log;
         Program.client.MessageReceived += CommandHandler.HandleCommand;
