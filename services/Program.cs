@@ -39,4 +39,9 @@ static class Program
         Console.WriteLine(msg.ToString());
         return Task.CompletedTask;
     }
+    public static Task Log(string msg)
+    {
+        Console.WriteLine($"{DateTime.Now.ToLongTimeString()} Custom      {msg}");
+        return Task.CompletedTask;
+    }
 }

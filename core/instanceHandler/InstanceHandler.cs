@@ -6,22 +6,7 @@ class InstanceHandler
     static InstanceHandler()
     {
         LoadedInstanceHandlers = new Dictionary<string, InstanceHandler>();
-        if (Config.autoUnload) StartAutoUnload(Config.autoUnloadInterval);
-    }
-    static async void StartAutoUnload(ushort autoSaveTime)
-    {
-        while (await new PeriodicTimer(TimeSpan.FromSeconds(autoSaveTime)).WaitForNextTickAsync())
-        {
-            await UnloadAllInstanceHandlers();
-        }
-    }
-    public static Task UnloadAllInstanceHandlers()
-    {
-        foreach (InstanceHandler pd in LoadedInstanceHandlers.Values)
-        {
-            if (Config.forceUnload || pd.lastReferenced - DateTime.Now < TimeSpan.FromSeconds(Config.idleUnloadTime)) pd.Unload();
-        }
-        return Task.CompletedTask;
+        if (Config.autoUnload) AutoUnloader.Start();
     }
     static Dictionary<string, InstanceHandler> LoadedInstanceHandlers;
 
@@ -32,8 +17,6 @@ class InstanceHandler
         instanceHandler.lastReferenced = DateTime.Now;
         return instanceHandler;
     }
-    // * INSTANCES BEGIN HERE !!!
-
     InstanceHandler(string userId)
     {
         this.playerdata = Playerdata.GetPlayerdata(userId);
@@ -50,4 +33,23 @@ class InstanceHandler
     }
     public DateTime lastReferenced;
     public Playerdata playerdata;
+
+    private static class AutoUnloader
+    {
+        public static async void Start()
+        {
+            while (await new PeriodicTimer(TimeSpan.FromSeconds(Config.autoUnloadInterval)).WaitForNextTickAsync())
+            {
+                await UnloadAllInstanceHandlers();
+            }
+        }
+        public static Task UnloadAllInstanceHandlers()
+        {
+            foreach (InstanceHandler pd in LoadedInstanceHandlers.Values)
+            {
+                if (Config.forceUnload || pd.lastReferenced - DateTime.Now < TimeSpan.FromSeconds(Config.idleUnloadTime)) pd.Unload();
+            }
+            return Task.CompletedTask;
+        }
+    }
 }

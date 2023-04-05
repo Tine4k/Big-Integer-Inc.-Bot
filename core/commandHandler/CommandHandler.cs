@@ -6,8 +6,8 @@ public static class CommandHandler
 {
     static CommandHandler()
     {
-        StaticCommands = typeof(Command).GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static);
-        InstanceCommands = typeof(Command).GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+        nonInstanceCommands = typeof(NonInstanceCommand).GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+        instanceCommands = typeof(InstanceCommand).GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
     }
     public static Task HandleCommand(SocketMessage _socketMessage)
     {
@@ -24,17 +24,17 @@ public static class CommandHandler
     }
     static void EvaluateCommand(string[] command, SocketUserMessage socketmsg)
     {
-        foreach (MethodBase methodBase in StaticCommands) if (MakeMessageProcessable(command[0]) == methodBase.Name.ToLower())
+        foreach (MethodBase methodBase in nonInstanceCommands) if (MakeMessageProcessable(command[0]) == methodBase.Name.ToLower())
             {
-                methodBase.Invoke(null, new object[] { socketmsg.Channel, command }); return;
+                methodBase.Invoke(new NonInstanceCommand(socketmsg, command), null); return;
             }
-        foreach (MethodBase methodBase in InstanceCommands) if (MakeMessageProcessable(command[0]) == methodBase.Name.ToLower())
+        foreach (MethodBase methodBase in instanceCommands) if (MakeMessageProcessable(command[0]) == methodBase.Name.ToLower())
             {
-                methodBase.Invoke(new Command(socketmsg, command), new object[] { }); return;
+                methodBase.Invoke(new InstanceCommand(socketmsg, command),null); return;
             }
-        Command.Unknown(socketmsg.Channel);
+        PfannenkuchenBot.NonInstanceCommand.Unknown(socketmsg.Channel);
     }
     public static string MakeMessageProcessable(string msg) => Format.StripMarkDown(msg).ToLower();
-    public static readonly MethodInfo[] StaticCommands;
-    public static readonly MethodInfo[] InstanceCommands;
+    public static readonly MethodInfo[] nonInstanceCommands;
+    public static readonly MethodInfo[] instanceCommands;
 }

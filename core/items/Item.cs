@@ -1,4 +1,3 @@
-using System.Security.AccessControl;
 using Newtonsoft.Json;
 
 namespace PfannenkuchenBot;

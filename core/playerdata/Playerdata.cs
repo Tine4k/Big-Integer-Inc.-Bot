@@ -11,6 +11,7 @@ class Playerdata
     }
     ~Playerdata()
     {
+        if (Config.logUnloads) Program.Log($"Playerdata of {userId} was saved to file \"playerdata/{userId}\"");
         Save();
     }
     public static Playerdata GetPlayerdata(string userId)
@@ -35,7 +36,7 @@ class Playerdata
     }
     public void Gain(Inventory items)
     {
-        foreach (KeyValuePair<Item, ulong> pair in items) inventory.Add(pair.Key, (uint)pair.Value);
+        inventory.Add(items);
     }
     public void Gain(int amount)
     {
@@ -47,11 +48,7 @@ class Playerdata
     }
     public bool Lose(Inventory items)
     {
-        foreach (KeyValuePair<Item, ulong> pair in items)
-        {
-            if (!inventory.Remove(pair.Key, (uint)pair.Value)) return false;
-        }
-        return true;
+        return inventory.Remove(items);
     }
     public bool Lose(uint amount, bool causeDepths = false)
     {
@@ -68,17 +65,17 @@ class Playerdata
         balance = 0;
         Stats = new Dictionary<Stat, int>();
     }
-    public string PrintContent() => inventory.PrintContent();
+    public string PrintInventory() => inventory.PrintContent();
 
-    void Save()
-    {
-        File.WriteAllText($"playerdata/{userId}.dat", JsonConvert.SerializeObject(this));
-    }
     public Dictionary<Stat, int> Stats
     { get; set; }
     public string userId;
     public long Balance
     { get; private set; }
+    void Save()
+    {
+        File.WriteAllText($"playerdata/{userId}.dat", JsonConvert.SerializeObject(this));
+    }
     Inventory inventory;
     long balance;
 }

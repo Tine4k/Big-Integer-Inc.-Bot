@@ -1,24 +1,17 @@
-using System.Text;
 using Discord;
 using Discord.WebSocket;
 using PfannenkuchenBot.Core;
 namespace PfannenkuchenBot;
-partial class Command
+class InstanceCommand: Command
 {
     // * All commands that reference playerdata belong here
-    public Command(SocketMessage _socketmsg, string[] _command)
+    public InstanceCommand(SocketMessage _socketmsg, string[] _command): base(_socketmsg, _command)
     {
-        this.channel = _socketmsg.Channel;
-        this.author = _socketmsg.Author;
         this.instanceHandler = InstanceHandler.GetInstanceHandler(_socketmsg.Author.Id.ToString());
         this.player = instanceHandler.playerdata;
-        this.command = _command;
     }
     readonly Playerdata player;
     readonly InstanceHandler instanceHandler;
-    readonly ISocketMessageChannel channel;
-    readonly SocketUser author;
-    readonly string[] command;
     public void Give()
     {
         uint amount;
@@ -26,20 +19,24 @@ partial class Command
             command.Length >= 2 &&
             uint.TryParse(command[2], out amount)
             ) player.Gain(command[1], amount = 1);
-        else Command.Unknown(channel);
+        else NonInstanceCommand.Unknown(channel);
     }
     public void Balance()
     {
-        channel.SendMessageAsync($"Your current balance is {player.Balance}$");
+        message.Append($"Your current balance is {player.Balance}{Config.currency}!");
+        Send();
     }
     public void Inventory()
     {
-        channel.SendMessageAsync(Format.BlockQuote(Format.Bold($"Inventory of {author.Username}:\n") + player.PrintContent()));
+        message.Append(Format.Bold($"Inventory of {author.Username}:\n"));
+        message.Append(player.PrintInventory());
+        Send();
     }
     public void Daily()
     {
         player.Gain(1000);
-        channel.SendMessageAsync($"Added 1000$ to your balance, which now contains {player.Balance}$");
+        message.Append($"Added 1000$ to your balance, which now contains {player.Balance}{Config.currency}");
+        Send();
     }
     public void Mine()
     {

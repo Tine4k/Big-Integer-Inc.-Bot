@@ -25,6 +25,7 @@ static class Config
             object? convertedValue = SetFieldToConfigValue(fieldInfo, configValue);
             fieldInfo.SetValue(null, convertedValue);
         }
+        
         object? SetFieldToConfigValue(FieldInfo fieldInfo, string configValue)
         {
             TypeConverter converter = TypeDescriptor.GetConverter(fieldInfo.FieldType);
@@ -34,13 +35,15 @@ static class Config
     }
     static string GetConfigValue(string fieldName)
     {
-        if (File.Exists(fieldName)) return File.ReadAllText(fieldName);
+        if (File.Exists("config/"+fieldName)) return File.ReadAllText("config/"+fieldName);
         else return String.Empty;
     }
 
     public static string prefix = "*";
     public static bool autoUnload = true;
     public static bool forceUnload = false;
-    public static ushort autoUnloadInterval = 60;
-    public static ushort idleUnloadTime = 60;
+    public static bool logUnloads = true;
+    public static ushort autoUnloadInterval = 10;
+    public static ushort idleUnloadTime = 10;
+    public static char currency = '$';
 }
