@@ -41,7 +41,7 @@ class InstanceCommand: Command
     public void Mine()
     {
         Inventory items = new Inventory();
-        items.Add("Gunpowder", (uint)Random.Shared.Next(4));
+        items.Add("Gunpowder", (uint)Random.Shared.Next(1,4));
         channel.SendMessageAsync($"You found {items.PrintContent()}!");
     }
 }

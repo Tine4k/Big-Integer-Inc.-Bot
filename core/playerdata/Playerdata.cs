@@ -1,42 +1,53 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+
 namespace PfannenkuchenBot.Core;
 class Playerdata
 {
-    public Playerdata(string _userId)
+    [JsonConstructor]
+    Playerdata([JsonProperty("UserId")] string _userId, [JsonProperty("Inventory")] Inventory _inventory)
     {
-        this.inventory = new Inventory();
         this.userId = _userId;
-        this.inventory = new Inventory();
-        this.Stats = new Dictionary<Stat, int>();
+        this.Inventory = _inventory;
     }
-    ~Playerdata()
+    Playerdata(string _userId)
     {
-        if (Config.logUnloads) Program.Log($"Playerdata of {userId} was saved to file \"playerdata/{userId}\"");
-        Save();
+        this.userId = _userId;
+        this.Inventory = new Inventory();
+        this.Stats = new Dictionary<Stat, int>();
     }
     public static Playerdata GetPlayerdata(string userId)
     {
-        if (File.Exists($"playerdata/{userId}.dat")) return DeserializePlayerdata(userId);
-        else return new Playerdata(userId);
-
+        if (File.Exists($"playerdata/{userId}.dat")) 
+        {
+            Playerdata playerdata = DeserializePlayerdata(userId);
+            if (Config.logPlayerdataLoads) Program.Log($"Loaded Playerdata with id {userId}");
+            return playerdata;
+        }
+        else
+        {
+            if (Config.logPlayerdataCreations) Program.Log($"Created new playerdata with id {userId}");
+            return new Playerdata(userId);
+        }
+        
         Playerdata DeserializePlayerdata(string userId)
         {
             Playerdata? playerdata = JsonConvert.DeserializeObject<Playerdata>(File.ReadAllText($"playerdata/{userId}.dat"));
-            playerdata ??= new Playerdata(userId);
+            if (playerdata is null) throw new Exception($"Failed to deserialize playerdata with id {userId}");
             return playerdata;
         }
     }
     public void Gain(string itemName, uint amount = 1)
     {
-        inventory.Add(itemName, amount);
+        Inventory.Add(itemName, amount);
     }
     public void Gain(Item item, uint amount = 1)
     {
-        inventory.Add(item, amount);
+        Inventory.Add(item, amount);
     }
     public void Gain(Inventory items)
     {
-        inventory.Add(items);
+        Inventory.Add(items);
     }
     public void Gain(int amount)
     {
@@ -44,38 +55,45 @@ class Playerdata
     }
     public bool Lose(string itemName, uint amount = 1)
     {
-        return inventory.Remove(itemName, amount);
+        return Inventory.Remove(itemName, amount);
     }
     public bool Lose(Inventory items)
     {
-        return inventory.Remove(items);
+        return Inventory.Remove(items);
     }
     public bool Lose(uint amount, bool causeDepths = false)
     {
-        if (causeDepths || amount >= balance)
+        if (causeDepths || amount >= Balance)
         {
-            balance -= amount;
+            Balance -= amount;
             return true;
         }
         else return false;
     }
     public void Reset()
     {
-        inventory.Clear();
-        balance = 0;
+        Inventory.Clear();
+        Balance = 0;
         Stats = new Dictionary<Stat, int>();
     }
-    public string PrintInventory() => inventory.PrintContent();
-
-    public Dictionary<Stat, int> Stats
-    { get; set; }
-    public string userId;
-    public long Balance
-    { get; private set; }
-    void Save()
+    public string PrintInventory() => Inventory.PrintContent();
+    public void Save()
     {
         File.WriteAllText($"playerdata/{userId}.dat", JsonConvert.SerializeObject(this));
+        if (Config.logPlayerdataUnloads) Program.Log($"Playerdata with id {userId} was saved to file \"playerdata/{userId}.dat\"");
     }
-    Inventory inventory;
-    long balance;
+    // * All fields that should be serialized have to either be 
+    // * a public field (in which case it is recommended to add a [JsonProperty("[fieldname in CamelCase]")] attribute) or 
+    // * a property that has a public setter or that is marked with the [JsonProperty] attribute
+    // * The order in which the members are displayed here results in the order of serialization (hence userId is the first entry in a .dat file)
+    [JsonProperty("UserId")]
+    public readonly string userId;
+    [JsonProperty]
+    Inventory Inventory
+    {get; set;}
+    public Dictionary<Stat, int>? Stats  
+    { get; set; }                    /*nullable for the duration of the Stat class not being relevant */
+    [JsonProperty]
+    public long Balance
+    { get; private set; }
 }

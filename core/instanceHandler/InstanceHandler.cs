@@ -5,15 +5,15 @@ class InstanceHandler
 {
     static InstanceHandler()
     {
-        LoadedInstanceHandlers = new Dictionary<string, InstanceHandler>();
+        loadedInstanceHandlers = new Dictionary<string, InstanceHandler>();
         if (Config.autoUnload) AutoUnloader.Start();
     }
-    static Dictionary<string, InstanceHandler> LoadedInstanceHandlers;
+    static Dictionary<string, InstanceHandler> loadedInstanceHandlers;
 
     public static InstanceHandler GetInstanceHandler(string userId)
     {
-        if (!LoadedInstanceHandlers.TryGetValue(userId, out InstanceHandler? instanceHandler)) return new InstanceHandler(userId);
-        instanceHandler ??= new InstanceHandler(userId);
+        if (!loadedInstanceHandlers.TryGetValue(userId, out InstanceHandler? instanceHandler)) return new InstanceHandler(userId);
+        if (instanceHandler is null) throw new Exception("Something went wrong");
         instanceHandler.lastReferenced = DateTime.Now;
         return instanceHandler;
     }
@@ -25,11 +25,12 @@ class InstanceHandler
     }
     void Load()
     {
-        if (!LoadedInstanceHandlers.ContainsKey(playerdata.userId)) LoadedInstanceHandlers.Add(playerdata.userId, this);
+        loadedInstanceHandlers.Add(playerdata.userId, this);
     }
     void Unload()
     {
-        LoadedInstanceHandlers.Remove(this.playerdata.userId);
+        playerdata.Save();
+        loadedInstanceHandlers.Remove(this.playerdata.userId);
     }
     public DateTime lastReferenced;
     public Playerdata playerdata;
@@ -45,7 +46,7 @@ class InstanceHandler
         }
         public static Task UnloadAllInstanceHandlers()
         {
-            foreach (InstanceHandler pd in LoadedInstanceHandlers.Values)
+            foreach (InstanceHandler pd in loadedInstanceHandlers.Values)
             {
                 if (Config.forceUnload || pd.lastReferenced - DateTime.Now < TimeSpan.FromSeconds(Config.idleUnloadTime)) pd.Unload();
             }

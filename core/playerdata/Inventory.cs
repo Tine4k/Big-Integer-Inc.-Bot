@@ -1,8 +1,10 @@
 namespace PfannenkuchenBot;
-
 using System.Text;
 class Inventory
 {
+    public Inventory() : this(new Dictionary<Item, ulong>())
+    {
+    }
     public void Add(Item item, uint amount = 1)
     {
         if (data.ContainsKey(item)) data[item] += amount;
@@ -58,27 +60,27 @@ class Inventory
         this.Remove(items);
         return true;
     }
-    public void Clear()
-    {
-        data = new Dictionary<Item, ulong>();
-    }
+    public void Clear() => data = new Dictionary<Item, ulong>();
+
     public string PrintContent()
     {
         StringBuilder message = new StringBuilder();
-        foreach (KeyValuePair<Item, ulong> pair in data) message.Append($"\n{pair.Value} of {pair.Key}");
+        foreach (KeyValuePair<Item, ulong> pair in data) message.Append($"\n{nameof(pair.Value)} of {pair.Key}");
         return message.ToString();
     }
-    public IEnumerator<KeyValuePair<Item, ulong>> GetEnumerator()
+    Dictionary<Item, ulong> data = new Dictionary<Item, ulong>();
+    public static readonly Inventory Empty = new Inventory(new Dictionary<Item, ulong>());
+    // * Do not change, not relevant for game design
+    public IEnumerator<KeyValuePair<Item, ulong>> GetEnumerator() => data.GetEnumerator();
+    Inventory(Dictionary<Item, ulong> _data)
     {
-        return data.GetEnumerator();
+        this.data = _data;
     }
-
-    System.Collections.Generic.Dictionary<PfannenkuchenBot.Item, ulong>.KeyCollection Keys
+    Dictionary<PfannenkuchenBot.Item, ulong>.KeyCollection Keys
     {
         get
         {
             return data.Keys;
         }
     }
-    Dictionary<Item, ulong> data = new Dictionary<Item, ulong>();
 }
