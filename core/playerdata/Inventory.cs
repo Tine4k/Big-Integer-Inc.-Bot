@@ -1,5 +1,7 @@
 namespace PfannenkuchenBot;
 using System.Text;
+using Newtonsoft.Json;
+
 class Inventory
 {
     public Inventory() : this(new Dictionary<Item, ulong>())
@@ -17,7 +19,7 @@ class Inventory
     }
     public void Add(Inventory items)
     {
-        foreach (KeyValuePair<Item, ulong> pair in items) data.Add(pair.Key, (uint)pair.Value);
+        foreach (KeyValuePair<Item, ulong> pair in items) Add(pair.Key, (uint)pair.Value);
     }
     public bool Remove(Item item, uint amount = 1) // Returns true if player has enough Items;
     {
@@ -65,11 +67,12 @@ class Inventory
     public string PrintContent()
     {
         StringBuilder message = new StringBuilder();
-        foreach (KeyValuePair<Item, ulong> pair in data) message.Append($"\n{nameof(pair.Value)} of {pair.Key}");
+        foreach (KeyValuePair<Item, ulong> pair in data) message.Append($"\n{pair.Value}x {pair.Key.Name}");
         return message.ToString();
     }
-    Dictionary<Item, ulong> data = new Dictionary<Item, ulong>();
     public static readonly Inventory Empty = new Inventory(new Dictionary<Item, ulong>());
+    [JsonProperty]
+    Dictionary<Item, ulong> data = new Dictionary<Item, ulong>();
     // * Do not change, not relevant for game design
     public IEnumerator<KeyValuePair<Item, ulong>> GetEnumerator() => data.GetEnumerator();
     Inventory(Dictionary<Item, ulong> _data)

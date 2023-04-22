@@ -28,7 +28,7 @@ class InstanceCommand: Command
     }
     public void Inventory()
     {
-        message.Append(Format.Bold($"Inventory of {author.Username}:\n"));
+        message.Append(Format.Bold($"Inventory of {author.Username}:"));
         message.Append(player.PrintInventory());
         Send();
     }
@@ -42,6 +42,12 @@ class InstanceCommand: Command
     {
         Inventory items = new Inventory();
         items.Add("Gunpowder", (uint)Random.Shared.Next(1,4));
-        channel.SendMessageAsync($"You found {items.PrintContent()}!");
+        player.Gain(items);
+        channel.SendMessageAsync($"You found:{items.PrintContent()}");
+    }
+    public void Waldwoche()
+    {
+        player.Gain("Waldwoche coin");
+        channel.SendMessageAsync($"You found a Waldwoche coin!");
     }
 }

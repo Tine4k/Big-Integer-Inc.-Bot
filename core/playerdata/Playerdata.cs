@@ -89,7 +89,7 @@ class Playerdata
     [JsonProperty("UserId")]
     public readonly string userId;
     [JsonProperty]
-    Inventory Inventory
+    public Inventory Inventory
     {get; set;}
     public Dictionary<Stat, int>? Stats  
     { get; set; }                    /*nullable for the duration of the Stat class not being relevant */
