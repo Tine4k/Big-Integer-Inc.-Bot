@@ -1,43 +1,15 @@
-using Newtonsoft.Json;
-
 namespace PfannenkuchenBot;
-class Item : GameObject
+class Item : GameElement
 {
     static Item()
     {
-        loadedItems = new Dictionary<string, Item>();
-        LoadAllItems();
+        helper = new GameElementHelper<Item>();
     }
-
-    static void LoadAllItems()
+    public static bool Get(string name, out Item? item)
     {
-        string itemsDirectory = "content/items";
-        foreach (string itemPath in Directory.GetFiles(itemsDirectory, "*json", SearchOption.AllDirectories))
-        {
-            LoadItem(itemPath);
-        }
+        if (helper is null) throw new Exception("Ka was los is");
+        bool successful = helper.Get(name, out item);
+        return successful;
     }
-    static void LoadItem(string itemPath)
-    {
-        Item? item = JsonConvert.DeserializeObject<Item>(File.ReadAllText(itemPath));
-        if (item == null) throw new JsonSerializationException($"Tried to load invalid item from file {itemPath}");
-        loadedItems.Add(item.Name, item);
-    }
-    static public bool GetItem(string itemName, out Item item)
-    {
-        bool successfull = loadedItems.TryGetValue(itemName, out Item? _item);
-        item = (_item is not null) ? _item : throw new KeyNotFoundException($"Invalid item detected at {itemName}");
-        return successfull;
-    }
-    public override string ToString() => Name;
-    static Dictionary<string, Item> loadedItems;
-
-    [JsonConstructor]
-    Item(string? name = null, string? description = null, Rarity? rarity = null) : base(name, description)
-    {
-        this.Rarity = rarity ?? throw new InvalidContentException();
-    }
-    [JsonProperty]
-    public Rarity Rarity
-    { get; private set; }
+    public static GameElementHelper<Item> helper;
 }

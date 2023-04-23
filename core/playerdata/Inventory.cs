@@ -1,11 +1,16 @@
 namespace PfannenkuchenBot;
+using System.Collections;
 using System.Text;
-using Newtonsoft.Json;
-
-class Inventory
+using System.Text.Json.Serialization;
+class Inventory : DictionaryBase
 {
-    public Inventory() : this(new Dictionary<Item, ulong>())
+    public Inventory() : this(new Dictionary<Item, ulong>()) //* if this raises any problems, remove the attribute below
     {
+    }
+    [JsonConstructor]
+    Inventory(Dictionary<Item, ulong> data)
+    {
+        this.data = data;
     }
     public void Add(Item item, uint amount = 1)
     {
@@ -14,7 +19,8 @@ class Inventory
     }
     public void Add(string itemName, uint amount = 1)
     {
-        if (!Item.GetItem(itemName, out Item item)) throw new KeyNotFoundException();
+        if (!Item.Get(itemName, out Item? item)) throw new KeyNotFoundException();
+        if (item is null) throw new NullReferenceException();
         this.Add(item, amount);
     }
     public void Add(Inventory items)
@@ -46,7 +52,8 @@ class Inventory
     }
     public bool Remove(string itemName, uint amount = 1) // Returns true if player has enough Items;
     {
-        if (!Item.GetItem(itemName, out Item item)) throw new KeyNotFoundException();
+        if (!Item.Get(itemName, out Item? item)) throw new KeyNotFoundException();
+        if (item is null) throw new NullReferenceException();
         return Remove(item, amount);
     }
 
@@ -62,7 +69,7 @@ class Inventory
         this.Remove(items);
         return true;
     }
-    public void Clear() => data = new Dictionary<Item, ulong>();
+    public new void Clear() => data = new Dictionary<Item, ulong>();
 
     public string PrintContent()
     {
@@ -71,14 +78,10 @@ class Inventory
         return message.ToString();
     }
     public static readonly Inventory Empty = new Inventory(new Dictionary<Item, ulong>());
-    [JsonProperty]
+    [JsonPropertyName("Data")]
     Dictionary<Item, ulong> data = new Dictionary<Item, ulong>();
     // * Do not change, not relevant for game design
-    public IEnumerator<KeyValuePair<Item, ulong>> GetEnumerator() => data.GetEnumerator();
-    Inventory(Dictionary<Item, ulong> _data)
-    {
-        this.data = _data;
-    }
+    public new IEnumerator<KeyValuePair<Item, ulong>> GetEnumerator() => data.GetEnumerator();
     Dictionary<PfannenkuchenBot.Item, ulong>.KeyCollection Keys
     {
         get

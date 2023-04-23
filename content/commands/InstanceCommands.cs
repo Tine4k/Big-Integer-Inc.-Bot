@@ -43,11 +43,18 @@ class InstanceCommand: Command
         Inventory items = new Inventory();
         items.Add("Gunpowder", (uint)Random.Shared.Next(1,4));
         player.Gain(items);
-        channel.SendMessageAsync($"You found:{items.PrintContent()}");
+        message.Append($"You found:{items.PrintContent()}");
+        Send();
     }
     public void Waldwoche()
     {
         player.Gain("Waldwoche coin");
         channel.SendMessageAsync($"You found a Waldwoche coin!");
+    }
+    public void Mane()
+    {
+        player.Gain("Jone");
+        message.Append("@Klagenfurt Busbahnhof");
+        Send();
     }
 }
