@@ -1,12 +1,12 @@
 namespace PfannenkuchenBot;
 using System.Collections;
+using System.Collections.Immutable;
 using System.Text;
 using System.Text.Json.Serialization;
 class Inventory : DictionaryBase
 {
-    public Inventory() : this(new Dictionary<Item, ulong>()) //* if this raises any problems, remove the attribute below
-    {
-    }
+    public Inventory() : this(new Dictionary<Item, ulong>())
+    {}
     [JsonConstructor]
     Inventory(Dictionary<Item, ulong> data)
     {
@@ -78,15 +78,8 @@ class Inventory : DictionaryBase
         return message.ToString();
     }
     public static readonly Inventory Empty = new Inventory(new Dictionary<Item, ulong>());
-    [JsonPropertyName("Data")]
     Dictionary<Item, ulong> data = new Dictionary<Item, ulong>();
     // * Do not change, not relevant for game design
     public new IEnumerator<KeyValuePair<Item, ulong>> GetEnumerator() => data.GetEnumerator();
-    Dictionary<PfannenkuchenBot.Item, ulong>.KeyCollection Keys
-    {
-        get
-        {
-            return data.Keys;
-        }
-    }
+    Dictionary<PfannenkuchenBot.Item, ulong>.KeyCollection Keys => data.Keys;
 }

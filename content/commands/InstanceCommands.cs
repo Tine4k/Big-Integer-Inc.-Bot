@@ -10,6 +10,11 @@ class InstanceCommand: Command
         this.instanceHandler = InstanceHandler.GetInstanceHandler(_socketmsg.Author.Id.ToString());
         this.player = instanceHandler.playerdata;
     }
+    protected override void Send()
+    {
+        base.Send();
+        instanceHandler.lastReferenced = DateTime.Now;
+    }
     readonly Playerdata player;
     readonly InstanceHandler instanceHandler;
     public void Give()

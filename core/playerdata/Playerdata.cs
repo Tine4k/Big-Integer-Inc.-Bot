@@ -3,11 +3,19 @@ using System.Text.Json.Serialization;
 namespace PfannenkuchenBot.Core;
 class Playerdata
 {
+    Playerdata()
+    {
+        this.userId = String.Empty;
+        this.Inventory = Inventory.Empty;
+        this.Stats = new Dictionary<Stat, int>();
+    }
     [JsonConstructor]
-    Playerdata(string userId, Inventory inventory)
+    public Playerdata(string userId, Inventory inventory, Dictionary<Stat,int> stats, long balance)
     {
         this.userId = userId;
         this.Inventory = inventory;
+        this.Stats = stats;
+        this.Balance = balance;
     }
     Playerdata(string _userId)
     {
@@ -85,14 +93,13 @@ class Playerdata
     // * a property that has a public setter or that is marked with the [JsonProperty] attribute
     // * The order in which the members are displayed here results in the order of serialization (hence userId is the first entry in a .dat file)
     [JsonPropertyName("UserId")]
+    public string UserId => userId;
     public readonly string userId;
     [JsonPropertyName("Inventory")]
-    [JsonConverter(typeof(GameElementHelper<Item>.GameElementConverter<Item>))]
     public Inventory Inventory
-    {get; set;}
-    [JsonPropertyName("Stats")]
-    public Dictionary<Stat, int>? Stats  
-    { get; set; }                    /*nullable for the duration of the Stat class not being relevant */
+    {get; private set;}
+    public Dictionary<Stat, int> Stats  
+    { get; set; }
     [JsonPropertyName("Balance")]
     public long Balance
     { get; private set; }

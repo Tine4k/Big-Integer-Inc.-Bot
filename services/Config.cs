@@ -6,27 +6,24 @@ static class Config
     static Config()
     {
         configFields = typeof(Config).GetFields(BindingFlags.DeclaredOnly | BindingFlags.Public);
-        ReloadConfig();
+        Reload();
     }
-    public static void ReloadConfig()
+    public static void Reload()
     {
-        foreach (FieldInfo fieldInfo in configFields)
-        {
-            ApplyConfigToField(fieldInfo);
-        }
+        foreach (FieldInfo field in configFields) ApplyConfig(field);
     }
-    static void ApplyConfigToField(FieldInfo fieldInfo)
+    static void ApplyConfig(FieldInfo field)
     {
-        string? configValue = GetConfigValue(fieldInfo.Name);
+        string? configValue = GetConfigValue(field.Name);
         if (String.IsNullOrWhiteSpace(configValue)) return;
-        if (fieldInfo.FieldType == typeof(string)) fieldInfo.SetValue(null, configValue);
+        if (field.FieldType == typeof(string)) field.SetValue(null, configValue);
         else
         {
-            object? convertedValue = SetFieldToConfigValue(fieldInfo, configValue);
-            fieldInfo.SetValue(null, convertedValue);
+            object? convertedValue = SetFieldValue(field, configValue);
+            field.SetValue(null, convertedValue);
         }
         
-        object? SetFieldToConfigValue(FieldInfo fieldInfo, string configValue)
+        object? SetFieldValue(FieldInfo fieldInfo, string configValue)
         {
             TypeConverter converter = TypeDescriptor.GetConverter(fieldInfo.FieldType);
             object? convertedValue = Convert.ChangeType(converter.ConvertFromString(configValue), fieldInfo.FieldType);

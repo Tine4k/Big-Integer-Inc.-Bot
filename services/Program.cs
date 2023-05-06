@@ -5,11 +5,6 @@ static class Program
 {
     public static void Main(string[] args)
     {
-        
-        var playerdata = Playerdata.GetPlayerdata("999999999999999999");
-        playerdata.Gain("Gunpowder");
-        Console.WriteLine("Finished!");
-        return;
         if (args.Length > 0)
         {
             if (args[0] == "test")
