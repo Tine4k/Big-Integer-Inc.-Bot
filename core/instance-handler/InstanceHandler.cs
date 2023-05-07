@@ -48,7 +48,7 @@ class InstanceHandler
         {
             foreach (InstanceHandler pd in loadedInstanceHandlers.Values)
             {
-                if (Config.forceUnload || DateTime.Now - pd.lastReferenced < TimeSpan.FromSeconds(Config.idleUnloadTime)) pd.Unload();
+                if (Config.forceUnload || DateTime.Now - pd.lastReferenced > TimeSpan.FromSeconds(Config.idleUnloadTime)) pd.Unload();
             }
             return Task.CompletedTask;
         }

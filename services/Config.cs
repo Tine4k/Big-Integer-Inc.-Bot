@@ -39,9 +39,10 @@ static class Config
     public static string prefix = "*";
     public static bool autoUnload = true;
     public static bool forceUnload = false;
-    public static ushort autoUnloadInterval = 60;
-    public static ushort idleUnloadTime = 60;
+    public static ushort autoUnloadInterval = 10;
+    public static ushort idleUnloadTime = 20;
     public static char currency = '$';
+    public static bool logAllCommands = true; // should be false by default
     public static bool logPlayerdataLoads = true;
     public static bool logPlayerdataUnloads = true;
     public static bool logPlayerdataCreations = true;

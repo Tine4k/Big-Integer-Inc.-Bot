@@ -51,11 +51,6 @@ class InstanceCommand: Command
         message.Append($"You found:{items.PrintContent()}");
         Send();
     }
-    public void Waldwoche()
-    {
-        player.Gain("Waldwoche coin");
-        channel.SendMessageAsync($"You found a Waldwoche coin!");
-    }
     public void Mane()
     {
         player.Gain("Jone");

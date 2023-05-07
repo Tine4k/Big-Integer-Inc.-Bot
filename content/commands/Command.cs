@@ -1,6 +1,8 @@
 namespace PfannenkuchenBot;
 using System.Text;
 using Discord.WebSocket;
+using PfannenkuchenBot.Core;
+
 abstract class Command
 {
     public Command(SocketMessage _socketmsg, string[] _command)
@@ -12,7 +14,9 @@ abstract class Command
     }
     protected virtual void Send()
     {
-        channel.SendMessageAsync(message.ToString());
+        string msg = message.ToString();
+        channel.SendMessageAsync(msg);
+        if (Config.logAllCommands) Program.Log(msg);
     }
     protected readonly ISocketMessageChannel channel;
     protected readonly SocketUser author;
