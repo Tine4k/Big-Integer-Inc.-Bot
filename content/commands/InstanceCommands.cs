@@ -24,7 +24,7 @@ class InstanceCommand: Command
             command.Length >= 2 &&
             uint.TryParse(command[2], out amount)
             ) player.Gain(command[1], amount = 1);
-        else NonInstanceCommand.Unknown(channel);
+        else Unknown();
     }
     public void Balance()
     {
@@ -40,7 +40,7 @@ class InstanceCommand: Command
     public void Daily()
     {
         player.Gain(1000);
-        message.Append($"Added 1000$ to your balance, which now contains {player.Balance}{Config.currency}");
+        message.Append($"Added 1000{Config.currency} to your balance, which now contains {player.Balance}{Config.currency}");
         Send();
     }
     public void Mine()

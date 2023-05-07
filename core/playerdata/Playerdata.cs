@@ -95,7 +95,6 @@ class Playerdata
     [JsonPropertyName("UserId")]
     public string UserId => userId;
     public readonly string userId;
-    // [JsonConverter()]
     [JsonPropertyName("Inventory")]
     public Inventory Inventory
     {get; private set;}

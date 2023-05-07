@@ -32,7 +32,7 @@ public static class CommandHandler
             {
                 methodBase.Invoke(new InstanceCommand(socketmsg, command),null); return;
             }
-        PfannenkuchenBot.NonInstanceCommand.Unknown(socketmsg.Channel);
+        Command.Unknown(socketmsg.Channel);
     }
     public static string MakeMessageProcessable(string msg) => Format.StripMarkDown(msg).ToLower();
     public static readonly MethodInfo[] nonInstanceCommands;

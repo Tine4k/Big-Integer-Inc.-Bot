@@ -1,6 +1,7 @@
 namespace PfannenkuchenBot;
 using System.Text;
 using Discord.WebSocket;
+using Discord;
 using PfannenkuchenBot.Core;
 
 abstract class Command
@@ -12,14 +13,17 @@ abstract class Command
         this.command = _command;
         this.message = new StringBuilder();
     }
+    public static void Unknown(ISocketMessageChannel channel) => 
+    channel.SendMessageAsync(Format.BlockQuote($"Unknown Command, please use {Config.prefix}help for a list of available commands!"));
+    protected virtual void Unknown() => Unknown(channel);
     protected virtual void Send()
     {
-        string msg = message.ToString();
-        channel.SendMessageAsync(msg);
-        if (Config.logAllCommands) Program.Log(msg);
+        channel.SendMessageAsync(message.ToString());
+        message.Insert(0, $"{author.Username} issued {command}\n");
+        if (Config.logAllCommands) Program.Log(message.ToString());
     }
-    protected readonly ISocketMessageChannel channel;
+    readonly ISocketMessageChannel channel;
     protected readonly SocketUser author;
     protected readonly string[] command;
-    protected StringBuilder message;
+    protected readonly StringBuilder message;
 }
