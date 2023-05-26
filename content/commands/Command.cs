@@ -2,7 +2,6 @@ namespace PfannenkuchenBot;
 using System.Text;
 using Discord.WebSocket;
 using Discord;
-using PfannenkuchenBot.Core;
 
 abstract class Command
 {

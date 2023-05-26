@@ -1,6 +1,6 @@
-namespace PfannenkuchenBot.Core;
 using System.Collections.Generic;
 using System.Threading;
+namespace PfannenkuchenBot.Commands;
 class InstanceHandler
 {
     static InstanceHandler()
@@ -8,7 +8,7 @@ class InstanceHandler
         loadedInstanceHandlers = new Dictionary<string, InstanceHandler>();
         if (Config.autoUnload) AutoUnloader.Start();
     }
-    static Dictionary<string, InstanceHandler> loadedInstanceHandlers;
+    public static Dictionary<string, InstanceHandler> loadedInstanceHandlers;
 
     public static InstanceHandler GetInstanceHandler(string userId)
     {
