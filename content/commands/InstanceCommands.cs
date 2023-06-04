@@ -60,13 +60,10 @@ class InstanceCommand: Command
     public void PunchTree() 
     {
         Inventory items = new Inventory();
-        items.Add("Wood", (uint)Random.Shared.Next(1,4));
+        items.Add("Wood", (uint)Random.Shared.Next(2,4));
         items.Add("Stick", (uint)Random.Shared.Next(1,2));
         player.Gain(items);
         message.Append($"You found:{items.PrintContent()}");
         Send();
     }
-
-
-
 }

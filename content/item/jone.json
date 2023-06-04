@@ -1,5 +1,7 @@
 {
     "Name": "Jone",
     "Description": "Ma Mane",
-    "Rarity": 4
+    "Rarity": 7,
+    "Creator": "DerBaumigsteBaum",
+    "Illegal": true
 }

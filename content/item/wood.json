@@ -1,5 +1,7 @@
 {
     "Name": "Wood",
     "Description": "Bro, it's just wood.",
-    "Rarity": 1
+    "Rarity": 1,
+    "Creator": "DerBaumigsteBaum",
+    "Illegal": false
 }
