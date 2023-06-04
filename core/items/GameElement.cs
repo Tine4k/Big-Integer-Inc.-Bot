@@ -8,6 +8,9 @@ abstract partial class GameElement
         Name = String.Empty;
         Rarity = default;
         Description = String.Empty;
+        Creator = String.Empty;
+        Illegal = false;
+        
     }
     [JsonPropertyName("Name")]
     public string Name
