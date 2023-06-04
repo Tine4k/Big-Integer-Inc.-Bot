@@ -44,4 +44,10 @@ partial class Command
         message.Append("@Klagenfurt Busbahnhof");
         Send(message, socketmsg, commandMessage);
     }
+
+    public void Craft(SocketMessage socketmsg, string[] commandMessage)
+    {
+        Inventory items = new Inventory();
+        items.Remove("Recipe");
+    }
 }

@@ -44,9 +44,13 @@ class Inventory
     }
     public bool Remove(Inventory items)
     {
-        foreach (KeyValuePair<Item, ulong> pair in items)
+        if (this.Contains(items)) 
         {
-            if (!this.Remove(pair.Key, (uint)pair.Value)) return false;
+            foreach (KeyValuePair<Item, ulong> pair in items)
+            {
+                if (!this.Remove(pair.Key, (uint)pair.Value)) 
+                return false;
+            }            
         }
         return true;
     }
