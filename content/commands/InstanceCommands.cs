@@ -56,4 +56,10 @@ class InstanceCommand: Command
         message.Append("@Klagenfurt Busbahnhof");
         Send();
     }
+
+    public void Lottery() {
+        player.Lose(100);
+        message.Append("Du scheiß neg");
+        Send();
+    }
 }
