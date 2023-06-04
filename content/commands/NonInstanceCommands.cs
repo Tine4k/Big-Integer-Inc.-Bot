@@ -22,4 +22,11 @@ partial class Command
         Format.Italics(Format.Underline("+43 067689807553"))));
         Send(message, socketmsg, commandMessage);
     }
+    public void Info(SocketMessage socketmsg, string[] commandMessage)
+    {        
+        if (commandMessage.Length >= 2 && Item.Get(commandMessage[1], out Item? item)) {
+            if (item is null) {Unknown(socketmsg.Channel); return;}
+            message.Append(item.Describe());
+        }
+    }
 }

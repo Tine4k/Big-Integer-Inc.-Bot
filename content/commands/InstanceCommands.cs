@@ -32,11 +32,12 @@ partial class Command
     public void Mine(SocketMessage socketmsg, string[] commandMessage)
     {
         Inventory items = new Inventory();
-        items.Add("Gunpowder", (uint)Random.Shared.Next(1,4));
+        items.Add("Gunpowder", (uint)Random.Shared.Next(0,2));
+        items.Add("Stone", (uint)Random.Shared.Next(1,6));
         playerdata.Gain(items);
         message.Append($"You found:{items.PrintContent()}");
         Send(message, socketmsg, commandMessage);
-    }
+    }    
     public void Mane(SocketMessage socketmsg, string[] commandMessage)
     {
         playerdata.Gain("Jone");
