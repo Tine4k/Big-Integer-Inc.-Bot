@@ -3,3 +3,4 @@ bin
 obj
 playerdata
 classes
+services/token.txt
