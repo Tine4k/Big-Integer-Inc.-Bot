@@ -28,6 +28,7 @@ partial class Command
         message.Insert(0, $"{socketmsg.Author.Username} issued \"{String.Join(' ', commandMessage)}\"\n");
         if (Config.logAllCommands) Program.Log(message.ToString());
         this.lastReferenced = DateTime.Now;
+        this.message.Clear();
     }
     // * Loading relevant
     static Command()
