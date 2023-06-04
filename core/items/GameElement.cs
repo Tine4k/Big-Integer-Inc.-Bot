@@ -19,5 +19,5 @@ abstract partial class GameElement
     public string Description
     { get; protected set; }
     public override string ToString() => Name;
-    public virtual string Describe() => $"Name: {Name}\nDescription: {Description}";
+    public virtual string Describe() => $"Name: {Name}\nDescription: {Description}\nRarity: {Enum.GetName(typeof(Rarity), Rarity)}";
 }

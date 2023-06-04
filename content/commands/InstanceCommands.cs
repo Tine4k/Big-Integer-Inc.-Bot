@@ -22,7 +22,7 @@ class InstanceCommand: Command
         if (
             command.Length >= 2 &&
             uint.TryParse(command[2], out amount)
-            ) player.Gain(command[1], amount = 1);
+            ) player.Gain(command[1], amount);
         else Unknown();
     }
     public void Balance()
@@ -45,21 +45,28 @@ class InstanceCommand: Command
     public void Mine()
     {
         Inventory items = new Inventory();
-        items.Add("Gunpowder", (uint)Random.Shared.Next(1,4));
+        items.Add("Gunpowder", (uint)Random.Shared.Next(0,2));
+        items.Add("Stone", (uint)Random.Shared.Next(1,6));
         player.Gain(items);
         message.Append($"You found:{items.PrintContent()}");
         Send();
-    }
+    }    
     public void Mane()
     {
         player.Gain("Jone");
         message.Append("@Klagenfurt Busbahnhof");
         Send();
     }
-
-    public void Lottery() {
-        player.Lose(100);
-        message.Append("Du scheiß neg");
+    public void PunchTree() 
+    {
+        Inventory items = new Inventory();
+        items.Add("Wood", (uint)Random.Shared.Next(1,4));
+        items.Add("Stick", (uint)Random.Shared.Next(1,2));
+        player.Gain(items);
+        message.Append($"You found:{items.PrintContent()}");
         Send();
     }
+
+
+
 }

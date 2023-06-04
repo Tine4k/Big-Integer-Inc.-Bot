@@ -25,4 +25,10 @@ class NonInstanceCommand : Command
         Format.Italics(Format.Underline("+43 067689807553"))));
         Send();
     }
+    public void Info()
+    {        
+        if (command.Length >= 2 && Item.Get(command[1], out Item item)) {
+            message.Append(item.Describe);
+        }
+    }
 }
