@@ -1,0 +1,11 @@
+{
+    "Name": "Pickaxe",
+    "Description": "great mighty poo",
+    "Rarity": 1,
+    "Creator": "ManeIzzda",
+    "Illegal": false,
+    "Recipe": {
+        "Sticks": [{"amount": 2}],
+        "Stone": [{"amount": 3}]
+    }
+}
