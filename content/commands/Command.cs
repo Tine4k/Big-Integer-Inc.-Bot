@@ -19,7 +19,7 @@ abstract class Command
     protected virtual void Send()
     {
         channel.SendMessageAsync(message.ToString());
-        message.Insert(0, $"{author.Username} issued {command}\n");
+        message.Insert(0, $"{author.Username} issued \"{String.Join(' ', command)}\"\n");
         if (Config.logAllCommands) Program.Log(message.ToString());
     }
     readonly ISocketMessageChannel channel;
