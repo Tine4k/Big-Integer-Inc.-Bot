@@ -23,10 +23,11 @@ partial class Command
         Send(message, socketmsg, commandMessage);
     }
     public void Info(SocketMessage socketmsg, string[] commandMessage)
-    {        
+    {
         if (commandMessage.Length >= 2 && Item.Get(commandMessage[1], out Item? item)) {
             if (item is null) {Unknown(socketmsg.Channel); return;}
             message.Append(item.Describe());
         }
+        Send(message, socketmsg, commandMessage);
     }
 }
