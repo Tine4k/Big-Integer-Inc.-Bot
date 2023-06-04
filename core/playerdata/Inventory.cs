@@ -10,57 +10,102 @@ class Inventory
     [JsonConstructor]
     Inventory(Dictionary<Item, ulong> data)
     {
-        this.contents = data;
+        this.content = data;
     }
     public void Add(Item item, uint amount = 1)
     {
-        if (contents.ContainsKey(item)) contents[item] += amount;
-        else contents.Add(item, amount);
+        if (content.ContainsKey(item)) content[item] += amount;
+        else content.Add(item, amount);
     }
     public void Add(string itemName, uint amount = 1)
     {
-        if (!Item.Get(itemName, out Item? item)) throw new KeyNotFoundException();
+        if (!Item.Get(itemName, out Item? item)) throw new InvalidGameObjectException();
         if (item is null) throw new NullReferenceException();
         this.Add(item, amount);
     }
     public void Add(Inventory items)
     {
-        foreach (KeyValuePair<Item, ulong> pair in items) Add(pair.Key, (uint)pair.Value);
+        foreach (KeyValuePair<Item, ulong> pair in items) this.Add(pair.Key, (uint)pair.Value);
     }
-    public bool Remove(Item item, uint amount = 1) // Returns true if player has enough Items;
+
+    public bool TryRemove(Item item, uint amount = 1) // Returns true if player has enough Items and removes amount
     {
-        if (!contents.ContainsKey(item)) return false;
-        if (amount < contents[item])
+        if (!content.ContainsKey(item)) return false;
+        if (amount < content[item])
         {
-            contents[item] -= amount;
+            content[item] -= amount;
             return true;
         }
-        else if (contents[item] == amount)
+        else if (amount == content[item])
         {
-            contents.Remove(item);
+            content.Remove(item);
             return true;
         }
         else return false;
     }
-    public bool Remove(Inventory items)
+    public bool TryRemove(string itemName, uint amount = 1)
+    {
+        if (!Item.Get(itemName, out Item? item)) throw new InvalidGameObjectException();
+        if (item is null) throw new NullReferenceException();
+        return TryRemove(item, amount);
+    }
+    public bool TryRemove(Inventory items)
+    {
+        if (!this.Contains(items)) return false;
+        this.Remove(items);
+        return true;
+    }
+
+    public void Remove(Item item, uint amount = 1) // Removes amount even if player doesn't have enough Items 
+    {
+        if (!content.ContainsKey(item)) return;
+        if (amount < content[item])
+        {
+            content[item] -= amount;
+        }
+        else if (amount >= content[item])
+        {
+            content.Remove(item);
+        }
+    }
+    public void Remove(string itemName, uint amount = 1)
+    {
+        if (!Item.Get(itemName, out Item? item)) throw new InvalidGameObjectException();
+        if (item is null) throw new NullReferenceException();
+        this.Remove(item, amount);
+    }
+    public void Remove(Inventory items)
+    {
+        foreach (KeyValuePair<Item, ulong> pair in items) this.Remove(pair.Key, (uint)pair.Value);
+    }
+
+    public bool Contains(Item item, ulong amount = 1)
+    {
+        if (!content.ContainsKey(item)) return false;
+        if (content[item] < amount) return false;
+        return true;
+    }
+    public bool Contains(Inventory items)
     {
         foreach (KeyValuePair<Item, ulong> pair in items)
         {
-            if (!this.Remove(pair.Key, (uint)pair.Value)) return false;
+            if (!this.Contains(pair.Key, pair.Value)) return false;
         }
         return true;
     }
-    public bool Remove(string itemName, uint amount = 1) // Returns true if player has enough Items;
-    {
-        if (!Item.Get(itemName, out Item? item)) throw new KeyNotFoundException();
-        if (item is null) throw new NullReferenceException();
-        return Remove(item, amount);
-    }
 
-    public bool Contains(Inventory items)
+    public bool Transfer(Inventory targetInventory, Item item)
     {
-        foreach (Item item in items.Keys) if (!contents.ContainsKey(item)) return false;
-        return contents.Count() > 0;
+        if (!this.Contains(item)) return false;
+        targetInventory.Add(item);
+        this.Remove(item);
+        return true;
+    }
+    public bool Transfer(Inventory targetInventory, string itemName)
+    {
+        if (!Item.Get(itemName, out Item? item)) throw new InvalidGameObjectException();
+        if (item is null) throw new NullReferenceException();
+        return this.Transfer(targetInventory, item);
     }
     public bool Transfer(Inventory targetInventory, Inventory items)
     {
@@ -69,51 +114,77 @@ class Inventory
         this.Remove(items);
         return true;
     }
-    public void Clear() => contents.Clear();
+    public bool Transfer(Playerdata player, Item item)
+    {
+        if (!this.Contains(item)) return false;
+        player.Gain(item);
+        this.Remove(item);
+        return true;
+    }
+    public bool Transfer(Playerdata player, string itemName)
+    {
+        if (!Item.Get(itemName, out Item? item)) throw new InvalidGameObjectException();
+        if (item is null) throw new NullReferenceException();
+        return this.Transfer(player, item);
+    }
+    public bool Transfer(Playerdata player, Inventory items)
+    {
+        if (!this.Contains(items)) return false;
+        player.Gain(items);
+        this.Remove(items);
+        return true;
+    }
+
+    public void Clear() => content.Clear();
+
     public string PrintContent()
     {
         StringBuilder message = new StringBuilder();
-        foreach (KeyValuePair<Item, ulong> pair in contents) message.Append($"\n{pair.Value}x {pair.Key.Name}");
+        foreach (KeyValuePair<Item, ulong> pair in content) message.Append($"\n{pair.Value}x {pair.Key.Name}");
         return message.ToString();
     }
+
     public static readonly Inventory Empty = new Inventory(new Dictionary<Item, ulong>());
+
+
     [JsonPropertyName("Contents")]
-    public Dictionary<Item, ulong> Contents => contents;
-    readonly Dictionary<Item, ulong> contents = new Dictionary<Item, ulong>();
+    public Dictionary<Item, ulong> Contents => content;
+    readonly Dictionary<Item, ulong> content = new Dictionary<Item, ulong>();
+
     // * Do not change, not relevant for game design
-    public IEnumerator<KeyValuePair<Item, ulong>> GetEnumerator() => contents.GetEnumerator();
-    Dictionary<Item, ulong>.KeyCollection Keys => contents.Keys;
-    Dictionary<Item, ulong>.ValueCollection Values => contents.Values;
+    public IEnumerator<KeyValuePair<Item, ulong>> GetEnumerator() => content.GetEnumerator();
+    Dictionary<Item, ulong>.KeyCollection Keys => content.Keys;
+    Dictionary<Item, ulong>.ValueCollection Values => content.Values;
 
     class InventoryConverter : JsonConverter<Inventory>
     {
         public override Inventory Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-    {
-        if (reader.TokenType != JsonTokenType.StartObject) throw new JsonException();
-        
-
-        var data = new Dictionary<Item, ulong>();
-
-        while (reader.Read())
         {
-            if (reader.TokenType == JsonTokenType.EndObject) return new Inventory(data);
-            
-            if (reader.TokenType != JsonTokenType.PropertyName) throw new JsonException();
+            if (reader.TokenType != JsonTokenType.StartObject) throw new JsonException();
 
-            string itemName = reader.GetString() ?? throw new NullReferenceException();
 
-            if (!Item.Get(itemName, out Item? item)) throw new KeyNotFoundException($"Item with name '{itemName}' not found.");
-            if (item is null) throw new NullReferenceException();
-            
-            if (!reader.Read()) throw new JsonException();
-            if (reader.TokenType != JsonTokenType.Number) throw new JsonException();
+            var data = new Dictionary<Item, ulong>();
 
-            ulong itemQuantity = reader.GetUInt64();
-            data[item] = itemQuantity;
+            while (reader.Read())
+            {
+                if (reader.TokenType == JsonTokenType.EndObject) return new Inventory(data);
+
+                if (reader.TokenType != JsonTokenType.PropertyName) throw new JsonException();
+
+                string itemName = reader.GetString() ?? throw new NullReferenceException();
+
+                if (!Item.Get(itemName, out Item? item)) throw new KeyNotFoundException($"Item with name '{itemName}' not found.");
+                if (item is null) throw new NullReferenceException();
+
+                if (!reader.Read()) throw new JsonException();
+                if (reader.TokenType != JsonTokenType.Number) throw new JsonException();
+
+                ulong itemQuantity = reader.GetUInt64();
+                data[item] = itemQuantity;
+            }
+
+            throw new JsonException();
         }
-
-        throw new JsonException();
-    }
         public override void Write(Utf8JsonWriter writer, Inventory inventory, JsonSerializerOptions options)
         {
             writer.WriteStartObject();

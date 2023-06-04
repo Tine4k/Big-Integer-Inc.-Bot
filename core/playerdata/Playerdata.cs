@@ -36,6 +36,7 @@ class Playerdata
             if (Config.logPlayerdataCreations) Program.Log($"Created new playerdata with id {userId}");
             return new Playerdata(userId);
         }
+
         Playerdata DeserializePlayerdata(string userId)
         {
             Playerdata? playerdata = JsonSerializer.Deserialize<Playerdata>(File.ReadAllText($"playerdata/{userId}.dat"));
@@ -43,6 +44,7 @@ class Playerdata
             return playerdata;
         }
     }
+
     public void Gain(string itemName, uint amount = 1)
     {
         Inventory.Add(itemName, amount);
@@ -55,43 +57,62 @@ class Playerdata
     {
         Inventory.Add(items);
     }
-    public void Gain(int amount)
+    public void Gain(uint amount)
     {
         Balance += amount;
     }
-    public bool Lose(string itemName, uint amount = 1)
+
+    public bool Lose(string itemName, uint amount = 1) // Returns true if player has enough Items and removes amount
     {
-        return Inventory.Remove(itemName, amount);
+        return Inventory.TryRemove(itemName, amount);
     }
     public bool Lose(Inventory items)
     {
-        return Inventory.Remove(items);
+        return Inventory.TryRemove(items);
     }
-    public bool Lose(uint amount, bool causeDepths = false)
+    public bool Lose(uint amount, bool causeDepths = true)
     {
-        if (causeDepths || amount >= Balance)
-        {
-            Balance -= amount;
-            return true;
-        }
-        else return false;
+        if (Balance < amount || !causeDepths) return false;
+        Balance -= amount;
+        return true;
     }
+    
+    public void ForceLose(string itemName, uint amount = 1) // Removes amount even if player doesn't have enough Items 
+    {
+        Inventory.Remove(itemName, amount);
+    }
+    public void ForceLose(Inventory items)
+    {
+        Inventory.Remove(items);
+    }
+    public void ForceLose(uint amount)
+    {
+        if (Balance < amount) Balance = 0;
+        else Balance -= amount;        
+    }
+
     public void Reset()
     {
         Inventory.Clear();
         Balance = 0;
         Stats = new Dictionary<Stat, int>();
     }
+
     public string PrintInventory() => Inventory.PrintContent();
+    
     public void Save()
     {
         File.WriteAllText($"playerdata/{userId}.dat", JsonSerializer.Serialize(this));
         if (Config.logPlayerdataUnloads) Program.Log($"Playerdata with id {userId} was saved to file \"playerdata/{userId}.dat\"");
     }
+    
+    
     // * All fields that should be serialized have to either be 
     // * a public field (in which case it is recommended to add a [JsonProperty("[fieldname in CamelCase]")] attribute) or 
     // * a property that has a public setter or that is marked with the [JsonProperty] attribute
     // * The order in which the members are displayed here results in the order of serialization (hence userId is the first entry in a .dat file)
+    
+    
     [JsonPropertyName("UserId")]
     public string UserId => userId;
     public readonly string userId;
