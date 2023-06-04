@@ -1,4 +1,5 @@
-﻿﻿namespace PfannenkuchenBot.Core;
+﻿﻿namespace PfannenkuchenBot;
+using PfannenkuchenBot.Commands;
 using Discord;
 using Discord.WebSocket;
 static class Program
@@ -30,6 +31,7 @@ static class Program
     {
         client.Log += Log;
         Program.client.MessageReceived += CommandHandler.HandleCommand;
+        if (!File.Exists("config/token.txt")) throw new FileNotFoundException("File \"token.txt\" not found. Please provice a text file with a valid token.");
         await client.LoginAsync(TokenType.Bot, File.ReadAllText("config/token.txt"));
         await client.StartAsync();
         await Task.Delay(-1);

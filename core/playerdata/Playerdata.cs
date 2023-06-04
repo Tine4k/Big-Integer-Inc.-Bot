@@ -1,6 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-namespace PfannenkuchenBot.Core;
+namespace PfannenkuchenBot;
 class Playerdata
 {
     Playerdata()

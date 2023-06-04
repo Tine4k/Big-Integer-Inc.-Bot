@@ -1,6 +1,6 @@
 using Discord;
 using Discord.WebSocket;
-namespace PfannenkuchenBot;
+namespace PfannenkuchenBot.Commands;
 class NonInstanceCommand : Command
 {
     // * Any commands that don't require the reference of playerdata belong here

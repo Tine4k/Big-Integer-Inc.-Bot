@@ -1,7 +1,6 @@
 using Discord;
 using Discord.WebSocket;
-using PfannenkuchenBot.Core;
-namespace PfannenkuchenBot;
+namespace PfannenkuchenBot.Commands;
 class InstanceCommand: Command
 {
     // * All commands that reference playerdata belong here

@@ -42,7 +42,7 @@ static class Config
     public static ushort autoUnloadInterval = 60;
     public static ushort idleUnloadTime = 60;
     public static char currency = '$';
-    public static bool logAllCommands = true; // should be false by default
+    public static bool logAllCommands = true;
     public static bool logPlayerdataLoads = true;
     public static bool logPlayerdataUnloads = true;
     public static bool logPlayerdataCreations = true;

@@ -6,6 +6,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Discord.Net" Version="3.9.0"/>
+    <PackageReference Include="Discord.Net" Version="3.10.0"/>
   </ItemGroup>
 </Project>
