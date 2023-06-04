@@ -11,11 +11,6 @@ public static class CommandHandler
     }
     public static Task HandleCommand(SocketMessage _socketMessage)
     {
-        if (Command.loadedCommands.TryGetValue(_socketMessage.Author.Id.ToString(), out Command? command))
-        {
-            if (command is null) throw new NullReferenceException();
-            throw new NotImplementedException();
-        }
         var socketMessage = _socketMessage as SocketUserMessage;
         if (socketMessage == null) return Task.CompletedTask;
         if (!(
