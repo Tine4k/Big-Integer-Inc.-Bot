@@ -1,65 +1,46 @@
 using Discord;
 using Discord.WebSocket;
 namespace PfannenkuchenBot.Commands;
-class InstanceCommand: Command
+partial class Command
 {
-    // * All commands that reference playerdata belong here
-    public InstanceCommand(SocketMessage _socketmsg, string[] _command): base(_socketmsg, _command)
-    {
-        this.instanceHandler = InstanceHandler.GetInstanceHandler(_socketmsg.Author.Id.ToString());
-        this.player = instanceHandler.playerdata;
-    }
-    protected override void Send()
-    {
-        base.Send();
-        instanceHandler.lastReferenced = DateTime.Now;
-    }
-    readonly Playerdata player;
-    readonly InstanceHandler instanceHandler;
-    public void Give()
+    public void Give(SocketMessage socketmsg, string[] commandMessage)
     {
         uint amount;
         if (
-            command.Length >= 2 &&
-            uint.TryParse(command[2], out amount)
-            ) player.Gain(command[1], amount = 1);
-        else Unknown();
+            commandMessage.Length >= 2 &&
+            uint.TryParse(commandMessage[2], out amount)
+            ) playerdata.Gain(commandMessage[1], amount = 1);
+        else Unknown(socketmsg.Channel);
     }
-    public void Balance()
+    public void Balance(SocketMessage socketmsg, string[] commandMessage)
     {
-        message.Append($"Your current balance is {player.Balance}{Config.currency}!");
-        Send();
+        message.Append($"Your current balance is {playerdata.Balance}{Config.currency}!");
+        Send(message, socketmsg, commandMessage);
     }
-    public void Inventory()
+    public void Inventory(SocketMessage socketmsg, string[] commandMessage)
     {
-        message.Append(Format.Bold($"Inventory of {author.Username}:"));
-        message.Append(player.PrintInventory());
-        Send();
+        message.Append(Format.Bold($"Inventory of {socketmsg.Author.Username}:"));
+        message.Append(playerdata.PrintInventory());
+        Send(message, socketmsg, commandMessage);
     }
-    public void Daily()
+    public void Daily(SocketMessage socketmsg, string[] commandMessage)
     {
-        player.Gain(1000);
-        message.Append($"Added 1000{Config.currency} to your balance, which now contains {player.Balance}{Config.currency}");
-        Send();
+        playerdata.Gain(1000);
+        message.Append($"Added 1000{Config.currency} to your balance, which now contains {playerdata.Balance}{Config.currency}");
+        Send(message, socketmsg, commandMessage);
     }
-    public void Mine()
+    public void Mine(SocketMessage socketmsg, string[] commandMessage)
     {
         Inventory items = new Inventory();
         items.Add("Gunpowder", (uint)Random.Shared.Next(1,4));
-        player.Gain(items);
+        playerdata.Gain(items);
         message.Append($"You found:{items.PrintContent()}");
-        Send();
+        Send(message, socketmsg, commandMessage);
     }
-    public void Mane()
+    public void Mane(SocketMessage socketmsg, string[] commandMessage)
     {
-        player.Gain("Jone");
+        playerdata.Gain("Jone");
         message.Append("@Klagenfurt Busbahnhof");
-        Send();
-    }
-
-    public void Lottery() {
-        player.Lose(100);
-        message.Append("Du scheiß neg");
-        Send();
+        Send(message, socketmsg, commandMessage);
     }
 }

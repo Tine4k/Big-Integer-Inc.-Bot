@@ -4,21 +4,16 @@ using Discord.WebSocket;
 using System.Reflection;
 public static class CommandHandler
 {
-    static List<MethodBase> commands;
+    static MethodBase[] commands;
     static CommandHandler()
     {
-        Type baseType = typeof(Command);
-
-        IEnumerable<Type> types = Assembly.GetExecutingAssembly().GetTypes()
-        .Where(type => baseType.IsAssignableFrom(type) && type != baseType);
-
-        commands = new List<MethodBase>(); 
+        commands = typeof(Command).GetMethods(BindingFlags.DeclaredOnly|BindingFlags.Public|BindingFlags.Instance);
     }
     public static Task HandleCommand(SocketMessage _socketMessage)
     {
-        if (InstanceHandler.loadedInstanceHandlers.TryGetValue(_socketMessage.Author.Id.ToString(), out InstanceHandler? instanceHandler))
+        if (Command.loadedCommands.TryGetValue(_socketMessage.Author.Id.ToString(), out Command? command))
         {
-            if (instanceHandler is null) throw new NullReferenceException();
+            if (command is null) throw new NullReferenceException();
             throw new NotImplementedException();
         }
         var socketMessage = _socketMessage as SocketUserMessage;
@@ -28,22 +23,19 @@ public static class CommandHandler
         socketMessage.Author.IsBot ||
         socketMessage.Content.Length <= Config.prefix.Length
         ) return Task.CompletedTask;
-        string[] command = socketMessage.Content.Remove(0, Config.prefix.Length).Split(' ');
-        EvaluateCommand(command, socketMessage);
+        string[] command_message = socketMessage.Content.Remove(0, Config.prefix.Length).Split(' ');
+        EvaluateCommand(command_message, socketMessage);
         return Task.CompletedTask;
     }
-    static void EvaluateCommand(string[] command, SocketUserMessage socketmsg)
+    static void EvaluateCommand(string[] commandMessage, SocketUserMessage socketmsg)
     {
-        foreach (MethodBase methodBase in commands) if (MakeMessageProcessable(command[0]) == methodBase.Name.ToLower())
+        foreach (MethodBase methodBase in commands) if (MakeMessageProcessable(commandMessage[0]) == methodBase.Name.ToLower())
             {
-                CreateInstanceHandler();
+                Command command = Command.GetCommand(socketmsg.Author.Id.ToString());
+                methodBase.Invoke(command, new object[]{socketmsg, commandMessage});
+                return;
             }
         Command.Unknown(socketmsg.Channel);
-        
-        Command CreateInstanceHandler()
-        {
-            throw new NotImplementedException();           
-        }
     }
     public static string MakeMessageProcessable(string msg) => Format.StripMarkDown(msg).ToLower();
 }

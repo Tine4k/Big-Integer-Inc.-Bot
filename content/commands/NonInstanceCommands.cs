@@ -1,28 +1,25 @@
 using Discord;
 using Discord.WebSocket;
 namespace PfannenkuchenBot.Commands;
-class NonInstanceCommand : Command
+partial class Command
 {
-    // * Any commands that don't require the reference of playerdata belong here
-    public NonInstanceCommand(SocketMessage _socketmsg, string[] _command) : base(_socketmsg, _command)
-    { }
-    public void Help()
+    public void Help(SocketMessage socketmsg, string[] commandMessage)
     {
         message.Append(Format.Bold("List of all available commands: (Not available yet)"));
-        Send();
+        Send(message, socketmsg, commandMessage);
     }
-    public void HelloWorld()
+    public void HelloWorld(SocketMessage socketmsg, string[] commandMessage)
     {
         message.Append("Hello There");
-        Send();
+        Send(message, socketmsg, commandMessage);
     }
-    public void Jone()
+    public void Jone(SocketMessage socketmsg, string[] commandMessage)
     {
         message.Append(
         Format.BlockQuote(Format.Bold(
         "Rauchst du an Jone, bist du da Mane!\nRauchst du kan, brauchst du an!\n") +
         "Kontaktieren Sie die Jone GmbH gerne unter " +
         Format.Italics(Format.Underline("+43 067689807553"))));
-        Send();
+        Send(message, socketmsg, commandMessage);
     }
 }

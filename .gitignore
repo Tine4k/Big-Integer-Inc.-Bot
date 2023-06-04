@@ -1,6 +1,6 @@
 config/token.txt
+services/token.txt
 bin
 obj
 playerdata
 classes
-services/token.txt
