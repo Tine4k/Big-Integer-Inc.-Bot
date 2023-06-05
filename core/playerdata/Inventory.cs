@@ -158,7 +158,7 @@ class Inventory
 
     class InventoryConverter : JsonConverter<Inventory>
     {
-        public override Inventory Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override Inventory? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             if (reader.TokenType != JsonTokenType.StartObject) throw new JsonException();
 

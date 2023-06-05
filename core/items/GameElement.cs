@@ -33,7 +33,7 @@ abstract partial class GameElement
     { get; protected set; }  
 
     [JsonPropertyName("Recipe")]
-    public string Recipe
+    public Inventory? Recipe
     { get; protected set; }
 
 
