@@ -31,12 +31,6 @@ abstract partial class GameElement
     [JsonPropertyName("Illegal")]
     public bool Illegal
     { get; protected set; }  
-
-    [JsonPropertyName("Recipe")]
-    public Inventory? Recipe
-    { get; protected set; }
-
-
     
     public override string ToString() => Name;
     public virtual string Describe() => $"Name: {Name}\nDescription: {Description}\nRarity: {Enum.GetName(typeof(Rarity), Rarity)}";
