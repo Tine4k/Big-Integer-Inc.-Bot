@@ -7,11 +7,12 @@
 	// Placeholders with the same ids are connected.
 	// Example:
 	"Create Command": {
-		"prefix": "incmd",
+		"prefix": "cmd",
 		"body": [
-			"public void ${1:name}()",
+			"public void ${1:name}(SocketMessage socketmsg, string[] commandMessage)",
 			"{",
 			"    $0",
+			"    Send(message, socketmsg, commandMessage);",
 			"}"
 		],
 		"description": "Add a new command to the Commands static class"

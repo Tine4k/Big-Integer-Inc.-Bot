@@ -1,15 +1,17 @@
 using Discord;
 using Discord.WebSocket;
+using Pfannenkuchenbot.Item;
+
 namespace PfannenkuchenBot.Commands;
 partial class Command
 {
     public void Give(SocketMessage socketmsg, string[] commandMessage)
     {
-        uint amount;
-        if (
+        if (commandMessage.Length == 2) playerdata.Gain(commandMessage[1]);
+        else if (
             commandMessage.Length >= 3 &&
-            uint.TryParse(commandMessage[2], out amount)
-            ) playerdata.Gain(commandMessage[1], amount = 1);
+            uint.TryParse(commandMessage[2], out uint amount)
+            ) playerdata.Gain(commandMessage[1], amount);
         else Unknown(socketmsg.Channel);
     }
     public void Balance(SocketMessage socketmsg, string[] commandMessage)
@@ -32,12 +34,28 @@ partial class Command
     public void Mine(SocketMessage socketmsg, string[] commandMessage)
     {
         Inventory items = new Inventory();
-        items.Add("Gunpowder", (uint)Random.Shared.Next(0,2));
-        items.Add("Stone", (uint)Random.Shared.Next(1,6));
+        items.Add("Gunpowder", (uint)Random.Shared.Next(0, 2));
+        items.Add("Stone", (uint)Random.Shared.Next(1, 6));
         playerdata.Gain(items);
         message.Append($"You found:{items.PrintContent()}");
         Send(message, socketmsg, commandMessage);
-    }    
+    }
+    public void PunchTree(SocketMessage socketmsg, string[] commandMessage)
+    {
+        if (Random.Shared.Next(3) == 1)
+        {
+            message.Append("Wow, you really took that litteral. Your fist is shattered, the tree is still standing.");
+        }
+        else
+        {
+            Inventory items = new Inventory();
+            items.Add("Wood", (uint)Random.Shared.Next(1, 2));
+            items.Add("Stick", (uint)Random.Shared.Next(2, 4));
+            playerdata.Gain(items);
+            message.Append($"The tree fell. From the distance, you hear the scream of Markus: *\"DU MÖRDER! BÄUME SIND AUCH MENSCHEN\"*.\nYou found:{items.PrintContent()}");
+        }
+        Send(message, socketmsg, commandMessage);
+    }
     public void Mane(SocketMessage socketmsg, string[] commandMessage)
     {
         playerdata.Gain("Jone");
@@ -47,7 +65,11 @@ partial class Command
 
     public void Craft(SocketMessage socketmsg, string[] commandMessage)
     {
-        Inventory items = new Inventory();
-        items.Remove("Recipe");
+        if (commandMessage.Length == 2 && Recipe.GetRecipe(commandMessage[1], out Recipe recipe) && Recipe.Craft(recipe, playerdata.Inventory))
+        {
+            message.Append($"You successfully crafted {recipe.Output.PrintContent()}");
+        }
+        else message.Append("Either this recipe doesn't exist or you didn't have all the materials required for crafting this item.");
+        Send(message, socketmsg, commandMessage);
     }
 }
