@@ -4,5 +4,7 @@
     "Rarity": 1,
     "Creator": "ManeIzzda",
     "Illegal": false,
-    "Recipe": null
+    "Recipe": {
+        "Wood" : 2
+    }
 }

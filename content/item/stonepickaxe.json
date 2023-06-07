@@ -5,7 +5,7 @@
     "Creator": "ManeIzzda",
     "Illegal": false,
     "Recipe": {
-        "Sticks": [{"amount": 2}],
-        "Stone": [{"amount": 3}]
+        "Sticks": 3,
+        "Stone": 3
     }
 }
