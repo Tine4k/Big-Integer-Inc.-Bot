@@ -7,7 +7,7 @@ partial class Command
     {
         uint amount;
         if (
-            commandMessage.Length >= 2 &&
+            commandMessage.Length >= 3 &&
             uint.TryParse(commandMessage[2], out amount)
             ) playerdata.Gain(commandMessage[1], amount = 1);
         else Unknown(socketmsg.Channel);

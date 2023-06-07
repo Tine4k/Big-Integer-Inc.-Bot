@@ -39,7 +39,9 @@ class Playerdata
 
         Playerdata DeserializePlayerdata(string userId)
         {
-            Playerdata? playerdata = JsonSerializer.Deserialize<Playerdata>(File.ReadAllText($"playerdata/{userId}.dat"));
+            string playerdataJson = File.ReadAllText($"playerdata/{userId}.dat");
+            if (String.IsNullOrWhiteSpace(playerdataJson)) throw new Exception($"Failed to deserialize playerdata with id {userId}");
+            Playerdata? playerdata = JsonSerializer.Deserialize<Playerdata>(playerdataJson);
             if (playerdata is null) throw new Exception($"Failed to deserialize playerdata with id {userId}");
             return playerdata;
         }

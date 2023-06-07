@@ -2,6 +2,9 @@
 using PfannenkuchenBot.Commands;
 using Discord;
 using Discord.WebSocket;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+
 static class Program
 {
     public static void Main(string[] args)
@@ -11,8 +14,10 @@ static class Program
             if (args[0] == "test")
             {
                 Console.WriteLine("Test running...");
-                var pd = Playerdata.GetPlayerdata("500953493918449674");
-                pd.Gain("Gunpowder", 10);
+
+                Log(JsonSerializer.Serialize(new String[]{"Illegal", "Unstackable"}));
+                // var pd = Playerdata.GetPlayerdata("500953493918449674");
+                // pd.Gain("Gunpowder", 10);
             }
         }
         else 

@@ -3,8 +3,5 @@
     "Description": "Arschbohrer",
     "Rarity": 1,
     "Creator": "ManeIzzda",
-    "Illegal": false,
-    "Recipe": {
-        "Wood" : 2
-    }
+    "Tags": []
 }

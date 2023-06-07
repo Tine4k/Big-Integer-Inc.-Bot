@@ -9,9 +9,9 @@ abstract partial class GameElement
         Rarity = default;
         Description = String.Empty;
         Creator = String.Empty;
-        Illegal = false;
-        
+        Tags = null!;
     }
+
     [JsonPropertyName("Name")]
     public string Name
     { get; protected set; }
@@ -28,9 +28,9 @@ abstract partial class GameElement
     public string Creator
     { get; protected set; }
 
-    [JsonPropertyName("Illegal")]
-    public bool Illegal
-    { get; protected set; }  
+    [JsonPropertyName("Tags")]
+    public String[] Tags
+    { get; protected set; }
     
     public override string ToString() => Name;
     public virtual string Describe() => $"Name: {Name}\nDescription: {Description}\nRarity: {Enum.GetName(typeof(Rarity), Rarity)}";
