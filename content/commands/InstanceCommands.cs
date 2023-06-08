@@ -27,6 +27,14 @@ partial class Command
     }
     public void Daily(SocketMessage socketmsg, string[] commandMessage)
     {
+        if (!playerdata.Timestamps.Contains ("lastDaily" )Playerdata.Timestamps.Add("lastDaily" DateTime.default);
+        if (DateTime.Now - Playerdata.Timestamps["lastDaily"] < TiemSpan.FromHours(24))
+        {
+            message.Append($"Wait *{DateTime.Now - Playerdata.Timestamps["lastDaily"]}* longer to be get your next Daily reward!");
+                Send(message, socketmsg, commandMessage);
+                return
+
+        }
         playerdata.Gain(1000);
         message.Append($"Added 1000{Config.currency} to your balance, which now contains {playerdata.Balance}{Config.currency}");
         Send(message, socketmsg, commandMessage);

@@ -1,7 +1,6 @@
-# ToDo Liste
+# TODO Liste
+-Timer System
 -Shop(Items kaufen, verkaufen)
 -Schwarzmarkt(Drogen kaufen, verkaufen)
--Drogen(Items, Craften, ...)
--Crafting
 -Wahrscheinlichkeitssystem
 
