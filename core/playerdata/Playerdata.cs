@@ -8,6 +8,7 @@ class Playerdata
         this.userId = String.Empty;
         this.Inventory = Inventory.Empty;
         this.Stats = new Dictionary<Stat, int>();
+        this.Timestamps = new Dictionary<string, DateTime>();
     }
     [JsonConstructor]
     public Playerdata(string userId, Inventory inventory, Dictionary<Stat,int> stats, long balance)
@@ -117,13 +118,22 @@ class Playerdata
     
     [JsonPropertyName("UserId")]
     public string UserId => userId;
-    public readonly string userId;
+    readonly string userId;
+    
     [JsonPropertyName("Inventory")]
     public Inventory Inventory
     {get; private set;}
+    
     public Dictionary<Stat, int> Stats  
     { get; set; }
+    
     [JsonPropertyName("Balance")]
     public long Balance
     { get; private set; }
+    
+    [JsonPropertyName("Timestamps")]
+    public Dictionary<string, DateTime> Timestamps 
+    { get; private set;}
+   
+    
 }
