@@ -118,7 +118,7 @@ class Playerdata
     
     [JsonPropertyName("UserId")]
     public string UserId => userId;
-    readonly string userId;
+    public readonly string userId;
     
     [JsonPropertyName("Inventory")]
     public Inventory Inventory

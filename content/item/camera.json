@@ -2,6 +2,7 @@
     "Name": "Camera",
     "Description": "Can be used to take various kinds of pictures, some more, some less appropriate.",
     "Rarity": 4,
+    "Price": 1300,
     "Creator": "ManeIzzda",
     "Tags": []
 }

@@ -20,6 +20,10 @@ abstract partial class GameElement
     public Rarity Rarity
     { get; protected set; }
 
+    [JsonPropertyName("Price")]
+    public uint Price
+    { get; protected set; }
+
     [JsonPropertyName("Description")]
     public string Description
     { get; protected set; }

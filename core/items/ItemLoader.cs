@@ -37,7 +37,7 @@ abstract partial class GameElement
             if (item == null) throw new JsonException($"Tried to load invalid {nameof(PfannenkuchenBot.Item)} from file {path}");
             loadedInstances.Add(item.Name, item);
         }
-        static Dictionary<string, Item> loadedInstances;
+        public static Dictionary<string, Item> loadedInstances;
         static readonly string directory;
 
         public class ItemConverter : JsonConverter<Item>

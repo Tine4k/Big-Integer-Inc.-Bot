@@ -2,6 +2,7 @@
     "Name": "Adrian Lootbox",
     "Description": "Contains a lot of \"surprises\".",
     "Rarity": 4,
+    "Price": 0,
     "Creator": "ManeIzzda",
     "Tags": []
 }
