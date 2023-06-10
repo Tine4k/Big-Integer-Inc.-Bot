@@ -21,9 +21,9 @@ class Recipe
     { get; protected set; }
 
 
-    public static bool Craft(string itemName, Inventory inventory)
+    public static bool Craft(string id, Inventory inventory)
     {
-        if (!GetRecipe(itemName, out Recipe recipe)) return false;
+        if (!GetRecipe(id, out Recipe recipe)) return false;
         return Craft(recipe, inventory);
     }
 
@@ -37,9 +37,9 @@ class Recipe
         else return false;
     }
 
-    public static bool GetRecipe(string itemName, out Recipe recipe)
+    public static bool GetRecipe(string id, out Recipe recipe)
     {
-        string recipeJson = File.ReadAllText($@"content\recipes\{itemName.ToLower()}.json");
+        string recipeJson = File.ReadAllText($@"content\recipes\{id.ToLower()}.json");
         recipe = JsonSerializer.Deserialize<Recipe>(recipeJson)!;
         if (recipe is null) return false;
         return true;
