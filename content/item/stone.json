@@ -1,5 +1,6 @@
 {
     "Name": "Stone",
+    "Id":"stone",
     "Description": "SteinRehKitz",
     "Rarity": 1,
     "Price": 16,

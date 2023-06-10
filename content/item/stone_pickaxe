@@ -1,0 +1,9 @@
+{
+    "Name": "Stone Pickaxe",
+    "Id":"stonepickaxe",
+    "Description": "The second worst of all mining tools.",
+    "Rarity": 1,
+    "Price": 0,
+    "Creator": "ManeIzzda",
+    "Tags": []
+}

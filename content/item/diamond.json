@@ -1,0 +1,9 @@
+{
+    "Name": "Diamond",
+    "Id": "daimond",
+    "Description": "The rarest of them all.",
+    "Rarity": 5,
+    "Price": 100,
+    "Creator": "Nussi_gg",
+    "Tags": ["legal"]
+}
