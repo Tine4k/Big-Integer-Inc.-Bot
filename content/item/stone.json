@@ -3,7 +3,7 @@
     "Id":"stone",
     "Description": "SteinRehKitz",
     "Rarity": 1,
-    "Price": 16,
+    "BuyPrice": 16, "SellPrice": 0,
     "Creator": "ManeIzzda",
     "Tags": []
 }

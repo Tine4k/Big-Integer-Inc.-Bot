@@ -3,7 +3,7 @@
     "Id": "copper",
     "Description": "Used for crafting high tech stuff.",
     "Rarity": 2,
-    "Price": 30,
+    "BuyPrice": 30, "SellPrice": 0,
     "Creator": "Nussi_gg",
     "Tags": ["legal"]
 }

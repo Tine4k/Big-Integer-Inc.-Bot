@@ -3,7 +3,7 @@
     "Id":"stonepickaxe",
     "Description": "The second worst of all mining tools.",
     "Rarity": 1,
-    "Price": 0,
+    "BuyPrice": 0, "SellPrice" : 0, 
     "Creator": "ManeIzzda",
     "Tags": []
 }

@@ -3,7 +3,7 @@
     "Id": "camera",
     "Description": "Can be used to take various kinds of pictures, some more, some less appropriate.",
     "Rarity": 4,
-    "Price": 1300,
+    "BuyPrice": 1300, "SellPrice": 0,
     "Creator": "ManeIzzda",
     "Tags": []
 }

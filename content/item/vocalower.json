@@ -3,7 +3,7 @@
     "Id":"vocalower",
     "Description": "Schiach oba guate Leistung!",
     "Rarity": 4,
-    "Price": 250,
+    "BuyPrice": 250, "SellPrice": 0,
     "Creator": "ManeIzzda",
     "Tags": ["Illegal"]
 }

@@ -3,7 +3,7 @@
     "Id":"sulfurbomb",
     "Description": "\"Adrian, wenn du mich noch einmal nach Schwefel fragst, dann bekommst du eine Note schlechter in Italienisch!\"",
     "Rarity": 4,
-    "Price": 0,
+    "BuyPrice": 0, "SellPrice" : 0, 
     "Creator": "ManeIzzda",
     "Tags": ["Illegal"]
 }

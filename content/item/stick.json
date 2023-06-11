@@ -3,7 +3,7 @@
     "Id":"stick",
     "Description": "Arschbohrer",
     "Rarity": 1,
-    "Price": 0,
+    "BuyPrice": 0, "SellPrice" : 0, 
     "Creator": "ManeIzzda",
     "Tags": []
 }

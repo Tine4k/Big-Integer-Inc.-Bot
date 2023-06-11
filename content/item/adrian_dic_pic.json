@@ -3,7 +3,8 @@
     "Id": "adriandsdickpick",
     "Description": "\"Geld ist Geld!\"",
     "Rarity": 3,
-    "Price": 0,
+    "BuyPrice": 0,
+    "SellPrice": 0,
     "Creator": "ManeIzzda",
     "Tags": []
 }

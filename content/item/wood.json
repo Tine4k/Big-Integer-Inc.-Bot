@@ -3,7 +3,7 @@
     "Id":"wood",
     "Description": "Da coconat wood is *very* good...",
     "Rarity": 1,
-    "Price": 10,
+    "BuyPrice": 10, "SellPrice": 0,
     "Creator": "DerBaumigsteBaum",
     "Tags": []
 }

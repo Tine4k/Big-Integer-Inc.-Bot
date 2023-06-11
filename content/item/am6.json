@@ -3,7 +3,7 @@
     "Id": "am6",
     "Description": "Better than 1.9er.",
     "Rarity": 3,
-    "Price": 0,
+    "BuyPrice": 0, "SellPrice" : 0, 
     "Creator": "ManeIzzda",
     "Tags": []
 }

@@ -3,7 +3,7 @@
     "Id": "flolootbox",
     "Description": "\"Wos zohlstn?\"",
     "Rarity": 4,
-    "Price": 0,
+    "BuyPrice": 0, "SellPrice" : 0, 
     "Creator": "ManeIzzda",
     "Tags": []
 }

@@ -3,7 +3,7 @@
     "Id": "kindersurpriseegg",
     "Description": "A quite astonishing comodity.",
     "Rarity": 3,
-    "Price": 50,
+    "BuyPrice": 50, "SellPrice": 0,
     "Creator": "Nussi_gg",
     "Tags": ["legal"]
 }

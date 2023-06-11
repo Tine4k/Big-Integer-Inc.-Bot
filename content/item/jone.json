@@ -3,7 +3,7 @@
     "Id":"jone",
     "Description": "Ma Mane!",
     "Rarity": 7,
-    "Price": 0,
+    "BuyPrice": 0, "SellPrice" : 0, 
     "Creator": "DerBaumigsteBaum",
     "Tags": ["Illegal"]
 }

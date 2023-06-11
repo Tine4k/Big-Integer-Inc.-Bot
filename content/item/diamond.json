@@ -3,7 +3,7 @@
     "Id": "daimond",
     "Description": "The rarest of them all.",
     "Rarity": 5,
-    "Price": 100,
+    "BuyPrice": 100, "SellPrice": 0,
     "Creator": "Nussi_gg",
     "Tags": ["legal"]
 }
