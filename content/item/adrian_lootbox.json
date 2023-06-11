@@ -1,6 +1,6 @@
 {
     "Name": "Adrian Lootbox",
-    "adrianlootbox": "adrianlootbox",
+    "Id": "adrianlootbox",
     "Description": "Contains a lot of \"surprises\".",
     "Rarity": 4,
     "BuyPrice": 0, "SellPrice" : 0, 

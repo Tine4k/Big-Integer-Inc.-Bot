@@ -1,9 +1,9 @@
 namespace PfannenkuchenBot;
 class Item : GameElement
 {
-    public static bool Get(string name, out Item item)
+    public static bool Get(string id, out Item item)
     {
-        bool successful = ItemLoader.Get(name, out item);
+        bool successful = ItemLoader.Get(id, out item);
         return successful;
     }
     

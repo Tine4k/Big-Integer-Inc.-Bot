@@ -173,7 +173,7 @@ class Inventory
 
                 string id = reader.GetString() ?? throw new NullReferenceException();
 
-                if (!Item.Get(id, out Item? item)) throw new KeyNotFoundException($"Item with name '{id}' not found.");
+                if (!Item.Get(id, out Item? item)) throw new KeyNotFoundException($"Item with id '{id}' not found.");
                 if (item is null) throw new NullReferenceException();
 
                 if (!reader.Read()) throw new JsonException();
@@ -190,7 +190,7 @@ class Inventory
             writer.WriteStartObject();
             foreach (KeyValuePair<Item, ulong> pair in inventory)
             {
-                writer.WriteNumber(pair.Key.Name, pair.Value);
+                writer.WriteNumber(pair.Key.Id, pair.Value);
             }
             writer.WriteEndObject();
         }

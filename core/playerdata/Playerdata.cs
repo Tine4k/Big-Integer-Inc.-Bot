@@ -7,10 +7,10 @@ class Playerdata
     public Playerdata(string userId, Inventory inventory, Dictionary<Stat,int> stats, long balance, Dictionary<string, DateTime> timestamps)
     {
         this.userId = userId;
-        this.Inventory = inventory;
-        this.Stats = stats;
+        this.Inventory = inventory ?? new Inventory();
+        this.Stats = stats ?? new Dictionary<Stat, int>();
         this.Balance = balance;
-        this.Timestamps = timestamps;
+        this.Timestamps = timestamps ?? new Dictionary<string, DateTime>();
     }
     Playerdata(string _userId)
     {
@@ -134,5 +134,4 @@ class Playerdata
     public Dictionary<string, DateTime> Timestamps 
     { get; private set;}
    
-    
 }

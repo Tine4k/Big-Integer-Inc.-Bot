@@ -28,20 +28,22 @@ partial class Command
         Send(message, socketmsg, commandMessage);
     }
 
-    /* public void Daily(SocketMessage socketmsg, string[] commandMessage)
+    public void Daily(SocketMessage socketmsg, string[] commandMessage)
     {
-        if (!playerdata.Timestamps.Contains ("lastDaily" )Playerdata.Timestamps.Add("lastDaily" DateTime.default);
-        if (DateTime.Now - Playerdata.Timestamps["lastDaily"] < TiemSpan.FromHours(24))
+        if (!playerdata.Timestamps.ContainsKey("lastDaily")) playerdata.Timestamps.Add("lastDaily", DateTime.Today - TimeSpan.FromDays(1));
+        if (playerdata.Timestamps["lastDaily"].Date == DateTime.Today.Date)
         {
-            message.Append($"Wait *{DateTime.Now - Playerdata.Timestamps["lastDaily"]}* longer to be get your next Daily reward!");
-                Send(message, socketmsg, commandMessage);
-                return
-
+            TimeSpan timeToNextDay = DateTime.Today - playerdata.Timestamps["lastDaily"];
+            message.Append($"Wait **{timeToNextDay.Hours}:{timeToNextDay.Minutes}:{timeToNextDay.Seconds}** longer to be get your next Daily reward!");
         }
+        else
+        {
         playerdata.Gain(1000);
         message.Append($"Added 1000{Config.currency} to your balance, which now contains {playerdata.Balance}{Config.currency}");
+        }
+        playerdata.Timestamps["lastDaily"] = DateTime.Today;
         Send(message, socketmsg, commandMessage);
-    } */
+    }
 
     public void Mine(SocketMessage socketmsg, string[] commandMessage)
     {
@@ -92,7 +94,7 @@ partial class Command
         Item item;
         if (commandMessage.Length < 2 || !Item.Get(commandMessage[1], out item)) message.Append("Wasn't able to find the item you want.");
         else if (item.BuyPrice == 0) message.Append($"That item ain't up for sale. To see all items you can buy, try {Config.prefix}shop");
-        else if(commandMessage.Length == 2 && playerdata.TryLose(item.BuyPrice))
+        else if (commandMessage.Length == 2 && playerdata.TryLose(item.BuyPrice))
         {
             playerdata.Gain(item);
             message.Append($"You've bought 1x {item} for {item.BuyPrice}{Config.currency}.");
@@ -115,9 +117,9 @@ partial class Command
         Item item;
         if (commandMessage.Length < 2 || !Item.Get(commandMessage[1], out item)) message.Append("Wasn't able to find the item you wanted to sell.");
         else if (item.SellPrice == 0) message.Append("This item can not be sold.");
-        else if(commandMessage.Length == 2 && playerdata.TryLose(item.Name))
+        else if (commandMessage.Length == 2 && playerdata.TryLose(item.Name))
         {
-            playerdata.Gain(item.SellPrice);            
+            playerdata.Gain(item.SellPrice);
             message.Append($"You've sold 1x {item} for {item.SellPrice}{Config.currency}.");
         }
         else if (commandMessage.Length == 3 || !uint.TryParse(commandMessage[2], out uint amount) || amount == 0)
@@ -126,7 +128,7 @@ partial class Command
         }
         else if (playerdata.TryLose(item.Name, amount))
         {
-            playerdata.Gain(item.SellPrice * amount);          
+            playerdata.Gain(item.SellPrice * amount);
             message.Append($"You've sold {amount}x {item} for {item.SellPrice * amount}{Config.currency}.");
         }
         else message.Append("You don't actually have this many items. Don't try to scam me!");

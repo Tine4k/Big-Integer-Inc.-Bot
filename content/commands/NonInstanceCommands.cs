@@ -5,7 +5,7 @@ partial class Command
 {
     public void Help(SocketMessage socketmsg, string[] commandMessage)
     {
-        message.Append(Format.Bold("List of all available commands: (Not available yet)"));
+        message.Append("**List of all available commands: (Not available yet)**");
         Send(message, socketmsg, commandMessage);
     }
     public void HelloWorld(SocketMessage socketmsg, string[] commandMessage)
@@ -16,18 +16,21 @@ partial class Command
     public void Jone(SocketMessage socketmsg, string[] commandMessage)
     {
         message.Append(
-        Format.BlockQuote(Format.Bold(
-        "Rauchst du an Jone, bist du da Mane!\nRauchst du kan, brauchst du an!\n") +
-        "Kontaktieren Sie die Jone GmbH gerne unter " +
-        Format.Italics(Format.Underline("+43 067689807553"))));
+        Format.BlockQuote(
+        """
+        **Rauchst du an Jone, bist du da Mane! Rauchst du kan, brauchst du an!**
+        Kontaktieren Sie die Jone GmbH gerne unter: 
+        __**+43 067689807553**__
+        """));
         Send(message, socketmsg, commandMessage);
     }
     public void Info(SocketMessage socketmsg, string[] commandMessage)
     {
-        if (commandMessage.Length >= 2 && Item.Get(commandMessage[1], out Item? item)) {
+        if (commandMessage.Length == 2 && Item.Get(commandMessage[1], out Item? item)) {
             if (item is null) {Unknown(socketmsg.Channel); return;}
             message.Append(item.Describe());
         }
+        else message.Append("That's not a item I know.");
         Send(message, socketmsg, commandMessage);
     }
     public void Shop(SocketMessage socketmsg, string[] commandMessage)
@@ -36,19 +39,19 @@ partial class Command
         {
             if(item.BuyPrice != 0 && !(item.Tags.Contains("Illegal")))
             {
-                message.Append($"{item} \nPrice: {item.BuyPrice}\n\n");
+                message.Append($"{item.Name}: {item.BuyPrice}{Config.currency}\n\n");
             }            
         }
         Send(message, socketmsg, commandMessage);
     }
     public void BlackMarket(SocketMessage socketmsg, string[] commandMessage)
     {
-        message.Append("Welcome to the Blackmarket!\n\n");
+        message.Append("**Welcome to the Black Market!\n**");
         foreach(Item item in GameElement.ItemLoader.loadedInstances.Values)
         {
             if(item.BuyPrice != 0 && item.Tags.Contains("Illegal"))
             {
-                message.Append($"{item} \nPrice: {item.BuyPrice}\n\n");
+                message.Append($"{item.Name}: {item.BuyPrice}{Config.currency}\n\n");
             }
         }
         Send(message, socketmsg, commandMessage);

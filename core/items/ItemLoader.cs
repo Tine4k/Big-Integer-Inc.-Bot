@@ -16,9 +16,9 @@ abstract partial class GameElement
         }
         public static bool Get(string id, out Item item)
         {
-            bool successfull = loadedInstances.TryGetValue(id, out item!);
+            if (!loadedInstances.TryGetValue(id, out item!)) return false;
             if (item is null) throw new KeyNotFoundException($"Invalid {nameof(GameElement)} detected at {id}");
-            return successfull;
+            return true;
         }
         public static void Reload()
         {
@@ -35,7 +35,7 @@ abstract partial class GameElement
         {
             Item? item = JsonSerializer.Deserialize<Item>(File.ReadAllText(path), new JsonSerializerOptions { Converters = { converter } });
             if (item == null) throw new JsonException($"Tried to load invalid {nameof(PfannenkuchenBot.Item)} from file {path}");
-            loadedInstances.Add(item.Name, item);
+            loadedInstances.Add(item.Id, item);
         }
         public static Dictionary<string, Item> loadedInstances;
         static readonly string directory;
