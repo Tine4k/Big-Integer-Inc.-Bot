@@ -33,8 +33,8 @@ partial class Command
         if (!playerdata.Timestamps.ContainsKey("lastDaily")) playerdata.Timestamps.Add("lastDaily", DateTime.Today - TimeSpan.FromDays(1));
         if (playerdata.Timestamps["lastDaily"].Date == DateTime.Today.Date)
         {
-            TimeSpan timeToNextDay = DateTime.Today - playerdata.Timestamps["lastDaily"];
-            message.Append($"Wait **{timeToNextDay.Hours}:{timeToNextDay.Minutes}:{timeToNextDay.Seconds}** longer to be get your next Daily reward!");
+            TimeSpan timeTillNextDay = (DateTime.Today + (TimeSpan.FromDays(1))) - DateTime.Now;
+            message.Append($"Wait **{timeTillNextDay.Hours}h {timeTillNextDay.Minutes}min {timeTillNextDay.Seconds}s** longer to be get your next Daily reward!");
         }
         else
         {
