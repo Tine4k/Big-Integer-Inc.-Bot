@@ -17,9 +17,9 @@ class Inventory
         if (content.ContainsKey(item)) content[item] += amount;
         else content.Add(item, amount);
     }
-    public void Add(string itemName, uint amount = 1)
+    public void Add(string id, uint amount = 1)
     {
-        if (!Item.Get(itemName, out Item? item)) throw new InvalidGameObjectException();
+        if (!Item.Get(id, out Item? item)) throw new InvalidGameObjectException();
         if (item is null) throw new NullReferenceException();
         this.Add(item, amount);
     }
@@ -43,9 +43,9 @@ class Inventory
         }
         else return false;
     }
-    public bool TryRemove(string itemName, uint amount = 1)
+    public bool TryRemove(string id, uint amount = 1)
     {
-        if (!Item.Get(itemName, out Item? item)) throw new InvalidGameObjectException();
+        if (!Item.Get(id, out Item? item)) throw new InvalidGameObjectException();
         if (item is null) throw new NullReferenceException();
         return TryRemove(item, amount);
     }
@@ -68,9 +68,9 @@ class Inventory
             content.Remove(item);
         }
     }
-    public void Remove(string itemName, uint amount = 1)
+    public void Remove(string id, uint amount = 1)
     {
-        if (!Item.Get(itemName, out Item? item)) throw new InvalidGameObjectException();
+        if (!Item.Get(id, out Item? item)) throw new InvalidGameObjectException();
         if (item is null) throw new NullReferenceException();
         this.Remove(item, amount);
     }
@@ -101,9 +101,9 @@ class Inventory
         this.Remove(item);
         return true;
     }
-    public bool Transfer(Inventory targetInventory, string itemName)
+    public bool Transfer(Inventory targetInventory, string id)
     {
-        if (!Item.Get(itemName, out Item? item)) throw new InvalidGameObjectException();
+        if (!Item.Get(id, out Item? item)) throw new InvalidGameObjectException();
         if (item is null) throw new NullReferenceException();
         return this.Transfer(targetInventory, item);
     }
@@ -121,9 +121,9 @@ class Inventory
         this.Remove(item);
         return true;
     }
-    public bool Transfer(Playerdata player, string itemName)
+    public bool Transfer(Playerdata player, string id)
     {
-        if (!Item.Get(itemName, out Item? item)) throw new InvalidGameObjectException();
+        if (!Item.Get(id, out Item? item)) throw new InvalidGameObjectException();
         if (item is null) throw new NullReferenceException();
         return this.Transfer(player, item);
     }
@@ -171,9 +171,9 @@ class Inventory
 
                 if (reader.TokenType != JsonTokenType.PropertyName) throw new JsonException();
 
-                string itemName = reader.GetString() ?? throw new NullReferenceException();
+                string id = reader.GetString() ?? throw new NullReferenceException();
 
-                if (!Item.Get(itemName, out Item? item)) throw new KeyNotFoundException($"Item with name '{itemName}' not found.");
+                if (!Item.Get(id, out Item? item)) throw new KeyNotFoundException($"Item with name '{id}' not found.");
                 if (item is null) throw new NullReferenceException();
 
                 if (!reader.Read()) throw new JsonException();

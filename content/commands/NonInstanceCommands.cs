@@ -34,21 +34,21 @@ partial class Command
     {
         foreach(Item item in GameElement.ItemLoader.loadedInstances.Values)
         {
-            if(item.Price != 0 && !(item.Tags.Contains("Illegal")))
+            if(item.BuyPrice != 0 && !(item.Tags.Contains("Illegal")))
             {
-                message.Append($"{item} \nPrice: {item.Price}\n\n");
+                message.Append($"{item} \nPrice: {item.BuyPrice}\n\n");
             }            
         }
         Send(message, socketmsg, commandMessage);
     }
-    public void Blackmarket(SocketMessage socketmsg, string[] commandMessage)
+    public void BlackMarket(SocketMessage socketmsg, string[] commandMessage)
     {
         message.Append("Welcome to the Blackmarket!\n\n");
         foreach(Item item in GameElement.ItemLoader.loadedInstances.Values)
         {
-            if(item.Price != 0 && item.Tags.Contains("Illegal"))
+            if(item.BuyPrice != 0 && item.Tags.Contains("Illegal"))
             {
-                message.Append($"{item} \nPrice: {item.Price}\n\n");
+                message.Append($"{item} \nPrice: {item.BuyPrice}\n\n");
             }
         }
         Send(message, socketmsg, commandMessage);

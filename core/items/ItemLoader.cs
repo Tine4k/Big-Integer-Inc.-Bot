@@ -14,10 +14,10 @@ abstract partial class GameElement
             directory = $@"content\{nameof(Item)}";
             LoadAll();
         }
-        public static bool Get(string name, out Item? item)
+        public static bool Get(string id, out Item item)
         {
-            bool successfull = loadedInstances.TryGetValue(name, out item);
-            if (item is null) throw new KeyNotFoundException($"Invalid {nameof(GameElement)} detected at {name}");
+            bool successfull = loadedInstances.TryGetValue(id, out item!);
+            if (item is null) throw new KeyNotFoundException($"Invalid {nameof(GameElement)} detected at {id}");
             return successfull;
         }
         public static void Reload()

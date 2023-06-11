@@ -46,8 +46,8 @@ partial class Command
     public void Mine(SocketMessage socketmsg, string[] commandMessage)
     {
         Inventory items = new Inventory();
-        items.Add("Gunpowder", (uint)Random.Shared.Next(0, 2));
-        items.Add("Stone", (uint)Random.Shared.Next(1, 6));
+        items.Add("gunpowder", (uint)Random.Shared.Next(0, 2));
+        items.Add("stone", (uint)Random.Shared.Next(1, 6));
         playerdata.Gain(items);
         message.Append($"You found:{items.PrintContent()}");
         Send(message, socketmsg, commandMessage);
@@ -62,8 +62,8 @@ partial class Command
         else
         {
             Inventory items = new Inventory();
-            items.Add("Wood", (uint)Random.Shared.Next(1, 2));
-            items.Add("Stick", (uint)Random.Shared.Next(2, 4));
+            items.Add("wood", (uint)Random.Shared.Next(1, 2));
+            items.Add("stick", (uint)Random.Shared.Next(2, 4));
             playerdata.Gain(items);
             message.Append($"The tree fell. From the distance, you hear the scream of Markus: *\"DU MÖRDER! BÄUME SIND AUCH MENSCHEN\"*.\nYou found:{items.PrintContent()}");
         }
@@ -72,7 +72,7 @@ partial class Command
 
     public void Mane(SocketMessage socketmsg, string[] commandMessage)
     {
-        playerdata.Gain("Jone");
+        playerdata.Gain("jone");
         message.Append("@Klagenfurt Busbahnhof");
         Send(message, socketmsg, commandMessage);
     }
@@ -89,41 +89,47 @@ partial class Command
 
     public void Buy(SocketMessage socketmsg, string[] commandMessage)
     {
-        uint Price;
-        if(commandMessage.Length == 2 && Item.Get(commandMessage[1], out Item? item) && item.Price != 0 && playerdata.Lose(item.Price))
+        Item item;
+        if (commandMessage.Length < 2 || !Item.Get(commandMessage[1], out item)) message.Append("Wasn't able to find the item you want.");
+        else if (item.BuyPrice == 0) message.Append($"That item ain't up for sale. To see all items you can buy, try {Config.prefix}shop");
+        else if(commandMessage.Length == 2 && playerdata.TryLose(item.BuyPrice))
         {
-            Price = item.Price;
-            playerdata.Lose(Price);
             playerdata.Gain(item);
-            message.Append($"You've bought 1 {item} for {Price}$.");
-        } 
-        else if(commandMessage.Length == 3 && Item.Get(commandMessage[1], out item) && item.Price != 0 && playerdata.Lose(item.Price))
-        {
-            Price = item.Price * Convert.ToUInt32(commandMessage[2]);
-            playerdata.Lose(Price);
-            playerdata.Gain(item, Convert.ToUInt32(commandMessage[2]));
-            message.Append($"You've bought {commandMessage[2]} {item} for {Price}$.");
+            message.Append($"You've bought 1x {item} for {item.BuyPrice}{Config.currency}.");
         }
-        else message.Append("This item isn't buyable or doesn't exist.");
+        else if (commandMessage.Length == 3 || !uint.TryParse(commandMessage[2], out uint amount) || amount == 0)
+        {
+            message.Append("Bro you can't buy this amount of items. That's not a valid number.");
+        }
+        else if (playerdata.TryLose(item, amount))
+        {
+            playerdata.Gain(item.BuyPrice * amount);
+            message.Append($"You've successfulyl bought {amount}x {item} for {item.BuyPrice * amount}{Config.currency}.");
+        }
+        else message.Append("You ain't got enough money to buy that item. Don't try to scam me!");
         Send(message, socketmsg, commandMessage);
     }
 
     public void Sell(SocketMessage socketmsg, string[] commandMessage)
     {
-        uint sellPrice;
-        if(commandMessage.Length == 2 && Item.Get(commandMessage[1], out Item? item) && item.Price != 0 && playerdata.Lose(item.Name, 1))
+        Item item;
+        if (commandMessage.Length < 2 || !Item.Get(commandMessage[1], out item)) message.Append("Wasn't able to find the item you wanted to sell.");
+        else if (item.SellPrice == 0) message.Append("This item can not be sold.");
+        else if(commandMessage.Length == 2 && playerdata.TryLose(item.Name))
         {
-            sellPrice = item.Price / 2;
-            playerdata.Gain(sellPrice);            
-            message.Append($"You've sold 1 {item} for {sellPrice}$.");
-        } 
-        else if (commandMessage.Length == 3 && Item.Get(commandMessage[1], out item) && item.Price != 0 && playerdata.Lose(item.Name, Convert.ToUInt32(commandMessage[2])))
-        {
-            sellPrice = (item.Price / 2) * Convert.ToUInt32(commandMessage[2]);
-            playerdata.Gain(sellPrice);            
-            message.Append($"You've sold {commandMessage[2]} {item} for {sellPrice}$.");
+            playerdata.Gain(item.SellPrice);            
+            message.Append($"You've sold 1x {item} for {item.SellPrice}{Config.currency}.");
         }
-        else message.Append("This item isn't sellable or doesn't exist.");
+        else if (commandMessage.Length == 3 || !uint.TryParse(commandMessage[2], out uint amount) || amount == 0)
+        {
+            message.Append("Bro that ain't a valid number.");
+        }
+        else if (playerdata.TryLose(item.Name, amount))
+        {
+            playerdata.Gain(item.SellPrice * amount);          
+            message.Append($"You've sold {amount}x {item} for {item.SellPrice * amount}{Config.currency}.");
+        }
+        else message.Append("You don't actually have this many items. Don't try to scam me!");
         Send(message, socketmsg, commandMessage);
     }
 }

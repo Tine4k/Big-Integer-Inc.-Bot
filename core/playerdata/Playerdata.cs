@@ -3,26 +3,21 @@ using System.Text.Json.Serialization;
 namespace PfannenkuchenBot;
 class Playerdata
 {
-    Playerdata()
-    {
-        this.userId = String.Empty;
-        this.Inventory = Inventory.Empty;
-        this.Stats = new Dictionary<Stat, int>();
-        this.Timestamps = new Dictionary<string, DateTime>();
-    }
     [JsonConstructor]
-    public Playerdata(string userId, Inventory inventory, Dictionary<Stat,int> stats, long balance)
+    public Playerdata(string userId, Inventory inventory, Dictionary<Stat,int> stats, long balance, Dictionary<string, DateTime> timestamps)
     {
         this.userId = userId;
         this.Inventory = inventory;
         this.Stats = stats;
         this.Balance = balance;
+        this.Timestamps = timestamps;
     }
     Playerdata(string _userId)
     {
         this.userId = _userId;
         this.Inventory = new Inventory();
         this.Stats = new Dictionary<Stat, int>();
+        this.Timestamps = new Dictionary<string, DateTime>();
     }
     public static Playerdata GetPlayerdata(string userId)
     {
@@ -48,9 +43,9 @@ class Playerdata
         }
     }
 
-    public void Gain(string itemName, uint amount = 1)
+    public void Gain(string id, uint amount = 1)
     {
-        Inventory.Add(itemName, amount);
+        Inventory.Add(id, amount);
     }
     public void Gain(Item item, uint amount = 1)
     {
@@ -65,24 +60,32 @@ class Playerdata
         Balance += amount;
     }
 
-    public bool Lose(string itemName, uint amount = 1) // Returns true if player has enough Items and removes amount
+    public bool TryLose(string id, uint amount = 1) // Returns true if player has enough Items and removes amount
     {
-        return Inventory.TryRemove(itemName, amount);
+        return Inventory.TryRemove(id, amount);
     }
-    public bool Lose(Inventory items)
+    public bool TryLose(Item item, uint amount = 1)
+    {
+        return Inventory.TryRemove(item, amount);
+    }
+    public bool TryLose(Inventory items)
     {
         return Inventory.TryRemove(items);
     }
-    public bool Lose(uint amount, bool causeDepths = true)
+    public bool TryLose(uint amount, bool causeDepths = true)
     {
         if (Balance < amount || !causeDepths) return false;
         Balance -= amount;
         return true;
     }
     
-    public void ForceLose(string itemName, uint amount = 1) // Removes amount even if player doesn't have enough Items 
+    public void ForceLose(string id, uint amount = 1) // Removes amount even if player doesn't have enough Items 
     {
-        Inventory.Remove(itemName, amount);
+        Inventory.Remove(id, amount);
+    }
+    public void ForceLose(Item item, uint amount = 1) 
+    {
+        Inventory.Remove(item, amount);
     }
     public void ForceLose(Inventory items)
     {
@@ -116,22 +119,18 @@ class Playerdata
     // * The order in which the members are displayed here results in the order of serialization (hence userId is the first entry in a .dat file)
     
     
-    [JsonPropertyName("UserId")]
     public string UserId => userId;
     public readonly string userId;
     
-    [JsonPropertyName("Inventory")]
     public Inventory Inventory
     {get; private set;}
     
     public Dictionary<Stat, int> Stats  
     { get; set; }
     
-    [JsonPropertyName("Balance")]
     public long Balance
     { get; private set; }
     
-    [JsonPropertyName("Timestamps")]
     public Dictionary<string, DateTime> Timestamps 
     { get; private set;}
    
