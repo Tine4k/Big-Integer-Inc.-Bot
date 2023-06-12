@@ -4,7 +4,7 @@ using Discord.WebSocket;
 using System.Reflection;
 public static class CommandHandler
 {
-    static MethodBase[] commands;
+    public static MethodBase[] commands;
     static CommandHandler()
     {
         commands = typeof(Command).GetMethods(BindingFlags.DeclaredOnly|BindingFlags.Public|BindingFlags.Instance);
