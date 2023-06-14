@@ -3,7 +3,7 @@
     "Id":"waldwochecoin",
     "Description": "80% chance of being faked by Nussi_GG.",
     "Rarity": 2,
-    "BuyPrice": 0, "SellPrice" : 0, 
+    "BuyPrice": 0, "SellPrice" : 5, 
     "Creator": "DerBaumigsteBaum",
     "Tags": []
 }

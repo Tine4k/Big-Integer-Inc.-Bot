@@ -15,7 +15,7 @@ static class Program
             {
                 Console.WriteLine("Test running...");
 
-                Log(JsonSerializer.Serialize(new String[]{"Illegal", "Unstackable"}));
+                Log(JsonSerializer.Serialize(new String[]{"Illegal", "Unstackable"}), "Startup");
                 // var pd = Playerdata.GetPlayerdata("500953493918449674");
                 // pd.Gain("Gunpowder", 10);
             }
@@ -41,14 +41,14 @@ static class Program
         await client.StartAsync();
         await Task.Delay(-1);
     }
-    static Task Log(LogMessage msg)
+    static Task Log(LogMessage logMessage)
     {
-        Console.WriteLine(msg.ToString());
+        Console.WriteLine(logMessage);
         return Task.CompletedTask;
     }
-    public static Task Log(string msg)
+    public static Task Log(string message, string source = "Unspecified", LogSeverity severity = LogSeverity.Info)
     {
-        Console.WriteLine($"{DateTime.Now.ToLongTimeString()} Custom      {msg}");
-        return Task.CompletedTask;
+        LogMessage logMessage = new LogMessage(severity,source,message.Replace('\n', ' '));
+        return Log(logMessage);
     }
 }

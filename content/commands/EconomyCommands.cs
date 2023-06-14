@@ -4,13 +4,13 @@ using Pfannenkuchenbot.Item;
 namespace PfannenkuchenBot.Commands;
 partial class Command
 {
-    public void Balance(SocketMessage socketmsg, string[] commandMessage)
+    public void Balance()
     {
         message.Append($"Your current balance is {playerdata.Balance}{Config.currency}!");
-        Send(message, socketmsg, commandMessage);
+        
     }
 
-    public void Buy(SocketMessage socketmsg, string[] commandMessage)
+    public void Buy()
     {
         Item item;
         if (commandMessage.Length < 2 || !Item.Get(commandMessage[1], out item)) message.Append("Wasn't able to find the item you want.");
@@ -30,10 +30,10 @@ partial class Command
             message.Append($"You've successfulyl bought {amount}x {item} for {item.BuyPrice * amount}{Config.currency}.");
         }
         else message.Append("You ain't got enough money to buy that item. Don't try to scam me!");
-        Send(message, socketmsg, commandMessage);
+        
     }
 
-    public void Sell(SocketMessage socketmsg, string[] commandMessage)
+    public void Sell()
     {
         Item item;
         if (commandMessage.Length < 2 || !Item.Get(commandMessage[1], out item)) message.Append("Wasn't able to find the item you wanted to sell.");
@@ -53,10 +53,10 @@ partial class Command
             message.Append($"You've sold {amount}x {item} for {item.SellPrice * amount}{Config.currency}.");
         }
         else message.Append("You don't actually have this many items. Don't try to scam me!");
-        Send(message, socketmsg, commandMessage);
+        
     }
     
-    public void Shop(SocketMessage socketmsg, string[] commandMessage)
+    public void Shop()
     {
         foreach(Item item in GameElement.ItemLoader.loadedInstances.Values)
         {
@@ -65,10 +65,10 @@ partial class Command
                 message.Append($"{item.Name}: {item.BuyPrice}{Config.currency}\n\n");
             }            
         }
-        Send(message, socketmsg, commandMessage);
+        
     }
     
-    public void BlackMarket(SocketMessage socketmsg, string[] commandMessage)
+    public void BlackMarket()
     {
         message.Append("**Welcome to the Black Market!\n**");
         foreach(Item item in GameElement.ItemLoader.loadedInstances.Values)
@@ -78,6 +78,6 @@ partial class Command
                 message.Append($"{item.Name}: {item.BuyPrice}{Config.currency}\n\n");
             }
         }
-        Send(message, socketmsg, commandMessage);
+        
     }
 }

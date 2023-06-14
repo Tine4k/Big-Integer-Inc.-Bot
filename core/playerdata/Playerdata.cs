@@ -24,12 +24,12 @@ class Playerdata
         if (File.Exists($"playerdata/{userId}.dat")) 
         {
             Playerdata playerdata = DeserializePlayerdata(userId);
-            if (Config.logPlayerdataLoads) Program.Log($"Loaded Playerdata with id {userId}");
+            if (Config.logPlayerdataLoads) Program.Log($"Loaded Playerdata with id {userId}", "Playerdata");
             return playerdata;
         }
         else
         {
-            if (Config.logPlayerdataCreations) Program.Log($"Created new playerdata with id {userId}");
+            if (Config.logPlayerdataCreations) Program.Log($"Created new playerdata with id {userId}", "Playerdata");
             return new Playerdata(userId);
         }
 
@@ -109,7 +109,7 @@ class Playerdata
     public void Save()
     {
         File.WriteAllText($"playerdata/{userId}.dat", JsonSerializer.Serialize(this));
-        if (Config.logPlayerdataUnloads) Program.Log($"Playerdata with id {userId} was saved to file \"playerdata/{userId}.dat\"");
+        if (Config.logPlayerdataUnloads) Program.Log($"Playerdata with id {userId} was saved to file \"playerdata/{userId}.dat\"", "Playerdata");
     }
     
     

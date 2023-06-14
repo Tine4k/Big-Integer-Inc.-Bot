@@ -7,12 +7,13 @@
 # Public TODO List Systen
 - BuyPrices & SellPrices balancen
 - Wahrscheinlichkeitssystem
-- Commands splitten
+<!-- - Commands splitten -->
 - Weekly & Monthly
 
 # Markus TODO List
 - Timer system
 - Weight
-- Discord aus Commands removen
+<!-- - Discord aus Commands removen -->
 - Battler
 - Abilities
+- Command Attributes für syntax

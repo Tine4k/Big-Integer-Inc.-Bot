@@ -4,11 +4,12 @@ using Discord.WebSocket;
 using System.Reflection;
 public static class CommandHandler
 {
-    public static MethodBase[] commands;
+    public static MethodBase[] loadedCommands;
     static CommandHandler()
     {
-        commands = typeof(Command).GetMethods(BindingFlags.DeclaredOnly|BindingFlags.Public|BindingFlags.Instance);
+        loadedCommands = LoadCommands();
     }
+    static MethodInfo[] LoadCommands() => typeof(Command).GetMethods(BindingFlags.DeclaredOnly|BindingFlags.Public|BindingFlags.Instance); 
     public static Task HandleCommand(SocketMessage _socketMessage)
     {
         var socketMessage = _socketMessage as SocketUserMessage;
@@ -22,15 +23,19 @@ public static class CommandHandler
         EvaluateCommand(command_message, socketMessage);
         return Task.CompletedTask;
     }
-    static void EvaluateCommand(string[] commandMessage, SocketUserMessage socketmsg)
+    static void EvaluateCommand(string[] commandMessage, SocketUserMessage socketMesssage)
     {
-        foreach (MethodBase methodBase in commands) if (MakeMessageProcessable(commandMessage[0]) == methodBase.Name.ToLower())
+        foreach (MethodBase methodBase in loadedCommands) 
+            if (MakeMessageProcessable(commandMessage[0]) == methodBase.Name.ToLower())
             {
-                Command command = Command.GetCommand(socketmsg.Author.Id.ToString());
-                methodBase.Invoke(command, new object[]{socketmsg, commandMessage});
+                Command command = Command.GetCommand(socketMesssage.Author.Id.ToString());
+                command.commandMessage = commandMessage;
+                command.socketMessage = socketMesssage;
+                methodBase.Invoke(command, null);
+                command.Send();
                 return;
             }
-        Command.Unknown(socketmsg.Channel);
+        Command.Unknown(socketMesssage.Channel);
     }
     public static string MakeMessageProcessable(string msg) => Format.StripMarkDown(msg).ToLower();
 }

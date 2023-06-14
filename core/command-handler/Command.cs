@@ -10,23 +10,25 @@ partial class Command
         this.message = new StringBuilder();
         this.playerdata = Playerdata.GetPlayerdata(userId);
         this.lastReferenced = DateTime.Now;
+        this.socketMessage = null!;
+        this.commandMessage = null!;
         this.Load();
     }
     public static Command GetCommand(string userId)
     {
         if (!loadedCommands.TryGetValue(userId, out Command? command)) return new Command(userId);
-        if (command is null) throw new Exception("Something went wrong");
+        if (command is null) throw new NullReferenceException("Something went wrong");
         command.lastReferenced = DateTime.Now;
         return command;
     }
     public static Dictionary<string, Command> loadedCommands;
     public static void Unknown(ISocketMessageChannel channel) => 
     channel.SendMessageAsync(Format.BlockQuote($"Unknown Command, please use {Config.prefix}help for a list of available commands!"));
-    protected virtual void Send(StringBuilder message,SocketMessage socketmsg, string[] commandMessage)
+    public virtual void Send()
     {
-        socketmsg.Channel.SendMessageAsync(message.ToString());
-        message.Insert(0, $"{socketmsg.Author.Username} issued \"{String.Join(' ', commandMessage)}\"\n");
-        if (Config.logAllCommands) Program.Log(message.ToString());
+        socketMessage.Channel.SendMessageAsync(message.ToString());
+        message.Insert(0, $"{socketMessage.Author.Username} issued \'{String.Join(' ', commandMessage)}\'\n");
+        if (Config.logAllCommands) Program.Log(message.ToString(), "Commands");
         this.lastReferenced = DateTime.Now;
         this.message.Clear();
     }
@@ -36,10 +38,12 @@ partial class Command
         loadedCommands = new Dictionary<string, Command>();
         if (Config.autoUnload) AutoUnloader.Start();
     }
+
     void Load()
     {
         loadedCommands.Add(playerdata.userId, this);
     }
+
     void Unload()
     {
         playerdata.Save();
@@ -47,9 +51,13 @@ partial class Command
     }
     
     // * Field declarations
-    public readonly Playerdata playerdata;
-    public DateTime lastReferenced;
-    protected StringBuilder message;
+    public SocketUserMessage socketMessage;
+    public String[] commandMessage;
+    protected readonly Playerdata playerdata;
+    protected DateTime lastReferenced;
+    protected readonly StringBuilder message;
+
+
     private static class AutoUnloader
     {
         public static async void Start()
@@ -63,7 +71,7 @@ partial class Command
         {
             foreach (Command command in loadedCommands.Values)
             {
-                if (Config.forceUnload || DateTime.Now - command.lastReferenced > TimeSpan.FromSeconds(Config.idleUnloadTime)) command.Unload();
+                if (Config.forceUnload || DateTime.Now - command.lastReferenced >= TimeSpan.FromSeconds(Config.idleUnloadTime)) command.Unload();
             }
             return Task.CompletedTask;
         }

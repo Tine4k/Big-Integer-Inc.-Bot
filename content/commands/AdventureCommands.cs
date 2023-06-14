@@ -4,17 +4,17 @@ using Pfannenkuchenbot.Item;
 namespace PfannenkuchenBot.Commands;
 partial class Command
 {
-    public void Mine(SocketMessage socketmsg, string[] commandMessage)
+    public void Mine()
     {
         Inventory items = new Inventory();
         items.Add("gunpowder", (uint)Random.Shared.Next(0, 2));
         items.Add("stone", (uint)Random.Shared.Next(1, 6));
         playerdata.Gain(items);
         message.Append($"You found:{items.PrintContent()}");
-        Send(message, socketmsg, commandMessage);
+        
     }
 
-    public void PunchTree(SocketMessage socketmsg, string[] commandMessage)
+    public void PunchTree()
     {
         if (Random.Shared.Next(3) == 1)
         {
@@ -28,6 +28,6 @@ partial class Command
             playerdata.Gain(items);
             message.Append($"The tree fell. From the distance, you hear the scream of Markus: *\"DU MÖRDER! BÄUME SIND AUCH MENSCHEN\"*.\nYou found:{items.PrintContent()}");
         }
-        Send(message, socketmsg, commandMessage);
+        
     }
 }

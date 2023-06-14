@@ -3,7 +3,7 @@ using Discord.WebSocket;
 namespace PfannenkuchenBot.Commands;
 partial class Command
 {
-    public void Daily(SocketMessage socketmsg, string[] commandMessage)
+    public void Daily()
     {
         if (!playerdata.Timestamps.ContainsKey("lastDaily")) playerdata.Timestamps.Add("lastDaily", DateTime.Today - TimeSpan.FromDays(1));
         if (playerdata.Timestamps["lastDaily"].Date == DateTime.Today.Date)
@@ -17,6 +17,6 @@ partial class Command
         message.Append($"Added 1000{Config.currency} to your balance, which now contains {playerdata.Balance}{Config.currency}");
         }
         playerdata.Timestamps["lastDaily"] = DateTime.Today;
-        Send(message, socketmsg, commandMessage);
+        
     }
 }
