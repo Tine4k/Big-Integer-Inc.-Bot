@@ -1,9 +1,9 @@
 {
     "Name": "Diamond",
-    "Id": "daimond",
+    "Id": "diamond",
     "Description": "The rarest of them all.",
     "Rarity": 5,
-    "BuyPrice": 100, "SellPrice": 0,
+    "BuyPrice": 0, "SellPrice": 200,
     "Creator": "Nussi_gg",
     "Tags": []
 }

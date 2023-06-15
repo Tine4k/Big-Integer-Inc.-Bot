@@ -13,14 +13,14 @@ partial class Command
     public void Buy()
     {
         Item item;
-        if (commandMessage.Length < 2 || !Item.Get(commandMessage[1], out item)) message.Append("Wasn't able to find the item you want.");
+        if (currentCommandMessage.Length < 2 || !Item.Get(currentCommandMessage[1], out item)) message.Append("Wasn't able to find the item you want.");
         else if (item.BuyPrice == 0) message.Append($"That item ain't up for sale. To see all items you can buy, try {Config.prefix}shop");
-        else if (commandMessage.Length == 2 && playerdata.TryLose(item.BuyPrice))
+        else if (currentCommandMessage.Length == 2 && playerdata.TryLose(item.BuyPrice))
         {
             playerdata.Gain(item);
             message.Append($"You've bought 1x {item} for {item.BuyPrice}{Config.currency}.");
         }
-        else if (commandMessage.Length == 3 || !uint.TryParse(commandMessage[2], out uint amount) || amount == 0)
+        else if (currentCommandMessage.Length == 3 || !uint.TryParse(currentCommandMessage[2], out uint amount) || amount == 0)
         {
             message.Append("Bro you can't buy this amount of items. That's not a valid number.");
         }
@@ -36,14 +36,14 @@ partial class Command
     public void Sell()
     {
         Item item;
-        if (commandMessage.Length < 2 || !Item.Get(commandMessage[1], out item)) message.Append("Wasn't able to find the item you wanted to sell.");
+        if (currentCommandMessage.Length < 2 || !Item.Get(currentCommandMessage[1], out item)) message.Append("Wasn't able to find the item you wanted to sell.");
         else if (item.SellPrice == 0) message.Append("This item can not be sold.");
-        else if (commandMessage.Length == 2 && playerdata.TryLose(item.Name))
+        else if (currentCommandMessage.Length == 2 && playerdata.TryLose(item.Name))
         {
             playerdata.Gain(item.SellPrice);
             message.Append($"You've sold 1x {item} for {item.SellPrice}{Config.currency}.");
         }
-        else if (commandMessage.Length == 3 || !uint.TryParse(commandMessage[2], out uint amount) || amount == 0)
+        else if (currentCommandMessage.Length == 3 || !uint.TryParse(currentCommandMessage[2], out uint amount) || amount == 0)
         {
             message.Append("Bro that ain't a valid number.");
         }
@@ -58,7 +58,7 @@ partial class Command
     
     public void Shop()
     {
-        foreach(Item item in GameElement.ItemLoader.loadedInstances.Values)
+        foreach(Item item in GameElementLoader<Item>.loadedInstances.Values)
         {
             if(item.BuyPrice != 0 && !(item.Tags.Contains("Illegal")))
             {
@@ -71,7 +71,7 @@ partial class Command
     public void BlackMarket()
     {
         message.Append("**Welcome to the Black Market!\n**");
-        foreach(Item item in GameElement.ItemLoader.loadedInstances.Values)
+        foreach(Item item in GameElementLoader<Item>.loadedInstances.Values)
         {
             if(item.BuyPrice != 0 && item.Tags.Contains("Illegal"))
             {

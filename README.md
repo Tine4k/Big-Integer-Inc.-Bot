@@ -11,8 +11,10 @@
 - Weekly & Monthly
 
 # Markus TODO List
-- Timer system
+- Timer Attribute
 - Weight
+- Tool class
+- Loottable class
 <!-- - Discord aus Commands removen -->
 - Battler
 - Abilities

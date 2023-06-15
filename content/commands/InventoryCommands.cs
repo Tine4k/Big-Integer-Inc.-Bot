@@ -6,14 +6,14 @@ partial class Command
 {
     public void Inventory()
     {
-        message.Append($"**Inventory of {socketMessage.Author.Username}:**");
+        message.Append($"**Inventory of {currentScketMessage.Author.Username}:**");
         message.Append(playerdata.PrintInventory());
         
     }
 
     public void Craft()
     {
-        if (commandMessage.Length == 2 && Recipe.GetRecipe(commandMessage[1], out Recipe recipe) && Recipe.Craft(recipe, playerdata.Inventory))
+        if (currentCommandMessage.Length == 2 && Recipe.GetRecipe(currentCommandMessage[1], out Recipe recipe) && Recipe.Craft(recipe, playerdata.Inventory))
         {
             message.Append($"You successfully crafted {recipe.Output.PrintContent()}");
         }

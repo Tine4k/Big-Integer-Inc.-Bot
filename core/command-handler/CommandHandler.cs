@@ -26,16 +26,15 @@ public static class CommandHandler
     static void EvaluateCommand(string[] commandMessage, SocketUserMessage socketMesssage)
     {
         foreach (MethodBase methodBase in loadedCommands) 
-            if (MakeMessageProcessable(commandMessage[0]) == methodBase.Name.ToLower())
+            if (Format.StripMarkDown(commandMessage[0]).ToLower() == methodBase.Name.ToLower())
             {
-                Command command = Command.GetCommand(socketMesssage.Author.Id.ToString());
-                command.commandMessage = commandMessage;
-                command.socketMessage = socketMesssage;
+                Command command = Command.GetCommand(socketMesssage.Author.Username);
+                command.currentCommandMessage = commandMessage;
+                command.currentScketMessage = socketMesssage;
                 methodBase.Invoke(command, null);
                 command.Send();
                 return;
             }
         Command.Unknown(socketMesssage.Channel);
     }
-    public static string MakeMessageProcessable(string msg) => Format.StripMarkDown(msg).ToLower();
 }

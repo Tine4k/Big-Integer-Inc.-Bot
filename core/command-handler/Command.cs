@@ -5,18 +5,17 @@ using Discord;
 
 partial class Command
 {
-    public Command(string userId)
+    public Command(string username)
     {
-        this.message = new StringBuilder();
-        this.playerdata = Playerdata.GetPlayerdata(userId);
+        this.playerdata = Playerdata.GetPlayerdata(username);
         this.lastReferenced = DateTime.Now;
-        this.socketMessage = null!;
-        this.commandMessage = null!;
+        this.currentScketMessage = null!;
+        this.currentCommandMessage = null!;
         this.Load();
     }
-    public static Command GetCommand(string userId)
+    public static Command GetCommand(string username)
     {
-        if (!loadedCommands.TryGetValue(userId, out Command? command)) return new Command(userId);
+        if (!loadedCommands.TryGetValue(username, out Command? command)) return new Command(username);
         if (command is null) throw new NullReferenceException("Something went wrong");
         command.lastReferenced = DateTime.Now;
         return command;
@@ -26,8 +25,8 @@ partial class Command
     channel.SendMessageAsync(Format.BlockQuote($"Unknown Command, please use {Config.prefix}help for a list of available commands!"));
     public virtual void Send()
     {
-        socketMessage.Channel.SendMessageAsync(message.ToString());
-        message.Insert(0, $"{socketMessage.Author.Username} issued \'{String.Join(' ', commandMessage)}\'\n");
+        currentScketMessage.Channel.SendMessageAsync(message.ToString());
+        message.Insert(0, $"{currentScketMessage.Author.Username} issued \'{String.Join(' ', currentCommandMessage)}\'\n");
         if (Config.logAllCommands) Program.Log(message.ToString(), "Commands");
         this.lastReferenced = DateTime.Now;
         this.message.Clear();
@@ -41,21 +40,21 @@ partial class Command
 
     void Load()
     {
-        loadedCommands.Add(playerdata.userId, this);
+        loadedCommands.Add(playerdata.username, this);
     }
 
     void Unload()
     {
         playerdata.Save();
-        loadedCommands.Remove(this.playerdata.userId);
+        loadedCommands.Remove(this.playerdata.username);
     }
     
     // * Field declarations
-    public SocketUserMessage socketMessage;
-    public String[] commandMessage;
+    public SocketUserMessage currentScketMessage;
+    public String[] currentCommandMessage;
     protected readonly Playerdata playerdata;
     protected DateTime lastReferenced;
-    protected readonly StringBuilder message;
+    protected readonly StringBuilder message = new StringBuilder();
 
 
     private static class AutoUnloader

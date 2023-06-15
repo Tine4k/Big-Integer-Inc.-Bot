@@ -3,7 +3,7 @@
     "Id": "gunpowder",
     "Description": "Created in the depths of Adrian's garrage, used as an crafting ingredient and for art projects.",
     "Rarity": 3,
-    "BuyPrice": 0, "SellPrice" : 0, 
+    "BuyPrice": 0, "SellPrice" : 30, 
     "Creator": "DerBaumigsteBaum",
     "Tags": []
 }

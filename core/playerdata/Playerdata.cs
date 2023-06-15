@@ -4,9 +4,9 @@ namespace PfannenkuchenBot;
 class Playerdata
 {
     [JsonConstructor]
-    public Playerdata(string userId, Inventory inventory, Dictionary<Stat,int> stats, long balance, Dictionary<string, DateTime> timestamps)
+    public Playerdata(string username, Inventory inventory, Dictionary<Stat,int> stats, long balance, Dictionary<string, DateTime> timestamps)
     {
-        this.userId = userId;
+        this.username = username;
         this.Inventory = inventory ?? new Inventory();
         this.Stats = stats ?? new Dictionary<Stat, int>();
         this.Balance = balance;
@@ -14,31 +14,31 @@ class Playerdata
     }
     Playerdata(string _userId)
     {
-        this.userId = _userId;
+        this.username = _userId;
         this.Inventory = new Inventory();
         this.Stats = new Dictionary<Stat, int>();
         this.Timestamps = new Dictionary<string, DateTime>();
     }
-    public static Playerdata GetPlayerdata(string userId)
+    public static Playerdata GetPlayerdata(string username)
     {
-        if (File.Exists($"playerdata/{userId}.dat")) 
+        if (File.Exists($"playerdata/{username}.dat")) 
         {
-            Playerdata playerdata = DeserializePlayerdata(userId);
-            if (Config.logPlayerdataLoads) Program.Log($"Loaded Playerdata with id {userId}", "Playerdata");
+            Playerdata playerdata = DeserializePlayerdata(username);
+            if (Config.logPlayerdataLoads) Program.Log($"Loaded Playerdata with username {username}", "Playerdata");
             return playerdata;
         }
         else
         {
-            if (Config.logPlayerdataCreations) Program.Log($"Created new playerdata with id {userId}", "Playerdata");
-            return new Playerdata(userId);
+            if (Config.logPlayerdataCreations) Program.Log($"Created new playerdata with username {username}", "Playerdata");
+            return new Playerdata(username);
         }
 
-        Playerdata DeserializePlayerdata(string userId)
+        Playerdata DeserializePlayerdata(string username)
         {
-            string playerdataJson = File.ReadAllText($"playerdata/{userId}.dat");
-            if (String.IsNullOrWhiteSpace(playerdataJson)) throw new Exception($"Failed to deserialize playerdata with id {userId}");
+            string playerdataJson = File.ReadAllText($"playerdata/{username}.dat");
+            if (String.IsNullOrWhiteSpace(playerdataJson)) throw new Exception($"Failed to deserialize playerdata of {username}");
             Playerdata? playerdata = JsonSerializer.Deserialize<Playerdata>(playerdataJson);
-            if (playerdata is null) throw new Exception($"Failed to deserialize playerdata with id {userId}");
+            if (playerdata is null) throw new Exception($"Failed to deserialize playerdata of {username}");
             return playerdata;
         }
     }
@@ -108,8 +108,8 @@ class Playerdata
     
     public void Save()
     {
-        File.WriteAllText($"playerdata/{userId}.dat", JsonSerializer.Serialize(this));
-        if (Config.logPlayerdataUnloads) Program.Log($"Playerdata with id {userId} was saved to file \"playerdata/{userId}.dat\"", "Playerdata");
+        File.WriteAllText($"playerdata/{username}.dat", JsonSerializer.Serialize(this));
+        if (Config.logPlayerdataUnloads) Program.Log($"Playerdata with id {username} was saved to file \"playerdata/{username}.dat\"", "Playerdata");
     }
     
     
@@ -119,8 +119,8 @@ class Playerdata
     // * The order in which the members are displayed here results in the order of serialization (hence userId is the first entry in a .dat file)
     
     
-    public string UserId => userId;
-    public readonly string userId;
+    public string UserName => username;
+    public readonly string username;
     
     public Inventory Inventory
     {get; private set;}
