@@ -58,7 +58,7 @@ partial class Command
     
     public void Shop()
     {
-        foreach(Item item in GameElementLoader<Item>.loadedInstances.Values)
+        foreach (Item item in GameElementLoader.loadedInstances[typeof(Item)])
         {
             if(item.BuyPrice != 0 && !(item.Tags.Contains("Illegal")))
             {
@@ -71,7 +71,7 @@ partial class Command
     public void BlackMarket()
     {
         message.Append("**Welcome to the Black Market!\n**");
-        foreach(Item item in GameElementLoader<Item>.loadedInstances.Values)
+        foreach(Item item in GameElementLoader.loadedInstances[typeof(Item)])
         {
             if(item.BuyPrice != 0 && item.Tags.Contains("Illegal"))
             {

@@ -3,15 +3,13 @@ class Item : GameElement
 {
     public static bool Get(string id, out Item item)
     {
-        bool successful = GameElementLoader<Item>.Get(id, out item);
+        bool successful = GameElementLoader.Get<Item>(id, out item);
         return successful;
     }
     public override string Describe() => $"""
     **{Name}**
     Description: {Description}
-    Rarity: {Enum.GetName(typeof(Rarity), Rarity)}
-    {((BuyPrice == 0) ? String.Empty : $"Buy Price: {BuyPrice}")}
-    {((SellPrice == 0) ? String.Empty : $"Sell Price: {SellPrice}")}
+    Rarity: {Enum.GetName(typeof(Rarity), Rarity)}{((BuyPrice == 0) ? String.Empty : $"\nBuy Price: {BuyPrice}")}{((SellPrice == 0) ? String.Empty : $"\nSell Price: {SellPrice}")}
     """;
     
     public uint BuyPrice

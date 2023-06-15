@@ -1,41 +1,47 @@
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace PfannenkuchenBot;
-static class GameElementLoader<T> where T : GameElement, new()
+static class GameElementLoader
 {
     static GameElementLoader()
     {
-        loadedInstances = new Dictionary<string, T>();
-        directory = $@"content\{typeof(T).Name}";
-        LoadAll();
+        loadedInstances = new Dictionary<Type, List<GameElement>>();
     }
-    public static bool Get(string id, out T gameElement)
+    public static bool Get<T>(string id, out T returnElement) where T : GameElement, new()
     {
-        if (!loadedInstances.TryGetValue(id, out gameElement!)) return false;
-        if (gameElement is null) throw new KeyNotFoundException($"Invalid {nameof(GameElement)} detected at {id}");
-        return true;
+        List<GameElement> list = loadedInstances[typeof(T)]!;
+        foreach (GameElement gameElement in list) if (gameElement.Id == id)
+            {
+                returnElement = (T)gameElement;
+                return true;
+            }
+        returnElement = null!;
+        return false;
     }
-    public static void Reload()
+    public static void Reload<T>() where T : GameElement, new()
     {
-        Reset();
-        LoadAll();
+        Reset<T>();
+        LoadAll<T>();
     }
     static void Reset() => loadedInstances.Clear();
-    static void LoadAll()
+    static void Reset<T>() where T : GameElement, new() => loadedInstances[typeof(T)].Clear(); 
+    static void LoadAll<T>() where T : GameElement, new()
     {
-        foreach (string path in Directory.GetFiles(directory, "*json", SearchOption.AllDirectories)) Load(path);
+        foreach (string path in Directory.GetFiles($@"content\{typeof(T).Name}", "*json", SearchOption.AllDirectories)) Load<T>(path);
     }
-    static void Load(string path)
+    static void Load<T>(string path) where T : GameElement, new()
     {
-        T? item = JsonSerializer.Deserialize<T>(File.ReadAllText(path), jsonSerializerOptions);
-        if (item == null) throw new JsonException($"Tried to load invalid {nameof(PfannenkuchenBot.Item)} from file {path}");
-        loadedInstances.Add(item.Id, item);
+        T? gameElement = JsonSerializer.Deserialize<T>(File.ReadAllText(path), new JsonSerializerOptions() { Converters = { new GameElementConverter<T>() } });
+        if (gameElement == null) throw new JsonException($"Tried to load invalid {nameof(PfannenkuchenBot.Item)} from file {path}");
+        if (!loadedInstances.TryGetValue(typeof(T), out List<GameElement>? list)) loadedInstances.Add(typeof(T), new List<GameElement>(){gameElement});
+        else list.Add(gameElement);
     }
-    public static readonly Dictionary<string, T> loadedInstances;
-    static readonly JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions() { Converters = { new GameElementConverter<T>() } };
-    static readonly string directory;
+    public static readonly Dictionary<Type, List<GameElement>> loadedInstances;
+
+
 
     public class GameElementConverter<T2> : JsonConverter<T2> where T2 : GameElement, new()
     {
