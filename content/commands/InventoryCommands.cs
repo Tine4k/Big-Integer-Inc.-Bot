@@ -1,4 +1,3 @@
-using Discord.WebSocket;
 using Pfannenkuchenbot.Item;
 
 namespace PfannenkuchenBot.Commands;
@@ -6,8 +5,8 @@ partial class Command
 {
     public void Inventory()
     {
-        message.Append($"**Inventory of {currentScketMessage.Author.Username}:**");
-        message.Append(playerdata.PrintInventory());
+        message.Append((playerdata.Inventory.Count > 0) ? $"**Inventory of {currentScketMessage.Author.Username}:**" : "It appears as if you inventory was empty...");
+        message.Append(playerdata.PrintContent());
         
     }
 

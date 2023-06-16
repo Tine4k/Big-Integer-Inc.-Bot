@@ -153,6 +153,7 @@ class Inventory
 
     // * Do not change, not relevant for game design
     public IEnumerator<KeyValuePair<Item, ulong>> GetEnumerator() => content.GetEnumerator();
+    public int Count => content.Count;
     Dictionary<Item, ulong>.KeyCollection Keys => content.Keys;
     Dictionary<Item, ulong>.ValueCollection Values => content.Values;
 

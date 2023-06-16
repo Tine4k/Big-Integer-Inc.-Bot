@@ -104,7 +104,7 @@ class Playerdata
         Stats = new Dictionary<Stat, int>();
     }
 
-    public string PrintInventory() => Inventory.PrintContent();
+    public string PrintContent() => Inventory.PrintContent();
     
     public void Save()
     {
