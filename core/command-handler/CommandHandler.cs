@@ -13,7 +13,7 @@ public static class CommandHandler
     public static Task HandleCommand(SocketMessage _socketMessage)
     {
         var socketMessage = _socketMessage as SocketUserMessage;
-        if (socketMessage == null) return Task.CompletedTask;
+        if (socketMessage is null) return Task.CompletedTask;
         if (!(
         socketMessage.Content.StartsWith(Config.prefix)) ||
         socketMessage.Author.IsBot ||
@@ -26,7 +26,7 @@ public static class CommandHandler
     static void EvaluateCommand(string[] commandMessage, SocketUserMessage socketMesssage)
     {
         foreach (MethodBase methodBase in loadedCommands) 
-            if (Format.StripMarkDown(commandMessage[0]).ToLower() == methodBase.Name.ToLower())
+            if (methodBase.Name.Equals(Format.StripMarkDown(commandMessage[0]).ToString(), StringComparison.OrdinalIgnoreCase))
             {
                 Command command = Command.GetCommand(socketMesssage.Author.Username);
                 command.currentCommandMessage = commandMessage;

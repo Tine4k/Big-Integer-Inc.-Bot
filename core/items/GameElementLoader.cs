@@ -1,5 +1,4 @@
 using System.Reflection;
-using System.Reflection.Metadata;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -12,8 +11,12 @@ static class GameElementLoader
     }
     public static bool Get<T>(string id, out T returnElement) where T : GameElement, new()
     {
-        List<GameElement> list = loadedInstances[typeof(T)]!;
-        foreach (GameElement gameElement in list) if (gameElement.Id == id)
+        if (!loadedInstances.TryGetValue(typeof(T), out List<GameElement>? list))
+        {
+            Reload<T>();
+            list = loadedInstances[typeof(T)];
+        }
+        foreach (GameElement gameElement in list) if (gameElement.Id.Equals(id, StringComparison.OrdinalIgnoreCase))
             {
                 returnElement = (T)gameElement;
                 return true;
@@ -23,20 +26,20 @@ static class GameElementLoader
     }
     public static void Reload<T>() where T : GameElement, new()
     {
-        Reset<T>();
+        if (loadedInstances.ContainsKey(typeof(T))) Reset<T>();
         LoadAll<T>();
     }
     static void Reset() => loadedInstances.Clear();
-    static void Reset<T>() where T : GameElement, new() => loadedInstances[typeof(T)].Clear(); 
+    static void Reset<T>() where T : GameElement, new() => loadedInstances[typeof(T)].Clear();
     static void LoadAll<T>() where T : GameElement, new()
     {
-        foreach (string path in Directory.GetFiles($@"content\{typeof(T).Name}", "*json", SearchOption.AllDirectories)) Load<T>(path);
+        foreach (string path in Directory.GetFiles($@"content\{typeof(T).Name.ToLower()}", "*json", SearchOption.AllDirectories)) Load<T>(path);
     }
     static void Load<T>(string path) where T : GameElement, new()
     {
         T? gameElement = JsonSerializer.Deserialize<T>(File.ReadAllText(path), new JsonSerializerOptions() { Converters = { new GameElementConverter<T>() } });
-        if (gameElement == null) throw new JsonException($"Tried to load invalid {nameof(PfannenkuchenBot.Item)} from file {path}");
-        if (!loadedInstances.TryGetValue(typeof(T), out List<GameElement>? list)) loadedInstances.Add(typeof(T), new List<GameElement>(){gameElement});
+        if (gameElement is null) throw new JsonException($"Tried to load invalid {nameof(PfannenkuchenBot.Item)} from file {path}");
+        if (!loadedInstances.TryGetValue(typeof(T), out List<GameElement>? list)) loadedInstances.Add(typeof(T), new List<GameElement>() { gameElement });
         else list.Add(gameElement);
     }
     public static readonly Dictionary<Type, List<GameElement>> loadedInstances;
@@ -59,11 +62,11 @@ static class GameElementLoader
                 {
                     if (property.Name == propertyName)
                     {
-                        if (property.PropertyType == typeof(string)) property.SetValue(gameElement, reader.GetString());
+                        if (property.PropertyType == typeof(String)) property.SetValue(gameElement, reader.GetString());
                         else
                         {
                             object? value = JsonSerializer.Deserialize(ref reader, property.PropertyType, options);
-                            if (value == null && Nullable.GetUnderlyingType(property.PropertyType) == null)
+                            if (value is null && Nullable.GetUnderlyingType(property.PropertyType) is null)
                             {
                                 throw new InvalidOperationException($"Cannot convert null value to non-nullable type {property.PropertyType.Name}.");
                             }

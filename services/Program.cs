@@ -16,8 +16,6 @@ static class Program
                 Console.WriteLine("Test running...");
 
                 Log(JsonSerializer.Serialize(new String[]{"Illegal", "Unstackable"}), "Startup");
-                // var pd = Playerdata.GetPlayerdata("500953493918449674");
-                // pd.Gain("Gunpowder", 10);
             }
         }
         else 
