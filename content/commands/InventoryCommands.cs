@@ -5,7 +5,7 @@ partial class Command
 {
     public void Inventory()
     {
-        message.Append((player.Inventory.Count > 0) ? $"**Inventory of {currentScketMessage.Author.Username}:**" : "It appears as if you inventory was empty...");
+        message.Append((player.Inventory.Count > 0) ? $"**Inventory of {currentSocketMessage.Author.Username}:**" : "It appears as if you inventory was empty...");
         message.Append(player.PrintContent());
         
     }

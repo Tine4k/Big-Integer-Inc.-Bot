@@ -9,7 +9,7 @@ partial class Command
     {
         this.player = Playerdata.GetPlayerdata(username);
         this.lastReferenced = DateTime.Now;
-        this.currentScketMessage = null!;
+        this.currentSocketMessage = null!;
         this.currentCommandMessage = null!;
         this.Load();
     }
@@ -25,8 +25,8 @@ partial class Command
     channel.SendMessageAsync(Format.BlockQuote($"Unknown Command, please use {Config.prefix}help for a list of available commands!"));
     public virtual void Send()
     {
-        currentScketMessage.Channel.SendMessageAsync(message.ToString());
-        message.Insert(0, $"{currentScketMessage.Author.Username} issued \'{String.Join(' ', currentCommandMessage)}\'\n");
+        currentSocketMessage.Channel.SendMessageAsync(message.ToString());
+        message.Insert(0, $"{currentSocketMessage.Author.Username} issued \'{String.Join(' ', currentCommandMessage)}\'\n");
         if (Config.logAllCommands) Program.Log(message.ToString(), "Commands");
         this.lastReferenced = DateTime.Now;
         this.message.Clear();
@@ -50,7 +50,7 @@ partial class Command
     }
     
     // * Field declarations
-    public SocketUserMessage currentScketMessage;
+    public SocketUserMessage currentSocketMessage;
     public String[] currentCommandMessage;
     protected readonly Playerdata player;
     protected DateTime lastReferenced;

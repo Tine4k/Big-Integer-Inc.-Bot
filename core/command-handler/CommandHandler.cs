@@ -9,7 +9,9 @@ public static class CommandHandler
     {
         loadedCommands = LoadCommands();
     }
-    static MethodInfo[] LoadCommands() => typeof(Command).GetMethods(BindingFlags.DeclaredOnly|BindingFlags.Public|BindingFlags.Instance); 
+    static MethodInfo[] LoadCommands() => typeof(Command).GetMethods(BindingFlags.DeclaredOnly|BindingFlags.Public|BindingFlags.Instance)
+                                                        .Where(method => !method.IsVirtual)
+                                                        .ToArray(); 
     public static Task HandleCommand(SocketMessage _socketMessage)
     {
         var socketMessage = _socketMessage as SocketUserMessage;
@@ -30,10 +32,8 @@ public static class CommandHandler
             {
                 Command command = Command.GetCommand(socketMesssage.Author.Username);
                 command.currentCommandMessage = commandMessage;
-                command.currentScketMessage = socketMesssage;
+                command.currentSocketMessage = socketMesssage;
                 methodBase.Invoke(command, null);
-                command.Send();
-                return;
             }
         Command.Unknown(socketMesssage.Channel);
     }
