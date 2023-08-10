@@ -7,7 +7,7 @@ partial class Command
 {
     public Command(string username)
     {
-        this.playerdata = Playerdata.GetPlayerdata(username);
+        this.player = Playerdata.GetPlayerdata(username);
         this.lastReferenced = DateTime.Now;
         this.currentScketMessage = null!;
         this.currentCommandMessage = null!;
@@ -40,19 +40,19 @@ partial class Command
 
     void Load()
     {
-        loadedCommands.Add(playerdata.username, this);
+        loadedCommands.Add(player.username, this);
     }
 
     void Unload()
     {
-        playerdata.Save();
-        loadedCommands.Remove(this.playerdata.username);
+        player.Save();
+        loadedCommands.Remove(this.player.username);
     }
     
     // * Field declarations
     public SocketUserMessage currentScketMessage;
     public String[] currentCommandMessage;
-    protected readonly Playerdata playerdata;
+    protected readonly Playerdata player;
     protected DateTime lastReferenced;
     protected readonly StringBuilder message = new StringBuilder();
 

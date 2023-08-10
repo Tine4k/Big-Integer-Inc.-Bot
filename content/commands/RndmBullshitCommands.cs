@@ -7,7 +7,7 @@ partial class Command
 {
     public void Mane()
     {
-        playerdata.Gain("jone", (uint)Random.Shared.Next(0,1));
+        player.Gain("jone", (uint)Random.Shared.Next(0,1));
         message.Append("@Klagenfurt Busbahnhof");
         
     }

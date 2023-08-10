@@ -7,14 +7,14 @@ partial class Command
         {
             try
             {
-                playerdata.Gain(currentCommandMessage[1]);
+                player.Gain(currentCommandMessage[1]);
                 message.Append($"Gave you {currentCommandMessage[1]}.");
             }
             catch
             {
                 if (uint.TryParse(currentCommandMessage[1], out uint amount)) 
                 {
-                    playerdata.Gain(amount);
+                    player.Gain(amount);
                    message.Append($"Gave you {currentCommandMessage[1]}.");
                 }
                 else message.Append("Invalid arguments.");
@@ -25,7 +25,7 @@ partial class Command
             uint.TryParse(currentCommandMessage[2], out uint amount)
             )
         {
-            playerdata.Gain(currentCommandMessage[1], amount);
+            player.Gain(currentCommandMessage[1], amount);
             message.Append($"Gave you {amount}x {currentCommandMessage[1]}");
         }
         else message.Append("Wasn't able to give you this item.");

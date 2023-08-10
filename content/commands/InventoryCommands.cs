@@ -5,14 +5,14 @@ partial class Command
 {
     public void Inventory()
     {
-        message.Append((playerdata.Inventory.Count > 0) ? $"**Inventory of {currentScketMessage.Author.Username}:**" : "It appears as if you inventory was empty...");
-        message.Append(playerdata.PrintContent());
+        message.Append((player.Inventory.Count > 0) ? $"**Inventory of {currentScketMessage.Author.Username}:**" : "It appears as if you inventory was empty...");
+        message.Append(player.PrintContent());
         
     }
 
     public void Craft()
     {
-        if (currentCommandMessage.Length == 2 && Recipe.GetRecipe(currentCommandMessage[1], out Recipe recipe) && Recipe.Craft(recipe, playerdata.Inventory))
+        if (currentCommandMessage.Length == 2 && Recipe.GetRecipe(currentCommandMessage[1], out Recipe recipe) && Recipe.Craft(recipe, player.Inventory))
         {
             message.Append($"You successfully crafted {recipe.Output.PrintContent()}");
         }
