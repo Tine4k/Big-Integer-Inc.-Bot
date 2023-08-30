@@ -62,7 +62,7 @@ static class GameElementLoader
                 {
                     if (property.Name == propertyName)
                     {
-                        if (property.PropertyType == typeof(String)) property.SetValue(gameElement, reader.GetString());
+                        if (property.PropertyType == typeof(string)) property.SetValue(gameElement, reader.GetString());
                         else
                         {
                             object? value = JsonSerializer.Deserialize(ref reader, property.PropertyType, options);

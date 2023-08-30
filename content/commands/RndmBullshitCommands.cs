@@ -5,6 +5,7 @@ using Pfannenkuchenbot.Item;
 namespace PfannenkuchenBot.Commands;
 partial class Command
 {
+    [Command(new Type[]{typeof(string)}, CommandCategory.Random)]
     public void Mane()
     {
         player.Gain("jone", (uint)Random.Shared.Next(0,1));

@@ -26,7 +26,7 @@ partial class Command
     public virtual void Send()
     {
         currentSocketMessage.Channel.SendMessageAsync(message.ToString());
-        message.Insert(0, $"{currentSocketMessage.Author.Username} issued \'{String.Join(' ', currentCommandMessage)}\'\n");
+        message.Insert(0, $"{currentSocketMessage.Author.Username} issued \'{string.Join(' ', currentCommandMessage)}\'\n");
         if (Config.logAllCommands) Program.Log(message.ToString(), "Commands");
         this.lastReferenced = DateTime.Now;
         this.message.Clear();
@@ -51,10 +51,10 @@ partial class Command
     
     // * Field declarations
     public SocketUserMessage currentSocketMessage;
-    public String[] currentCommandMessage;
+    public string[] currentCommandMessage;
     protected readonly Playerdata player;
     protected DateTime lastReferenced;
-    protected readonly StringBuilder message = new StringBuilder();
+    protected readonly StringBuilder message = new();
 
 
     private static class AutoUnloader

@@ -15,7 +15,7 @@ static class Config
     static void ApplyConfig(FieldInfo field)
     {
         string? configValue = GetConfigValue(field.Name);
-        if (String.IsNullOrWhiteSpace(configValue)) return;
+        if (string.IsNullOrWhiteSpace(configValue)) return;
         if (field.FieldType == typeof(string)) field.SetValue(null, configValue);
         else
         {
@@ -33,7 +33,7 @@ static class Config
     static string GetConfigValue(string fieldName)
     {
         if (File.Exists("config/"+fieldName)) return File.ReadAllText("config/"+fieldName);
-        else return String.Empty;
+        else return string.Empty;
     }
 
     public static string prefix = "*";

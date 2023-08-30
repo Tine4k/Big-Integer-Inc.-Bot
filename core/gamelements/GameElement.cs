@@ -25,7 +25,7 @@ abstract partial class GameElement
     public string Creator
     { get; protected set; }
 
-    public String[] Tags
+    public string[] Tags
     { get; protected set; }
     
     public override string ToString() => Id;

@@ -9,7 +9,7 @@ class Item : GameElement
     public override string Describe() => $"""
     **{Name}**
     Description: {Description}
-    Rarity: {Enum.GetName(typeof(Rarity), Rarity)}{((BuyPrice == 0) ? String.Empty : $"\nBuy Price: {BuyPrice}")}{((SellPrice == 0) ? String.Empty : $"\nSell Price: {SellPrice}")}
+    Rarity: {Enum.GetName(typeof(Rarity), Rarity)}{((BuyPrice == 0) ? string.Empty : $"\nBuy Price: {BuyPrice}")}{((SellPrice == 0) ? string.Empty : $"\nSell Price: {SellPrice}")}
     """;
     
     public uint BuyPrice

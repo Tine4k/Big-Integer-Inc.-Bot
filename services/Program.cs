@@ -15,7 +15,7 @@ static class Program
             {
                 Console.WriteLine("Test running...");
 
-                Log(JsonSerializer.Serialize(new String[]{"Illegal", "Unstackable"}), "Startup");
+                Log(JsonSerializer.Serialize(new string[]{"Illegal", "Unstackable"}), "Startup");
             }
         }
         else 
