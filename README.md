@@ -19,3 +19,7 @@
 - Battler
 - Abilities
 - Command Attributes für syntax
+
+# Immediate
+1. Change from MethodInfo based command lookup to CommandAttribute based
+2. Set the Syntax on the Command during LoadCommands()

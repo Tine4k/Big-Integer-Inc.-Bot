@@ -1,11 +1,7 @@
-using Discord;
-using Discord.WebSocket;
-using Pfannenkuchenbot.Item;
-
 namespace PfannenkuchenBot.Commands;
 partial class Command
 {
-    [Command(new Type[]{typeof(string)}, CommandCategory.Random)]
+    [Command(CommandCategory.Random)]
     public void Mane()
     {
         player.Gain("jone", (uint)Random.Shared.Next(0,1));
@@ -21,6 +17,5 @@ partial class Command
         Kontaktieren Sie die Jone GmbH gerne unter: 
         __**+43 067689807553**__
         """);
-        
     }
 }

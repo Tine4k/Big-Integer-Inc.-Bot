@@ -10,11 +10,18 @@ public static class CommandHandler
     {
         
         syntaxParameterTypes = Assembly.GetExecutingAssembly().GetTypes()
-            .Where(type => typeof(GameElement).IsAssignableFrom(type) && type != typeof(GameElement)).ToArray().
+            .Where(type => typeof(GameElement).IsAssignableFrom(type) && type != typeof(GameElement)).
             Concat(new Type[]{typeof(long), typeof(string)}).ToArray();
         loadedCommands = LoadCommands();
     }
-    static MethodInfo[] LoadCommands() => typeof(Command).GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+    static MethodInfo[] LoadCommands()
+    {
+        MethodInfo[] loadedCommands = Assembly.GetExecutingAssembly().GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+        foreach (MethodInfo methodInfo in loadedCommands) 
+        foreach (ParameterInfo parameterInfo in methodInfo.GetParameters()) 
+        if (!syntaxParameterTypes.Contains(parameterInfo.ParameterType)) throw new InvalidSyntaxException();
+        return loadedCommands;
+    }
     public static Task HandleCommand(SocketMessage _socketMessage)
     {
         var socketMessage = _socketMessage as SocketUserMessage;
