@@ -10,9 +10,9 @@ partial class Command
         
     }
 
-    public void Buy()
+    [Command(CommandCategory.Economy)]
+    public void Buy(Item item, uint amount)
     {
-        Item item;
         if (currentCommandMessage.Length < 2 || !Item.Get(currentCommandMessage[1], out item)) message.Append("Wasn't able to find the item you want.");
         else if (item.BuyPrice == 0) message.Append($"That item ain't up for sale. To see all items you can buy, try {Config.prefix}shop");
         else if (currentCommandMessage.Length == 2 && player.TryLose(item.BuyPrice))
@@ -20,7 +20,7 @@ partial class Command
             player.Gain(item);
             message.Append($"You've bought 1x {item} for {item.BuyPrice}{Config.currency}.");
         }
-        else if (currentCommandMessage.Length == 3 || !uint.TryParse(currentCommandMessage[2], out uint amount) || amount == 0)
+        else if (currentCommandMessage.Length == 3 || !uint.TryParse(currentCommandMessage[2], out amount) || amount == 0)
         {
             message.Append("Bro you can't buy this amount of items. That's not a valid number.");
         }

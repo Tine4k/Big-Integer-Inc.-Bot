@@ -46,7 +46,7 @@ static class Program
     }
     public static Task Log(string message, string source = "Unspecified", LogSeverity severity = LogSeverity.Info)
     {
-        LogMessage logMessage = new LogMessage(severity,source,message.Replace('\n', ' '));
+        LogMessage logMessage = new(severity,source,message.Replace('\n', ' '));
         return Log(logMessage);
     }
 }

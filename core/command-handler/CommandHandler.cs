@@ -8,19 +8,28 @@ public static class CommandHandler
     public static MethodBase[] loadedCommands;
     static CommandHandler()
     {
-        
         syntaxParameterTypes = Assembly.GetExecutingAssembly().GetTypes()
             .Where(type => typeof(GameElement).IsAssignableFrom(type) && type != typeof(GameElement)).
-            Concat(new Type[]{typeof(long), typeof(string)}).ToArray();
+            Concat(new Type[] { typeof(long), typeof(string) }).ToArray();
         loadedCommands = LoadCommands();
     }
     static MethodInfo[] LoadCommands()
     {
-        MethodInfo[] loadedCommands = Assembly.GetExecutingAssembly().GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
-        foreach (MethodInfo methodInfo in loadedCommands) 
-        foreach (ParameterInfo parameterInfo in methodInfo.GetParameters()) 
-        if (!syntaxParameterTypes.Contains(parameterInfo.ParameterType)) throw new InvalidSyntaxException();
-        return loadedCommands;
+        List<MethodInfo> loadedCommands = new(); 
+        MethodInfo[] CommandMethods = typeof(Command).GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+        foreach (MethodInfo methodInfo in CommandMethods)
+        {
+            if (Attribute.IsDefined(methodInfo, typeof(CommandAttribute)))
+            {
+                loadedCommands.Add(methodInfo);
+                CommandAttribute cmd = (CommandAttribute)methodInfo.GetCustomAttribute(typeof(Command))!;
+                cmd.TargetedMethod = methodInfo;
+                cmd.Syntax = methodInfo.GetParameters();
+                foreach (ParameterInfo parameterInfo in methodInfo.GetParameters())
+                    if (!syntaxParameterTypes.Contains(parameterInfo.ParameterType)) throw new InvalidSyntaxException(methodInfo.Name);
+            }
+        }
+        return loadedCommands.ToArray();
     }
     public static Task HandleCommand(SocketMessage _socketMessage)
     {
@@ -41,9 +50,18 @@ public static class CommandHandler
             if (methodBase.Name.Equals(Format.StripMarkDown(commandMessage[0]).ToString(), StringComparison.OrdinalIgnoreCase))
             {
                 Command command = Command.GetCommand(socketMesssage.Author.Username);
+                CommandAttribute commandAttribute = (CommandAttribute)methodBase.GetCustomAttribute(typeof(CommandAttribute))!;
                 command.currentCommandMessage = commandMessage;
                 command.currentSocketMessage = socketMesssage;
-                methodBase.Invoke(command, null);
+
+                object[] parameters;
+
+                for (int i = 1; i < commandAttribute.Syntax.Length; ++i)
+                {
+                    // TODO Parsing
+                }
+
+                methodBase.Invoke(command, parameters);
                 command.Send();
                 return;
             }

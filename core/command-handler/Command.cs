@@ -23,11 +23,11 @@ partial class Command
     public static Dictionary<string, Command> loadedCommands;
     public static void Unknown(ISocketMessageChannel channel) => 
     channel.SendMessageAsync(Format.BlockQuote($"Unknown Command, please use {Config.prefix}help for a list of available commands!"));
-    public virtual void Send()
+    public virtual async void Send()
     {
-        currentSocketMessage.Channel.SendMessageAsync(message.ToString());
+        await currentSocketMessage.Channel.SendMessageAsync(message.ToString());
         message.Insert(0, $"{currentSocketMessage.Author.Username} issued \'{string.Join(' ', currentCommandMessage)}\'\n");
-        if (Config.logAllCommands) Program.Log(message.ToString(), "Commands");
+        if (Config.logAllCommands) await Program.Log(message.ToString(), "Commands");
         this.lastReferenced = DateTime.Now;
         this.message.Clear();
     }
