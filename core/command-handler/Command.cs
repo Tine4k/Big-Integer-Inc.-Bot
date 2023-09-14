@@ -52,9 +52,10 @@ partial class Command
     // * Field declarations
     public SocketUserMessage currentSocketMessage;
     public string[] currentCommandMessage;
-    protected readonly Playerdata player;
+    public bool success = true;
+    public readonly StringBuilder message = new();
+    public readonly Playerdata player;
     protected DateTime lastReferenced;
-    protected readonly StringBuilder message = new();
 
 
     private static class AutoUnloader

@@ -1,7 +1,7 @@
 namespace PfannenkuchenBot.Commands;
 partial class Command
 {
-    [Command(CommandCategory.Random)]
+    [Command(CommandCategory.Random, Cooldown = 10)]
     public void Mane(string Location)
     {
         switch (Location)
@@ -9,13 +9,19 @@ partial class Command
             case "Völkermarkt" or "Voelkermarkt":
                 {
                     player.Gain("jone", (uint)Random.Shared.Next(0, 1));
-                    message.Append("@Völkermarkt Sumsipark");
+                    message.Append("**@Völkermarkt Sumsipark**");
+                    break;
+                }
+            case "Heiliger" or "Heiligengeistplatz":
+                {
+                    player.Gain("jone", (uint)Random.Shared.Next(0, 1));
+                    message.Append("**@Am Heiligen um dreie in da fruah**");
                     break;
                 }
             default:
                 {
                     player.Gain("jone", (uint)Random.Shared.Next(0, 1));
-                    message.Append("@Klagenfurt Busbahnhof");
+                    message.Append("**@Klagenfurt Busbahnhof**");
                     break;
                 }
         }

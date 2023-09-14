@@ -3,23 +3,28 @@
 - Mehr adventure commands
 - Mehr Crafting Rezepte
 - Drugs
+- Random locations für Mane command, am besten eine suspekte Location und irgendeine droge dazu
 
 # Public TODO List Systen
+<!-- - Commands splitten -->
 - BuyPrices & SellPrices balancen
 - Wahrscheinlichkeitssystem
-<!-- - Commands splitten -->
 - Weekly & Monthly
+- Give every command an attribute
 
 # Markus TODO List
-- Timer Attribute
+<!-- - Timer Attribute -->
+<!-- - Command Attributes für syntax -->
+- Discord aus Commands removen
 - Weight
 - Tool class
 - Loottable class
-<!-- - Discord aus Commands removen -->
 - Battler
 - Abilities
-- Command Attributes für syntax
+- Playerdata Get methods standardizen
+- Überlegungen bezüglich Timestamps für command cooldowns wegen overloads (welcher syntax ist gut dafür)
+- snippets fixen
+- 
 
-# Immediate
-1. Change from MethodInfo based command lookup to CommandAttribute based
-2. Set the Syntax on the Command during LoadCommands()
+# Adding new GameElements
+- Add them to the switch statement of CommandHandler.EvaluateCommand()

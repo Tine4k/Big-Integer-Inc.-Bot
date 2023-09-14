@@ -3,7 +3,7 @@ class Item : GameElement
 {
     public static bool Get(string id, out Item item)
     {
-        bool successful = GameElementLoader.Get<Item>(id, out item);
+        bool successful = GameElementLoader.TryGet(id, out item);
         return successful;
     }
     public override string Describe() => $"""

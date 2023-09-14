@@ -2,34 +2,39 @@ namespace PfannenkuchenBot.Commands;
 using Discord;
 using Discord.WebSocket;
 using System.Reflection;
+
 public static class CommandHandler
 {
-    public static readonly Type[] syntaxParameterTypes;
-    public static MethodBase[] loadedCommands;
+    static readonly Type[] syntaxParameterTypes;
+    public static Dictionary<MethodBase, ParameterInfo[]> loadedCommands;
     static CommandHandler()
     {
-        syntaxParameterTypes = Assembly.GetExecutingAssembly().GetTypes()
-            .Where(type => typeof(GameElement).IsAssignableFrom(type) && type != typeof(GameElement)).
-            Concat(new Type[] { typeof(long), typeof(string) }).ToArray();
+        Type[] gameElementAssignableTypes = Assembly.GetExecutingAssembly().GetTypes()
+            .Where(type => typeof(GameElement).IsAssignableFrom(type) && type != typeof(GameElement)).ToArray();
+        syntaxParameterTypes = gameElementAssignableTypes.Concat(
+            new Type[] {
+                typeof(ulong),
+                typeof(string),
+                typeof(bool),
+                typeof(Playerdata)
+                }).ToArray();
         loadedCommands = LoadCommands();
     }
-    static MethodInfo[] LoadCommands()
+    static Dictionary<MethodBase, ParameterInfo[]> LoadCommands()
     {
-        List<MethodInfo> loadedCommands = new(); 
-        MethodInfo[] CommandMethods = typeof(Command).GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
-        foreach (MethodInfo methodInfo in CommandMethods)
+        Dictionary<MethodBase, ParameterInfo[]> loadedCommands = new();
+        MethodInfo[] CommandClassMethods = typeof(Command).GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+        foreach (MethodInfo methodInfo in CommandClassMethods)
         {
             if (Attribute.IsDefined(methodInfo, typeof(CommandAttribute)))
             {
-                loadedCommands.Add(methodInfo);
-                CommandAttribute cmd = (CommandAttribute)methodInfo.GetCustomAttribute(typeof(Command))!;
-                cmd.TargetedMethod = methodInfo;
-                cmd.Syntax = methodInfo.GetParameters();
-                foreach (ParameterInfo parameterInfo in methodInfo.GetParameters())
+                ParameterInfo[] parameters = methodInfo.GetParameters();
+                foreach (ParameterInfo parameterInfo in parameters)
                     if (!syntaxParameterTypes.Contains(parameterInfo.ParameterType)) throw new InvalidSyntaxException(methodInfo.Name);
+                loadedCommands.Add(methodInfo, parameters);
             }
         }
-        return loadedCommands.ToArray();
+        return loadedCommands;
     }
     public static Task HandleCommand(SocketMessage _socketMessage)
     {
@@ -46,22 +51,76 @@ public static class CommandHandler
     }
     static void EvaluateCommand(string[] commandMessage, SocketUserMessage socketMesssage)
     {
-        foreach (MethodBase methodBase in loadedCommands)
-            if (methodBase.Name.Equals(Format.StripMarkDown(commandMessage[0]).ToString(), StringComparison.OrdinalIgnoreCase))
+        foreach (KeyValuePair<MethodBase, ParameterInfo[]> pair in loadedCommands)
+            if (pair.Key.Name.Equals(Format.StripMarkDown(commandMessage[0]).ToString(), StringComparison.OrdinalIgnoreCase))
             {
                 Command command = Command.GetCommand(socketMesssage.Author.Username);
-                CommandAttribute commandAttribute = (CommandAttribute)methodBase.GetCustomAttribute(typeof(CommandAttribute))!;
                 command.currentCommandMessage = commandMessage;
                 command.currentSocketMessage = socketMesssage;
 
-                object[] parameters;
+                object[] parameters = new object[pair.Value.Length];
 
-                for (int i = 1; i < commandAttribute.Syntax.Length; ++i)
+
+                //* This is relevant for parameters, so that the right overload of the method you're trying to invoke can be selected
+                //* Also, parsing happens here
+                for (int i = 0; i < pair.Value.Length; ++i)
                 {
-                    // TODO Parsing
+                    if (commandMessage.Length < i + 2) continue;
+                    if (pair.Value[i].ParameterType.Equals(typeof(string)))
+                    {
+                        parameters[i] = commandMessage[i + 1];
+                    }
+                    else if (pair.Value[i].ParameterType.Equals(typeof(bool)))
+                    {
+                        if (bool.TryParse(commandMessage[i + 1], out bool boolean)) parameters[i] = boolean;
+                    }
+                    else if (pair.Value[i].ParameterType.Equals(typeof(ulong)))
+                    {
+                        if (ulong.TryParse(commandMessage[i + 1], out ulong number)) parameters[i] = number;
+                    }
+                    else if (pair.Value[i].ParameterType.Equals(typeof(Item)))
+                    {
+                        if (GameElementLoader.TryGet(commandMessage[i + 1], out Item item)) parameters[i] = item;
+                    }
+                    else if (pair.Value[i].ParameterType.Equals(typeof(Playerdata)))
+                    {
+                        parameters[i] = Playerdata.GetPlayerdata(commandMessage[i + 1]); // ! temporary solution, playerdata fetching neads to be reviewed
+                    }
+                    else throw new Exception("What da heeeeel");
                 }
 
-                methodBase.Invoke(command, parameters);
+                //* Here it is assured that the cooldown is overa and that it is allowed for the command to be invoked by the user (planned)
+                CommandAttribute attribute = (CommandAttribute)pair.Key.GetCustomAttribute(typeof(CommandAttribute))!;
+                if (attribute.Cooldown > 0)
+                {
+                    string timestampName = "lastCalled" + pair.Key.Name;
+                    if (!command.player.Timestamps.ContainsKey(timestampName)) command.player.Timestamps.Add(timestampName, DateTime.Now);
+                    DateTime lastCalled = command.player.Timestamps[timestampName];
+                    TimeSpan cooldown = TimeSpan.FromSeconds(attribute.Cooldown);
+                    if (DateTime.Now - lastCalled <= cooldown)
+                    {
+                        TimeSpan nextAvailableCall = lastCalled + cooldown - DateTime.Now;
+                        command.message.Clear();
+                        command.message.Append($"You have to wait **{((nextAvailableCall.Hours < 0) ? (nextAvailableCall.Hours + "h ") : "")}{nextAvailableCall.Minutes}min and {nextAvailableCall.Seconds}s**");
+                        command.Send();
+                        return;
+                    }
+                }
+                try
+                {
+                    pair.Key.Invoke(command, parameters);
+                }
+                catch (ArgumentException)
+                {
+                    command.message.Clear();
+                    command.message.Append("Well, seems like your System.Reflection based command invocation was not as robust as you thought, Markus. <@500953493918449674>");
+                    command.Send();
+                    return;
+                }
+                if (command.success && attribute.Cooldown > 0)
+                {
+                    command.player.Timestamps["lastCalled" + pair.Key.Name] = DateTime.Now;
+                }
                 command.Send();
                 return;
             }

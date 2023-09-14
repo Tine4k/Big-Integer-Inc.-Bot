@@ -9,20 +9,23 @@ static class GameElementLoader
     {
         loadedInstances = new Dictionary<Type, List<GameElement>>();
     }
-    public static bool Get<T>(string id, out T returnElement) where T : GameElement, new()
+    public static bool TryGet<T>(string id, out T returnElement) where T : GameElement, new()
+    {
+        returnElement = Get<T>(id)!;
+        if (returnElement is null) return false;
+        return true;
+    }
+    public static T? Get<T>(string id) where T : GameElement, new()
     {
         if (!loadedInstances.TryGetValue(typeof(T), out List<GameElement>? list))
         {
             Reload<T>();
             list = loadedInstances[typeof(T)];
         }
-        foreach (GameElement gameElement in list) if (gameElement.Id.Equals(id, StringComparison.OrdinalIgnoreCase))
-            {
-                returnElement = (T)gameElement;
-                return true;
-            }
-        returnElement = null!;
-        return false;
+        foreach (GameElement gameElement in list) 
+            if (gameElement.Id.Equals(id, StringComparison.OrdinalIgnoreCase))
+                return (T)gameElement;
+        return null;
     }
     public static void Reload<T>() where T : GameElement, new()
     {

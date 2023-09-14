@@ -1,18 +1,21 @@
-using System.Reflection;
-using PfannenkuchenBot.Commands;
-
+namespace PfannenkuchenBot.Commands;
 [AttributeUsage(System.AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
 sealed class CommandAttribute : Attribute
 {
 
     public CommandAttribute(CommandCategory Category)
     {
-        this.Category = Category;
-        this.TargetedMethod = null!;
-        this.Syntax = null!;
+        this.Categories = new CommandCategory[] { Category };
     }
-    public CommandCategory Category { get; }
-    public TimeSpan Cooldown { get; set; }
-    public MethodInfo TargetedMethod { private get; set; }
-    public ParameterInfo[] Syntax { get; set; }
+    public CommandAttribute(CommandCategory[] Categories)
+    {
+        this.Categories = Categories;
+    }
+    public CommandCategory Category { get => Categories[0]; }
+    public CommandCategory[] Categories { get; }
+    /* The categories this command is relevant to, categories can be deactivated (planned),
+    so if you want to deactivate a category, and a command is within two catgories, 
+    it still stays active as long as the other category is active*/
+    public ulong Cooldown { get; set; }
+    /* Cooldown between usage of Command, in seconds*/
 }

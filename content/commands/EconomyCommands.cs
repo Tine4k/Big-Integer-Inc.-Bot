@@ -10,7 +10,6 @@ partial class Command
         
     }
 
-    [Command(CommandCategory.Economy)]
     public void Buy(Item item, uint amount)
     {
         if (currentCommandMessage.Length < 2 || !Item.Get(currentCommandMessage[1], out item)) message.Append("Wasn't able to find the item you want.");
