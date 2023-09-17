@@ -3,6 +3,7 @@ using System.Reflection;
 namespace PfannenkuchenBot.Commands;
 partial class Command
 {
+    [Command(CommandCategory.System)]
     public void Help()
     {
         message.Append("**List of all available commands:**\n");

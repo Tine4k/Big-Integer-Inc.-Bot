@@ -2,6 +2,7 @@ using Discord.WebSocket;
 namespace PfannenkuchenBot.Commands;
 partial class Command
 {
+    [Command(CommandCategory.Information)]
     public void Info()
     {
         if (currentCommandMessage.Length == 2 && Item.Get(currentCommandMessage[1], out Item? item)) {

@@ -4,6 +4,7 @@ using Pfannenkuchenbot.Item;
 namespace PfannenkuchenBot.Commands;
 partial class Command
 {
+    [Command(CommandCategory.Adventure, Cooldown = 60*5)]
     public void Mine()
     {
         Inventory items = new Inventory();
@@ -14,6 +15,7 @@ partial class Command
         
     }
 
+    [Command(CommandCategory.Adventure, Cooldown = 60*2)]
     public void PunchTree()
     {
         if (Random.Shared.Next(3) == 1)

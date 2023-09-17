@@ -1,6 +1,7 @@
 namespace PfannenkuchenBot.Commands;
 partial class Command
 {
+    [Command(CommandCategory.Admin)]
     public void Give()
     {
         if (currentCommandMessage.Length == 2)

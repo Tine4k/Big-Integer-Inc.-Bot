@@ -6,5 +6,6 @@ public enum CommandCategory
     Economy,
     Inventory,
     Rewards,
+    Adventure,
     Random
 }

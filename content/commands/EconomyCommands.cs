@@ -4,6 +4,7 @@ using Pfannenkuchenbot.Item;
 namespace PfannenkuchenBot.Commands;
 partial class Command
 {
+    [Command(CommandCategory.Economy)]
     public void Balance()
     {
         message.Append($"Your current balance is {player.Balance}{Config.currency}!");
@@ -32,6 +33,7 @@ partial class Command
         
     }
 
+    [Command(CommandCategory.Economy)]
     public void Sell()
     {
         Item item;
@@ -62,6 +64,7 @@ partial class Command
         
     }
     
+    [Command(CommandCategory.Economy)]
     public void Shop()
     {
         foreach (Item item in GameElementLoader.loadedInstances[typeof(Item)])
@@ -71,9 +74,9 @@ partial class Command
                 message.Append($"{item.Name}: {item.BuyPrice}{Config.currency}\n\n");
             }            
         }
-        
     }
     
+    [Command(CommandCategory.Economy)]
     public void BlackMarket()
     {
         message.Append("**Welcome to the Black Market!\n**");
@@ -85,5 +88,16 @@ partial class Command
             }
         }
         
+    }
+    [Command(CommandCategory.Economy)]
+    public void Catalogue()
+    {
+        foreach (Item item in GameElementLoader.loadedInstances[typeof(Item)])
+        {
+            if(item.SellPrice != 0 && !(item.Tags.Contains("Illegal")))
+            {
+                message.Append($"{item.Name}: {item.BuyPrice}{Config.currency}\n\n");
+            }            
+        }
     }
 }
