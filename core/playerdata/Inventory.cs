@@ -140,7 +140,7 @@ class Inventory
     public string PrintContent()
     {
         StringBuilder message = new StringBuilder();
-        foreach (KeyValuePair<Item, ulong> pair in content) if (pair.Value > 0) message.Append($"\n{pair.Value}x {pair.Key.Name}");
+        foreach (KeyValuePair<Item, ulong> pair in content.OrderByDescending(key => key.Value)) if (pair.Value > 0) message.Append($"\n{pair.Value}x {pair.Key.Name}");
         return message.ToString();
     }
 
