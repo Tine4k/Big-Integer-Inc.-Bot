@@ -2,7 +2,7 @@ using Discord.WebSocket;
 using Pfannenkuchenbot.Item;
 
 namespace PfannenkuchenBot.Commands;
-partial class Command
+public partial class CommandHandler
 {
     [Command(CommandCategory.Adventure, Cooldown = 60*5)]
     public void Mine()

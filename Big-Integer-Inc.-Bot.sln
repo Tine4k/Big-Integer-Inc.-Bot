@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "epic_discord_battles", "epic_discord_battles.csproj", "{6C06CA77-F9CF-47C5-9C89-4F90E7BFD861}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C06CA77-F9CF-47C5-9C89-4F90E7BFD861}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C06CA77-F9CF-47C5-9C89-4F90E7BFD861}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C06CA77-F9CF-47C5-9C89-4F90E7BFD861}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C06CA77-F9CF-47C5-9C89-4F90E7BFD861}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CB1BB5B2-0267-4AF8-9F2C-D110FA96A8B1}
+	EndGlobalSection
+EndGlobal

@@ -1,5 +1,5 @@
 namespace PfannenkuchenBot.Commands;
-partial class Command
+public partial class CommandHandler
 {
     [Command(CommandCategory.Random, Cooldown = 10)]
     public void Mane(string Location)

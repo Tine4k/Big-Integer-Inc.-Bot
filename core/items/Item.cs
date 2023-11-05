@@ -1,5 +1,5 @@
 namespace PfannenkuchenBot;
-class Item : GameElement
+public class Item : GameElement
 {
     public static bool Get(string id, out Item item)
     {

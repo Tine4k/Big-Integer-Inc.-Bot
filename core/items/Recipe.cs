@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using PfannenkuchenBot;
 
 namespace Pfannenkuchenbot.Item;
-class Recipe
+public class Recipe
 {
     [JsonConstructor]
     public Recipe(Inventory materials, Inventory output)

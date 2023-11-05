@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace PfannenkuchenBot;
-static class GameElementLoader
+static public class GameElementLoader
 {
     static GameElementLoader()
     {
@@ -46,7 +46,6 @@ static class GameElementLoader
         else list.Add(gameElement);
     }
     public static readonly Dictionary<Type, List<GameElement>> loadedInstances;
-
 
 
     public class GameElementConverter<T2> : JsonConverter<T2> where T2 : GameElement, new()

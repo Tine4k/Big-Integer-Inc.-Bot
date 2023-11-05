@@ -3,7 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 [JsonConverter(typeof(InventoryConverter))]
-class Inventory
+public class Inventory
 {
     public Inventory() : this(new Dictionary<Item, ulong>())
     { }
@@ -157,7 +157,7 @@ class Inventory
     Dictionary<Item, ulong>.KeyCollection Keys => content.Keys;
     Dictionary<Item, ulong>.ValueCollection Values => content.Values;
 
-    class InventoryConverter : JsonConverter<Inventory>
+    public class InventoryConverter : JsonConverter<Inventory>
     {
         public override Inventory? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

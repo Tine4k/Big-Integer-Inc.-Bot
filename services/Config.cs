@@ -1,8 +1,8 @@
 using System.Reflection;
 using System.ComponentModel;
-static class Config
+static public class Config
 {
-    static FieldInfo[] configFields;
+    static readonly FieldInfo[] configFields;
     static Config()
     {
         configFields = typeof(Config).GetFields(BindingFlags.DeclaredOnly | BindingFlags.Public);

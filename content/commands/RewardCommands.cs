@@ -1,7 +1,7 @@
 using Discord.WebSocket;
 
 namespace PfannenkuchenBot.Commands;
-partial class Command
+public partial class CommandHandler
 {
     [Command(CommandCategory.Rewards)]
     public void Daily()

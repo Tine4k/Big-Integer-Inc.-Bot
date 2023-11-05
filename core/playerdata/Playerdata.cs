@@ -1,44 +1,45 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using PfannenkuchenBot.Commands;
 namespace PfannenkuchenBot;
-class Playerdata
+public class Playerdata
 {
     [JsonConstructor]
-    public Playerdata(string username, Inventory inventory, Dictionary<Stat,int> stats, long balance, Dictionary<string, DateTime> timestamps)
+    public Playerdata(string Username, Inventory Inventory, Dictionary<Stat, int> Stats, long Balance, Dictionary<string, DateTime> Timestamps)
     {
-        this.username = username;
-        this.Inventory = inventory ?? new Inventory();
-        this.Stats = stats ?? new Dictionary<Stat, int>();
-        this.Balance = balance;
-        this.Timestamps = timestamps ?? new Dictionary<string, DateTime>();
+        this.Username = Username;
+        this.Inventory = Inventory ?? new Inventory();
+        this.Stats = Stats ?? new Dictionary<Stat, int>();
+        this.Balance = Balance;
+        this.Timestamps = Timestamps ?? new Dictionary<string, DateTime>();
     }
-    Playerdata(string _userId)
+    Playerdata(string Username, uint Id = 0)
     {
-        this.username = _userId;
+        this.Username = Username;
+        this.Id = Id;
         this.Inventory = new Inventory();
         this.Stats = new Dictionary<Stat, int>();
         this.Timestamps = new Dictionary<string, DateTime>();
     }
-    public static Playerdata GetPlayerdata(string username)
+    public static Playerdata GetPlayerdata(string Username)
     {
-        if (File.Exists($"playerdata/{username}.dat")) 
+        if (File.Exists($"playerdata/{Username}.dat"))
         {
-            Playerdata playerdata = DeserializePlayerdata(username);
-            if (Config.logPlayerdataLoads) Program.Log($"Loaded Playerdata with username {username}", "Playerdata");
+            Playerdata playerdata = DeserializePlayerdata(Username);
+            if (Config.logPlayerdataLoads) Logger.Log($"Loaded Playerdata with username {Username}", "Playerdata");
             return playerdata;
         }
         else
         {
-            if (Config.logPlayerdataCreations) Program.Log($"Created new playerdata with username {username}", "Playerdata");
-            return new Playerdata(username);
+            if (Config.logPlayerdataCreations) Logger.Log($"Created new playerdata with username {Username}", "Playerdata");
+            return new Playerdata(Username);
         }
 
-        Playerdata DeserializePlayerdata(string username)
+        static Playerdata DeserializePlayerdata(string username)
         {
             string playerdataJson = File.ReadAllText($"playerdata/{username}.dat");
             if (String.IsNullOrWhiteSpace(playerdataJson)) throw new Exception($"Failed to deserialize playerdata of {username}");
-            Playerdata? playerdata = JsonSerializer.Deserialize<Playerdata>(playerdataJson);
-            if (playerdata is null) throw new Exception($"Failed to deserialize playerdata of {username}");
+            Playerdata? playerdata = JsonSerializer.Deserialize<Playerdata>(playerdataJson) ?? throw new Exception($"Failed to deserialize playerdata of {username}");
             return playerdata;
         }
     }
@@ -78,12 +79,12 @@ class Playerdata
         Balance -= amount;
         return true;
     }
-    
+
     public void ForceLose(string id, uint amount = 1) // Removes amount even if player doesn't have enough Items 
     {
         Inventory.Remove(id, amount);
     }
-    public void ForceLose(Item item, uint amount = 1) 
+    public void ForceLose(Item item, uint amount = 1)
     {
         Inventory.Remove(item, amount);
     }
@@ -94,7 +95,7 @@ class Playerdata
     public void ForceLose(uint amount)
     {
         if (Balance < amount) Balance = 0;
-        else Balance -= amount;        
+        else Balance -= amount;
     }
 
     public void Reset()
@@ -104,34 +105,27 @@ class Playerdata
         Stats = new Dictionary<Stat, int>();
     }
 
-    public string PrintContent() => Inventory.PrintContent();
-    
     public void Save()
     {
-        File.WriteAllText($"playerdata/{username}.dat", JsonSerializer.Serialize(this));
-        if (Config.logPlayerdataUnloads) Program.Log($"Playerdata with id {username} was saved to file \"playerdata/{username}.dat\"", "Playerdata");
+        File.WriteAllText($"playerdata/{Username}.dat", JsonSerializer.Serialize(this));
+        if (Config.logPlayerdataUnloads) Logger.Log($"Playerdata with id {Username} was saved to file \"playerdata/{Username}.dat\"", "Playerdata");
     }
-    
-    
-    // * All fields that should be serialized have to either be 
-    // * a public field (in which case it is recommended to add a [JsonProperty("[fieldname in CamelCase]")] attribute) or 
-    // * a property that has a public setter or that is marked with the [JsonProperty] attribute
-    // * The order in which the members are displayed here results in the order of serialization (hence userId is the first entry in a .dat file)
-    
-    
-    public string UserName => username;
-    public readonly string username;
-    
-    public Inventory Inventory
-    {get; private set;}
-    
-    public Dictionary<Stat, int> Stats  
-    { get; set; }
-    
-    public long Balance
-    { get; private set; }
-    
-    public Dictionary<string, DateTime> Timestamps 
-    { get; private set;}
-   
+
+    public string PrintContent() => Inventory.PrintContent();
+    public string Mention() => CommandHandler.MentionUser(Id);
+
+    // * The order in which the members are displayed here results in the order of serialization (hence Username is the first entry in a .dat file)
+
+
+    public string Username { get; init; }
+    public uint Id { get; init; }
+
+    public Inventory Inventory { get; private set; }
+
+    public long Balance { get; private set; }
+
+    public Dictionary<Stat, int> Stats { get; set; }
+
+    public Dictionary<string, DateTime> Timestamps { get; private set; }
+
 }

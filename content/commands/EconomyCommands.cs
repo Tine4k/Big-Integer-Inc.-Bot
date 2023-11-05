@@ -2,7 +2,7 @@ using Discord.WebSocket;
 using Pfannenkuchenbot.Item;
 
 namespace PfannenkuchenBot.Commands;
-partial class Command
+public partial class CommandHandler
 {
     [Command(CommandCategory.Economy)]
     public void Balance()
@@ -67,11 +67,16 @@ partial class Command
     [Command(CommandCategory.Economy)]
     public void Shop()
     {
-        foreach (Item item in GameElementLoader.loadedInstances[typeof(Item)])
+        if (!GameElementLoader.loadedInstances.TryGetValue(typeof(Item), out List<GameElement>? items))
         {
-            if(item.BuyPrice != 0 && !(item.Tags.Contains("Illegal")))
+            message.Append($"The shop can't be accessed right now, try again in a minute");
+            return;
+        }
+        foreach (Item item in items.Cast<Item>().ToArray())
+        {
+            if(item.BuyPrice != 0 && !item.Tags.Contains("Illegal"))
             {
-                message.Append($"{item.Name}: {item.BuyPrice}{Config.currency}\n\n");
+                message.AppendLine($"{item.Name}: {item.BuyPrice}{Config.currency}\n");
             }            
         }
     }

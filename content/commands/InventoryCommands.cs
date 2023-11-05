@@ -1,12 +1,12 @@
 using Pfannenkuchenbot.Item;
 
 namespace PfannenkuchenBot.Commands;
-partial class Command
+public partial class CommandHandler
 {
     [Command(CommandCategory.Inventory)]
     public void Inventory()
     {
-        message.Append((player.Inventory.Count > 0) ? $"**Inventory of {currentSocketMessage.Author.Username}:**" : "It appears as if you inventory was empty...");
+        message.Append((player.Inventory.Count > 0) ? $"**Inventory of {player.Username}:**" : "It appears as if you inventory was empty...");
         message.Append(player.PrintContent());
         
     }

@@ -1,6 +1,6 @@
 namespace PfannenkuchenBot.Commands;
 [AttributeUsage(System.AttributeTargets.Method, Inherited = false, AllowMultiple = false)]
-sealed class CommandAttribute : Attribute
+sealed public class CommandAttribute : Attribute
 {
 
     public CommandAttribute(CommandCategory Category)

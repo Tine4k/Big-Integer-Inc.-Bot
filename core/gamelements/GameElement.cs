@@ -1,5 +1,5 @@
 namespace PfannenkuchenBot;
-abstract partial class GameElement
+public abstract partial class GameElement
 {
     public GameElement()
     {

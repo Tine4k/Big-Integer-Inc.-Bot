@@ -1,5 +1,5 @@
 namespace PfannenkuchenBot;
-enum Rarity
+public enum Rarity
 {
     Standard,
     Common,

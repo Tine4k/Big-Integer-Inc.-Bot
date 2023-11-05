@@ -1,52 +1,46 @@
-﻿﻿namespace PfannenkuchenBot;
-using PfannenkuchenBot.Commands;
-using Discord;
-using Discord.WebSocket;
-using System.Text.Json.Serialization;
-using System.Text.Json;
+﻿namespace PfannenkuchenBot;
+using System;
+using DiscordPort;
+using WebPort;
 
-static class Program
+public static class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         if (args.Length > 0)
         {
             if (args[0] == "test")
             {
-                Console.WriteLine("Test running...");
-
-                Log(JsonSerializer.Serialize(new string[]{"Illegal", "Unstackable"}), "Startup");
+                // Console.WriteLine("Test running...");
+                // Logger.Log(SessionId ?? "Something went wrong");
+                // Logger.Log(Logger.currentLogPath);
             }
         }
-        else 
-        StartUp().GetAwaiter().GetResult();
+        else await StartUp();
     }
-    public static DiscordSocketClient client = new DiscordSocketClient(new DiscordSocketConfig()
+
+    static Program()
     {
-        GatewayIntents =
-        GatewayIntents.Guilds |
-        GatewayIntents.GuildEmojis |
-        GatewayIntents.GuildMessages |
-        GatewayIntents.GuildMessageReactions |
-        GatewayIntents.MessageContent
-    });
+        SessionId = CreateSessionId();
+    }
+
+    static string CreateSessionId()
+    {
+        string today = DateTime.Today.ToString("y-M-d");
+        if (Directory.Exists(Logger.logDirectory))
+        {
+            string[] logsOfToday = Directory.GetFiles(Logger.logDirectory).Where((string a) => Path.GetFileName(a).StartsWith(today)).OrderBy((string a) => a).ToArray();
+            return $"{today}-{logsOfToday.Length + 1}";
+        }
+        return $"{today}-1";
+    }
+
     static async Task StartUp()
     {
-        client.Log += Log;
-        Program.client.MessageReceived += CommandHandler.HandleCommand;
-        if (!File.Exists("config/token.txt")) throw new FileNotFoundException("File \"token.txt\" not found. Please provice a text file with a valid token.");
-        await client.LoginAsync(TokenType.Bot, File.ReadAllText("config/token.txt"));
-        await client.StartAsync();
-        await Task.Delay(-1);
+        CreateSessionId();
+        await DiscordPorter.StartUp();
+        WebPorter.StartUp();
     }
-    static Task Log(LogMessage logMessage)
-    {
-        Console.WriteLine(logMessage);
-        return Task.CompletedTask;
-    }
-    public static Task Log(string message, string source = "Unspecified", LogSeverity severity = LogSeverity.Info)
-    {
-        LogMessage logMessage = new(severity,source,message.Replace('\n', ' '));
-        return Log(logMessage);
-    }
+
+    public static readonly string SessionId;
 }

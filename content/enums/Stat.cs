@@ -1,5 +1,5 @@
 namespace PfannenkuchenBot;
-enum Stat
+public enum Stat
 {
     CommandsInvoked,
     UsedBalance,

@@ -1,0 +1,19 @@
+@page 
+@model IndexModel
+@using PfannenkuchenBot.Commands.Logging
+<form method="post">
+    <input type="text" aps-for="Username" placeholder="Entet username!">
+    <input type="text" aps-for="Command" placeholder="Enter command!">
+    <button type=submit>Click here to submit</button>
+</form>
+<ul>
+@if (Model.LatestResponses is not null && Model.LatestResponses.Count() < 0)
+{
+    foreach (CommandLogEntry logEntry in Model.LatestResponses)
+    {
+        <li>
+            @logEntry.Content
+        </li>
+    }
+}
+</ul>
