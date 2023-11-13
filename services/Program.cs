@@ -38,8 +38,10 @@ public static class Program
     static async Task StartUp()
     {
         CreateSessionId();
-        await DiscordPorter.StartUp();
+        DiscordPorter.StartUp();
+        await Logger.Log("Discord started");
         WebPorter.StartUp();
+        // await Task.Delay(-1);
     }
 
     public static readonly string SessionId;

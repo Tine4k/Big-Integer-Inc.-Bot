@@ -14,14 +14,13 @@ public class DiscordPorter : IPorter
         GatewayIntents.GuildMessageReactions |
         GatewayIntents.MessageContent
     });
-    public static async Task StartUp()
+    public static void StartUp()
     {
         client.Log += Logger.Log;
         client.MessageReceived += EvaluateCommand;
         if (!File.Exists(tokenpath)) throw new FileNotFoundException($"File {tokenpath} not found. Please provice a text file with a valid token.");
-        await client.LoginAsync(TokenType.Bot, File.ReadAllText(tokenpath));
-        await client.StartAsync();
-        await Task.Delay(-1);
+        client.LoginAsync(TokenType.Bot, File.ReadAllText(tokenpath));
+        client.StartAsync();
     }
 
     static Task EvaluateCommand(SocketMessage _socketMessage)
