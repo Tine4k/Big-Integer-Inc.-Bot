@@ -38,7 +38,7 @@ public static class Program
     static async Task StartUp()
     {
         CreateSessionId();
-        DiscordPorter.StartUp();
+        // DiscordPorter.StartUp();
         await Logger.Log("Discord started");
         WebPorter.StartUp();
         // await Task.Delay(-1);

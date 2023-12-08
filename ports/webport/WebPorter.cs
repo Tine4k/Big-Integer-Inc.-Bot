@@ -1,13 +1,14 @@
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using PfannenkuchenBot.Commands;
-
 namespace PfannenkuchenBot.WebPort;
 public class WebPorter : IPorter
 {
     public static void StartUp()
     {
         var host = new WebHostBuilder()
-            .UseKestrel(kestrelOptions => { kestrelOptions.ListenAnyIP(5005); })
-            .UseContentRoot(@"ports\webport")
+            .UseKestrel(kestrelOptions => { kestrelOptions.ListenLocalhost(5005); })
+            .UseWebRoot(@$"{Environment.CurrentDirectory}\wwwroot")
+            .UseContentRoot(@$"{Environment.CurrentDirectory}\ports\webport")
             .UseStartup<Startup>()
             .Build();
         host.Run();
@@ -21,14 +22,15 @@ public class WebPorter : IPorter
 
     private class Startup
     {
-        // This method is used to configure services (dependencies) for the application.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add services, such as MVC, Entity Framework, authentication, etc.
             services.AddMvc();
+            services.AddRazorPages(options => 
+            {
+                options.RootDirectory = @$"/ports/webport/Pages";
+            });
         }
 
-        // This method is used to configure the request processing pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -37,22 +39,16 @@ public class WebPorter : IPorter
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-
-            // Configure routing, static files, and other middleware components.
             app.UseHttpsRedirection();
+            app.UseRouting();
             app.UseStaticFiles();
 
-            app.UseRouting();
-
-            // Add controllers and set up default routing.
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
