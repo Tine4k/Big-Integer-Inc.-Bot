@@ -35,12 +35,12 @@ public class DiscordPorter : IPorter
 
         string[] command_message = socketMessage.Content.Remove(0, Config.prefix.Length).Split(' ');
 
-        CommandHandler.HandleCommand(command_message, socketMessage.Author.Username, socketMessage.Channel, typeof(DiscordPorter));
+        CommandHandler.HandleCommand<DiscordPorter>(command_message, socketMessage.Author.Username, socketMessage.Channel);
         
         return Task.CompletedTask;
     }
 
-    public static async Task SendAsync(string message, object context)
+    public static async Task Send(string message, object context)
     {
         if (context is not SocketTextChannel channel) throw new ArgumentException("Someone messed up with coding");
         await channel.SendMessageAsync(message);

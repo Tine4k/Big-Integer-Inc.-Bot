@@ -2,11 +2,14 @@
 @model IndexModel
 @using PfannenkuchenBot.Commands.Logging
 <h1>success</h1>
-@* <form method="post">
+<form method="post">
     <input type="text" aps-for="Username" placeholder="Enter username!">
     <input type="text" aps-for="Command" placeholder="Enter command!">
     <button type=submit>Click here to submit</button>
 </form>
+<p>
+    @Model.OutPut
+</p>
 <ul>
 @if (Model.LatestResponses is not null && Model.LatestResponses.Count() < 0)
 {
@@ -17,4 +20,4 @@
         </li>
     }
 }
-</ul> *@
+</ul>

@@ -1,35 +1,28 @@
-namespace PfannenkuchenBot.WebPort.Pages;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using PfannenkuchenBot.Commands;
 using PfannenkuchenBot.Commands.Logging;
 
+namespace PfannenkuchenBot.WebPort.Pages;
 public class IndexModel : PageModel
 {
-    public List<CommandLogEntry>? LatestResponses {get; set;}
+    public CommandLogEntry[]? LatestResponses {get; set;}
 
     public void OnGet()
     {
-        LatestResponses = GetLastLogs();
-
-
-        static List<CommandLogEntry> GetLastLogs()
-        {
-            List<CommandLogEntry> Responses = new();
-            using (StreamReader reader = new(Logger.currentLogPath))
-            {
-                for (int i=0; i<10 && !reader.EndOfStream;i++) Responses.Add(CommandLogEntry.Parse(reader.ReadLine()!));
-                
-            };
-            return Responses;
-        }
+        LatestResponses = CommandLogEntry.GetLastLogs();
     }
 
     [BindProperty]
     public string? Username {get;set;}
-
+    [BindProperty]
+    public string? Command {get;set;}
+    public string OutPut = string.Empty;
     public void OnPost()
     {
-
+        if (Command is null) return;
+        if (Username is null) return;
+        ref string s = ref OutPut;
+        WebPorter.EvaluateRequest(Command, Username, s);
     }
 }

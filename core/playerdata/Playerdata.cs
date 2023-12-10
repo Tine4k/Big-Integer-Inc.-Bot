@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Routing.Tree;
 using PfannenkuchenBot.Commands;
 namespace PfannenkuchenBot;
 public class Playerdata
@@ -26,15 +27,14 @@ public class Playerdata
     {
         if (File.Exists($"playerdata/{Username}.dat"))
         {
-            Playerdata playerdata = DeserializePlayerdata(Username) ?? new(Username);
-            if (Config.logPlayerdataLoads) Logger.Log($"Loaded Playerdata with username {Username}", "Playerdata");
-            return playerdata;
+            if (TryGetPlayerdata(Username, out Playerdata playerdata))
+            {
+                if (Config.logPlayerdataLoads) Logger.Log($"Loaded Playerdata with username {Username}", "Playerdata");
+                return playerdata;
+            }
         }
-        else
-        {
-            if (Config.logPlayerdataCreations) Logger.Log($"Created new playerdata with username {Username}", "Playerdata");
-            return new Playerdata(Username);
-        }
+        if (Config.logPlayerdataCreations) Logger.Log($"Created new playerdata with username {Username}", "Playerdata");
+        return new Playerdata(Username);
     }
 
     public static bool TryGetPlayerdata(string Username, out Playerdata playerdata)
@@ -43,11 +43,11 @@ public class Playerdata
         playerdata = DeserializePlayerdata(Username)!;
         return playerdata is not null;
     }
-    
+
     static Playerdata? DeserializePlayerdata(string username)
     {
-        string path = $"playerdata/{username}.dat";
-        if (!Directory.Exists(path)) return null; 
+        string path = @$"playerdata\{username}.dat";
+        if (!Directory.Exists(path)) return null;
         string playerdataJson = File.ReadAllText(path);
         if (String.IsNullOrWhiteSpace(playerdataJson)) return null;
         Playerdata? playerdata = JsonSerializer.Deserialize<Playerdata>(playerdataJson);

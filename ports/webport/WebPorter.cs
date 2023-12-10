@@ -11,11 +11,17 @@ public class WebPorter : IPorter
             .UseContentRoot(@$"{Environment.CurrentDirectory}\ports\webport")
             .UseStartup<Startup>()
             .Build();
-        host.Run();
+        host.Start();
     }
 
-    public static Task SendAsync(string message, object context)
+    public static Task EvaluateRequest(string command, string username, object platform)
     {
+        CommandHandler.HandleCommand<WebPorter>(command.Split(' '), username, (object)platform);
+        return Task.CompletedTask;
+    }
+    public static Task Send(string message, object context)
+    {
+        context = message;
         return Task.CompletedTask;
     }
 
@@ -25,7 +31,7 @@ public class WebPorter : IPorter
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddRazorPages(options => 
+            services.AddRazorPages(options =>
             {
                 options.RootDirectory = @$"/ports/webport/Pages";
             });

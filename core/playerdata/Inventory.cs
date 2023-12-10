@@ -140,16 +140,16 @@ public class Inventory
     public string PrintContent()
     {
         StringBuilder message = new();
-        foreach (KeyValuePair<Item, ulong> pair in content.OrderByDescending(key => key.Value)) if (pair.Value > 0) message.Append($"\n{pair.Value}x {pair.Key.Name}");
+        foreach (KeyValuePair<Item, ulong> pair in content.OrderByDescending(key => key.Value)) message.Append($"\n{pair.Value}x {pair.Key.Name}");
         return message.ToString();
     }
 
-    public static readonly Inventory Empty = new Inventory(new Dictionary<Item, ulong>());
+    public static readonly Inventory Empty = new();
 
 
     [JsonPropertyName("Contents")]
     public Dictionary<Item, ulong> Contents => content;
-    readonly Dictionary<Item, ulong> content = new Dictionary<Item, ulong>();
+    readonly Dictionary<Item, ulong> content = new();
 
     // * Do not change, not relevant for game design
     public IEnumerator<KeyValuePair<Item, ulong>> GetEnumerator() => content.GetEnumerator();
@@ -191,7 +191,7 @@ public class Inventory
             writer.WriteStartObject();
             foreach (KeyValuePair<Item, ulong> pair in inventory)
             {
-                writer.WriteNumber(pair.Key.Id, pair.Value);
+                if (pair.Value > 0) writer.WriteNumber(pair.Key.Id, pair.Value);
             }
             writer.WriteEndObject();
         }
