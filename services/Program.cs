@@ -11,6 +11,7 @@ public static class Program
         {
             if (args[0] == "test")
             {
+                System.Console.WriteLine(Command);
             }
         }
         else await StartUp();

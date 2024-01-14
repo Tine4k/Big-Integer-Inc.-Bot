@@ -14,7 +14,8 @@ public class Inventory
     }
     public void Add(Item item, uint amount = 1)
     {
-        if (content.ContainsKey(item)) content[item] += amount;
+        if (amount == 0) return;
+        else if (content.ContainsKey(item)) content[item] += amount;
         else content.Add(item, amount);
     }
     public void Add(string id, uint amount = 1)
@@ -154,8 +155,8 @@ public class Inventory
     // * Do not change, not relevant for game design
     public IEnumerator<KeyValuePair<Item, ulong>> GetEnumerator() => content.GetEnumerator();
     public int Count => content.Count;
-    Dictionary<Item, ulong>.KeyCollection Keys => content.Keys;
-    Dictionary<Item, ulong>.ValueCollection Values => content.Values;
+    public Dictionary<Item, ulong>.KeyCollection Keys => content.Keys;
+    public Dictionary<Item, ulong>.ValueCollection Values => content.Values;
 
     public class InventoryConverter : JsonConverter<Inventory>
     {

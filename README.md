@@ -58,9 +58,3 @@
 
 # For overloads work
 - Rewrite the foreach loop in the HandleCommand method to continue if the argument compatability check fails after the first iteration 
-
-# Makes sure to fix the playerdata loading
-
-# Pomodoro Timer
-- Fix logging
-- Implement CommandLogEntry Parsing

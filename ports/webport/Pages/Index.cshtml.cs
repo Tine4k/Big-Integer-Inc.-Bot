@@ -17,12 +17,10 @@ public class IndexModel : PageModel
     public string? Username {get;set;}
     [BindProperty]
     public string? Command {get;set;}
-    public string OutPut = string.Empty;
+    public readonly ResponseWrapper responseWrapper = new();
     public void OnPost()
     {
-        if (Command is null) return;
-        if (Username is null) return;
-        ref string s = ref OutPut;
-        WebPorter.EvaluateRequest(Command, Username, s);
+        if (Command is null || Username is null) responseWrapper.Response += "Values are unspecified";
+        else WebPorter.EvaluateRequest(Command, Username, responseWrapper);
     }
 }

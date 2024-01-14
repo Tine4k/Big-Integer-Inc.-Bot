@@ -32,6 +32,6 @@ public abstract partial class GameElement
     public virtual string Describe() => $"""
     **{Name}**
     Description: {Description}
-    Rarity: {Enum.GetName(typeof(Rarity), Rarity)}
+    Rarity: {Enum.GetName(Rarity)}
     """;
 }

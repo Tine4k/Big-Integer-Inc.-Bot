@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Mvc.Formatters.Xml;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PfannenkuchenBot.Commands;
+
 namespace PfannenkuchenBot.WebPort;
 public class WebPorter : IPorter
 {
@@ -13,15 +15,19 @@ public class WebPorter : IPorter
             .Build();
         host.Start();
     }
+    
 
     public static Task EvaluateRequest(string command, string username, object platform)
     {
         CommandHandler.HandleCommand<WebPorter>(command.Split(' '), username, (object)platform);
         return Task.CompletedTask;
     }
+
+
     public static Task Send(string message, object context)
     {
-        context = message;
+        if (context is not ResponseWrapper wrapper) throw new ArgumentException("Someone messed up with coding");
+        wrapper.Response = message;
         return Task.CompletedTask;
     }
 
@@ -59,4 +65,13 @@ public class WebPorter : IPorter
         }
     }
 
+}
+
+public class ResponseWrapper
+{
+    public string? Response { get; set; }
+    public override string ToString()
+    {
+        return Response ?? string.Empty;
+    }
 }

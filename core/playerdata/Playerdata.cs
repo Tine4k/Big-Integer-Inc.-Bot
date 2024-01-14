@@ -46,8 +46,8 @@ public class Playerdata
 
     static Playerdata? DeserializePlayerdata(string username)
     {
-        string path = @$"playerdata\{username}.dat";
-        if (!Directory.Exists(path)) return null;
+        string path = @$"playerdata/{username}.dat";
+        if (!File.Exists(path)) return null;
         string playerdataJson = File.ReadAllText(path);
         if (String.IsNullOrWhiteSpace(playerdataJson)) return null;
         Playerdata? playerdata = JsonSerializer.Deserialize<Playerdata>(playerdataJson);
