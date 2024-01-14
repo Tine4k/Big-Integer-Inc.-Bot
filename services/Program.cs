@@ -9,10 +9,10 @@ public static class Program
     {
         if (args.Length > 0)
         {
-            if (args[0] == "test")
-            {
-                System.Console.WriteLine(Command);
-            }
+            // if (args[0] == "test")
+            // {
+            //     System.Console.WriteLine(Command);
+            // }
         }
         else await StartUp();
     }

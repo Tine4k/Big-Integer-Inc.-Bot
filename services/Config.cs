@@ -48,6 +48,6 @@ static public class Config
     public static bool logPlayerdataLoads = true;
     public static bool logPlayerdataUnloads = true;
     public static bool logPlayerdataCreations = true;
-    public static bool discordPortActive = !true;
+    public static bool discordPortActive = true;
     public static bool webPortActive = true;
 }
