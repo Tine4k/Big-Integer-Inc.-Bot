@@ -1,5 +1,8 @@
 using System.Reflection;
 using System.ComponentModel;
+using Microsoft.AspNetCore.Razor.TagHelpers;
+
+namespace PfannenkuchenBot;
 static public class Config
 {
     static readonly FieldInfo[] configFields;
@@ -22,7 +25,7 @@ static public class Config
             object? convertedValue = SetFieldValue(field, configValue);
             field.SetValue(null, convertedValue);
         }
-        
+
         object? SetFieldValue(FieldInfo fieldInfo, string configValue)
         {
             TypeConverter converter = TypeDescriptor.GetConverter(fieldInfo.FieldType);
@@ -32,19 +35,19 @@ static public class Config
     }
     static string GetConfigValue(string fieldName)
     {
-        if (File.Exists("config/"+fieldName)) return File.ReadAllText("config/"+fieldName);
+        if (File.Exists("config/" + fieldName)) return File.ReadAllText("config/" + fieldName);
         else return string.Empty;
     }
-
     public static string prefix = "*";
     public static bool autoUnload = true;
     public static bool forceUnload = false;
-    public static ushort autoUnloadInterval = 60;
-    public static ushort idleUnloadTime = 60;
+    public static ushort autoUnloadInterval = 10;
+    public static ushort idleUnloadTime = 10;
     public static char currency = '$';
     public static bool logAllCommands = true;
     public static bool logPlayerdataLoads = true;
     public static bool logPlayerdataUnloads = true;
     public static bool logPlayerdataCreations = true;
-    
+    public static bool discordPortActive = true;
+    public static bool webPortActive = true;
 }

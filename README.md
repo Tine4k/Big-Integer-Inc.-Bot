@@ -27,6 +27,10 @@
 # Adding new GameElements
 - Add them to the switch statement of CommandHandler.EvaluateCommand()
 
+# Adding new Ports
+- Add an IPorter
+- Add to the switch statement in CommandHandler.Send()
+- Add to the Ports Enum
 
 # Web porting
 - Extract Discord from litterally everywhere
@@ -52,5 +56,5 @@
   - Can be loaded and unloaded easily
 
 
-# For the bot to work
-- Extract the discord.net from the evaluate command method and write overloads, refractor, then add a event handler for the commandreceived and add the tasks
+# For overloads work
+- Rewrite the foreach loop in the HandleCommand method to continue if the argument compatability check fails after the first iteration 

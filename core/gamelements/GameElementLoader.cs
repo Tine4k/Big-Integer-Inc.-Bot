@@ -12,8 +12,7 @@ static public class GameElementLoader
     public static bool TryGet<T>(string id, out T returnElement) where T : GameElement, new()
     {
         returnElement = Get<T>(id)!;
-        if (returnElement is null) return false;
-        return true;
+        return returnElement is not null;
     }
     public static T? Get<T>(string id) where T : GameElement, new()
     {

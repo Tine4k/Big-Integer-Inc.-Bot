@@ -9,12 +9,10 @@ public static class Program
     {
         if (args.Length > 0)
         {
-            if (args[0] == "test")
-            {
-                // Console.WriteLine("Test running...");
-                // Logger.Log(SessionId ?? "Something went wrong");
-                // Logger.Log(Logger.currentLogPath);
-            }
+            // if (args[0] == "test")
+            // {
+            //     System.Console.WriteLine(Command);
+            // }
         }
         else await StartUp();
     }
@@ -38,8 +36,17 @@ public static class Program
     static async Task StartUp()
     {
         CreateSessionId();
-        await DiscordPorter.StartUp();
-        WebPorter.StartUp();
+        if (Config.discordPortActive)
+        {
+            DiscordPorter.StartUp();
+            await Logger.Log("Discord started");
+        }
+        if (Config.webPortActive)
+        {
+            WebPorter.StartUp();
+            await Logger.Log("Webport started");
+        }
+        await Task.Delay(-1);
     }
 
     public static readonly string SessionId;

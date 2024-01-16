@@ -9,14 +9,14 @@ public partial class CommandHandler
             try
             {
                 player.Gain(currentCommandMessage[1]);
-                message.Append($"Gave you {currentCommandMessage[1]}.");
+                message.Append($"Gave you {currentCommandMessage[1]}{Config.currency}.");
             }
             catch
             {
                 if (uint.TryParse(currentCommandMessage[1], out uint amount)) 
                 {
                     player.Gain(amount);
-                   message.Append($"Gave you {currentCommandMessage[1]}.");
+                   message.Append($"Gave you {currentCommandMessage[1]}{Config.currency}.");
                 }
                 else message.Append("Invalid arguments.");
             }

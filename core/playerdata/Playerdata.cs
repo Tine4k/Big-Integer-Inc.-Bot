@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Routing.Tree;
 using PfannenkuchenBot.Commands;
 namespace PfannenkuchenBot;
 public class Playerdata
@@ -21,29 +22,39 @@ public class Playerdata
         this.Stats = new Dictionary<Stat, int>();
         this.Timestamps = new Dictionary<string, DateTime>();
     }
+
     public static Playerdata GetPlayerdata(string Username)
     {
         if (File.Exists($"playerdata/{Username}.dat"))
         {
-            Playerdata playerdata = DeserializePlayerdata(Username);
-            if (Config.logPlayerdataLoads) Logger.Log($"Loaded Playerdata with username {Username}", "Playerdata");
-            return playerdata;
+            if (TryGetPlayerdata(Username, out Playerdata playerdata))
+            {
+                if (Config.logPlayerdataLoads) Logger.Log($"Loaded Playerdata with username {Username}", "Playerdata");
+                return playerdata;
+            }
         }
-        else
-        {
-            if (Config.logPlayerdataCreations) Logger.Log($"Created new playerdata with username {Username}", "Playerdata");
-            return new Playerdata(Username);
-        }
-
-        static Playerdata DeserializePlayerdata(string username)
-        {
-            string playerdataJson = File.ReadAllText($"playerdata/{username}.dat");
-            if (String.IsNullOrWhiteSpace(playerdataJson)) throw new Exception($"Failed to deserialize playerdata of {username}");
-            Playerdata? playerdata = JsonSerializer.Deserialize<Playerdata>(playerdataJson) ?? throw new Exception($"Failed to deserialize playerdata of {username}");
-            return playerdata;
-        }
+        if (Config.logPlayerdataCreations) Logger.Log($"Created new playerdata with username {Username}", "Playerdata");
+        return new Playerdata(Username);
     }
 
+    public static bool TryGetPlayerdata(string Username, out Playerdata playerdata)
+    {
+        // * Die GetPlayerdata Method return eine nullable class
+        playerdata = DeserializePlayerdata(Username)!;
+        return playerdata is not null;
+    }
+
+    static Playerdata? DeserializePlayerdata(string username)
+    {
+        string path = @$"playerdata/{username}.dat";
+        if (!File.Exists(path)) return null;
+        string playerdataJson = File.ReadAllText(path);
+        if (String.IsNullOrWhiteSpace(playerdataJson)) return null;
+        Playerdata? playerdata = JsonSerializer.Deserialize<Playerdata>(playerdataJson);
+        return playerdata;
+    }
+
+    public bool Has(Item item, uint amount = 1) => Inventory.Contains(item, amount);
     public void Gain(string id, uint amount = 1)
     {
         Inventory.Add(id, amount);

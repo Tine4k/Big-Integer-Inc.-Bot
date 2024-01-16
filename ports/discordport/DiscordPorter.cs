@@ -14,14 +14,13 @@ public class DiscordPorter : IPorter
         GatewayIntents.GuildMessageReactions |
         GatewayIntents.MessageContent
     });
-    public static async Task StartUp()
+    public static void StartUp()
     {
         client.Log += Logger.Log;
         client.MessageReceived += EvaluateCommand;
         if (!File.Exists(tokenpath)) throw new FileNotFoundException($"File {tokenpath} not found. Please provice a text file with a valid token.");
-        await client.LoginAsync(TokenType.Bot, File.ReadAllText(tokenpath));
-        await client.StartAsync();
-        await Task.Delay(-1);
+        client.LoginAsync(TokenType.Bot, File.ReadAllText(tokenpath));
+        client.StartAsync();
     }
 
     static Task EvaluateCommand(SocketMessage _socketMessage)
@@ -36,12 +35,12 @@ public class DiscordPorter : IPorter
 
         string[] command_message = socketMessage.Content.Remove(0, Config.prefix.Length).Split(' ');
 
-        CommandHandler.HandleCommand(command_message, socketMessage.Author.Username, socketMessage.Channel, typeof(DiscordPorter));
+        CommandHandler.HandleCommand<DiscordPorter>(command_message, socketMessage.Author.Username, socketMessage.Channel);
         
         return Task.CompletedTask;
     }
 
-    public static async Task SendAsync(string message, object context)
+    public static async Task Send(string message, object context)
     {
         if (context is not SocketTextChannel channel) throw new ArgumentException("Someone messed up with coding");
         await channel.SendMessageAsync(message);

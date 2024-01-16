@@ -13,17 +13,17 @@ public class Logger
 
     public static Task Log(LogMessage logMessage)
     {
-        currentLogPath ??= $"{logDirectory}{Program.SessionId}.log";;
+        currentLogPath ??= $"{logDirectory}{Program.SessionId}.log"; ;
         // writer ??= new StreamWriter(currentLogPath, true);
         Console.WriteLine(logMessage);
-        using StreamWriter writer = new StreamWriter(currentLogPath, true); writer.WriteLine(logMessage); //! Temporary solution, make a class member at some point and add hybernate function to bot
+        using StreamWriter writer = new(currentLogPath, true); writer.WriteLine(logMessage); //! Temporary solution, make a class member at some point and add hybernate function to bot
         // WriteToLogFile(logMessage);
         return Task.CompletedTask;
     }
 
     public static Task Log(CommandHandler handler)
     {
-        handler.message.Insert(0, $"{handler.player.Username} issued \'{string.Join(' ', handler.currentCommandMessage)}\'\n");
+        handler.message.Insert(0, $"{handler.player.Username} issued \"{string.Join(' ', handler.currentCommandMessage)}\":\n");
         return Log(handler.message.ToString(), source: "Commands");
     }
 
