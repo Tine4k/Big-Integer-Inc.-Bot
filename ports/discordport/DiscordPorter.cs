@@ -33,9 +33,9 @@ public class DiscordPorter : IPorter
         socketMessage.Content.Length <= Config.prefix.Length
         ) return Task.CompletedTask;
 
-        string[] command_message = socketMessage.Content.Remove(0, Config.prefix.Length).Split(' ');
+        string[] commandMessage = socketMessage.Content.Remove(0, Config.prefix.Length).Split(' ');
 
-        CommandHandler.HandleCommand<DiscordPorter>(command_message, socketMessage.Author.Username, socketMessage.Channel);
+        CommandHandler.HandleCommand<DiscordPorter>(commandMessage, socketMessage.Author.Username, socketMessage.Channel);
         
         return Task.CompletedTask;
     }

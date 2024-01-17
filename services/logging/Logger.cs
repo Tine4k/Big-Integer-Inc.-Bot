@@ -1,5 +1,6 @@
 using Discord;
 using PfannenkuchenBot.Commands;
+using PfannenkuchenBot.ConsolePort;
 namespace PfannenkuchenBot;
 public class Logger
 {
@@ -15,7 +16,7 @@ public class Logger
     {
         currentLogPath ??= $"{logDirectory}{Program.SessionId}.log"; ;
         // writer ??= new StreamWriter(currentLogPath, true);
-        Console.WriteLine(logMessage);
+        if (DateTime.Now - ConsolePorter.lastUsed > TimeSpan.FromSeconds(8)) Console.WriteLine(logMessage);
         using StreamWriter writer = new(currentLogPath, true); writer.WriteLine(logMessage); //! Temporary solution, make a class member at some point and add hybernate function to bot
         // WriteToLogFile(logMessage);
         return Task.CompletedTask;

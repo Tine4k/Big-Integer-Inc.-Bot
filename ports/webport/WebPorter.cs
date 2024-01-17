@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Mvc.Formatters.Xml;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using PfannenkuchenBot.Commands;
 
 namespace PfannenkuchenBot.WebPort;
@@ -65,13 +63,4 @@ public class WebPorter : IPorter
         }
     }
 
-}
-
-public class ResponseWrapper
-{
-    public string? Response { get; set; }
-    public override string ToString()
-    {
-        return Response ?? string.Empty;
-    }
 }

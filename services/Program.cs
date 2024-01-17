@@ -1,6 +1,7 @@
 ﻿namespace PfannenkuchenBot;
 using System;
 using DiscordPort;
+using PfannenkuchenBot.ConsolePort;
 using WebPort;
 
 public static class Program
@@ -46,7 +47,17 @@ public static class Program
             WebPorter.StartUp();
             await Logger.Log("Webport started");
         }
+        if (Config.consolePortActive)
+        {
+            ConsolePorter.StartUp();
+            await Logger.Log("Consoleport started");
+        }
         await Task.Delay(-1);
+    }
+
+    public static void Shutdown()
+    {
+        throw new NotImplementedException();
     }
 
     public static readonly string SessionId;
