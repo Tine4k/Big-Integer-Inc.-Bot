@@ -141,7 +141,7 @@ public class Inventory
     public string PrintContent()
     {
         StringBuilder message = new();
-        foreach (KeyValuePair<Item, ulong> pair in content.OrderByDescending(key => key.Value)) message.Append($"\n{pair.Value}x {pair.Key.Name}");
+        foreach (KeyValuePair<Item, ulong> pair in content.OrderByDescending(key => key.Value)) message.AppendLine($"{pair.Value}x {pair.Key.Name}");
         return message.ToString();
     }
 

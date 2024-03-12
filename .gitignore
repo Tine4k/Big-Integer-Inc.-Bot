@@ -1,5 +1,4 @@
 config/token.txt
-/config/discordtoken.txt
 config/discordtoken.txt
 services/token.txt
 bin
@@ -7,3 +6,4 @@ obj
 classes
 /playerdata
 /log
+config/discordtoken.txt

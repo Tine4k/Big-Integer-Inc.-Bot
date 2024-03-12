@@ -37,4 +37,15 @@ public partial class CommandHandler
         __**+43 067689807553**__
         """);
     }
+    [Command(CommandCategory.Random)]
+    public void Test()
+    {
+        message.Append("The parameterless test got called!");
+    }
+
+    [Command(CommandCategory.Random)]
+    public void Test(string word)
+    {
+        message.Append("The word parameter is "+ word);
+    }
 }

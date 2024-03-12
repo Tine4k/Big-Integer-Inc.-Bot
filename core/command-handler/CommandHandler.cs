@@ -70,86 +70,93 @@ public partial class CommandHandler
     {
         CommandHandler commandHandler = CommandHandler.GetCommandHandler(username);
         commandHandler.currentCommandMessage = commandMessage;
+
+        Dictionary<MethodBase, ParameterInfo[]> possibleOverloads = new();
+
         foreach (KeyValuePair<MethodBase, ParameterInfo[]> pair in LoadedCommands)
             if (pair.Key.Name.Equals(Format.StripMarkDown(commandMessage[0]).ToString(), StringComparison.OrdinalIgnoreCase))
+                possibleOverloads.Add(pair.Key, pair.Value);
+
+        foreach (KeyValuePair<MethodBase, ParameterInfo[]> pair in possibleOverloads.OrderByDescending(pair => pair.Value.Length))
+        {
+            object?[] parameters = new object?[pair.Value.Length];
+
+            //* This is relevant for parameters, so that the right overload of the method you're trying to invoke can be selected
+            //* Also, parsing happens here
+
+            for (int i = 0; i < pair.Value.Length; ++i)
             {
-                object?[] parameters = new object?[pair.Value.Length];
-
-                //* This is relevant for parameters, so that the right overload of the method you're trying to invoke can be selected
-                //* Also, parsing happens here
-                for (int i = 0; i < pair.Value.Length; ++i)
+                if (commandMessage.Length < i + 2) continue;
+                if (pair.Value[i].ParameterType.Equals(typeof(string)))
                 {
-                    if (commandMessage.Length < i + 2) continue;
-                    if (pair.Value[i].ParameterType.Equals(typeof(string)))
-                    {
-                        parameters[i] = commandMessage[i + 1];
-                    }
-                    else if (pair.Value[i].ParameterType.Equals(typeof(bool)))
-                    {
-                        if (bool.TryParse(commandMessage[i + 1], out bool boolean)) parameters[i] = boolean;
-                    }
-                    else if (pair.Value[i].ParameterType.Equals(typeof(ulong)))
-                    {
-                        if (ulong.TryParse(commandMessage[i + 1], out ulong number)) parameters[i] = number;
-                    }
-                    else if (pair.Value[i].ParameterType.Equals(typeof(uint)))
-                    {
-                        if (uint.TryParse(commandMessage[i + 1], out uint number)) parameters[i] = number;
-                    }
-                    else if (pair.Value[i].ParameterType.Equals(typeof(ushort)))
-                    {
-                        if (ushort.TryParse(commandMessage[i + 1], out ushort number)) parameters[i] = number;
-                    }
-                    else if (pair.Value[i].ParameterType.Equals(typeof(Item)))
-                    {
-                        parameters[i] = GameElementLoader.Get<Item>(commandMessage[i + 1]);
-                    }
-                    else if (pair.Value[i].ParameterType.Equals(typeof(Playerdata)))
-                    {
-                        if (Playerdata.TryGetPlayerdata(commandMessage[i + 1], out Playerdata playerdata)) parameters[i] = playerdata; // ! temporary solution, playerdata fetching neads to be reviewed
-                    }
-                    else throw new ArgumentException($"Something went wrong when trying to get the argumetns for the command {commandMessage}.");
+                    parameters[i] = commandMessage[i + 1];
                 }
-
-                //* Here it is assured that the cooldown is over and that it is allowed for the command to be invoked by the user (planned)
-                CommandAttribute attribute = pair.Key.GetCustomAttribute<CommandAttribute>()!;
-                if (attribute.Cooldown > 0)
+                else if (pair.Value[i].ParameterType.Equals(typeof(bool)))
                 {
-                    string timestampName = "lastCalled" + pair.Key.Name;
-
-                    if (!commandHandler.player.Timestamps.TryGetValue(timestampName, out DateTime lastCalled)) commandHandler.player.Timestamps.Add(timestampName, DateTime.MinValue);
-
-                    TimeSpan cooldown = TimeSpan.FromSeconds(attribute.Cooldown);
-
-                    commandHandler.Targeting = attribute.Targeting;
-
-                    if (DateTime.Now - lastCalled <= cooldown)
-                    {
-                        TimeSpan nextAvailableCall = lastCalled + cooldown - DateTime.Now;
-                        commandHandler.message.Clear();
-                        commandHandler.message.Append($"You have to wait **{((nextAvailableCall.Hours < 0) ? (nextAvailableCall.Hours + "h ") : "")}{nextAvailableCall.Minutes}min and {nextAvailableCall.Seconds}s**");
-                        commandHandler.Send<PorterType>(platform);
-                        return;
-                    }
+                    if (bool.TryParse(commandMessage[i + 1], out bool boolean)) parameters[i] = boolean;
                 }
-                try
+                else if (pair.Value[i].ParameterType.Equals(typeof(ulong)))
                 {
-                    pair.Key.Invoke(commandHandler, parameters);
+                    if (ulong.TryParse(commandMessage[i + 1], out ulong number)) parameters[i] = number;
                 }
-                catch (ArgumentException)
+                else if (pair.Value[i].ParameterType.Equals(typeof(uint)))
                 {
+                    if (uint.TryParse(commandMessage[i + 1], out uint number)) parameters[i] = number;
+                }
+                else if (pair.Value[i].ParameterType.Equals(typeof(ushort)))
+                {
+                    if (ushort.TryParse(commandMessage[i + 1], out ushort number)) parameters[i] = number;
+                }
+                else if (pair.Value[i].ParameterType.Equals(typeof(Item)))
+                {
+                    parameters[i] = GameElementLoader.Get<Item>(commandMessage[i + 1]);
+                }
+                else if (pair.Value[i].ParameterType.Equals(typeof(Playerdata)))
+                {
+                    if (Playerdata.TryGetPlayerdata(commandMessage[i + 1], out Playerdata playerdata)) parameters[i] = playerdata; // ! temporary solution, playerdata fetching neads to be reviewed
+                }
+                else throw new ArgumentException($"Something went wrong when trying to get the argumetns for the command {commandMessage}.");
+            }
+
+            //* Here it is assured that the cooldown is over and that it is allowed for the command to be invoked by the user (planned)
+            CommandAttribute attribute = pair.Key.GetCustomAttribute<CommandAttribute>()!;
+            if (attribute.Cooldown > 0)
+            {
+                string timestampName = "lastCalled" + pair.Key.Name;
+
+                if (!commandHandler.player.Timestamps.TryGetValue(timestampName, out DateTime lastCalled)) commandHandler.player.Timestamps.Add(timestampName, DateTime.MinValue);
+
+                TimeSpan cooldown = TimeSpan.FromSeconds(attribute.Cooldown);
+
+                commandHandler.Targeting = attribute.Targeting;
+
+                if (DateTime.Now - lastCalled <= cooldown)
+                {
+                    TimeSpan nextAvailableCall = lastCalled + cooldown - DateTime.Now;
                     commandHandler.message.Clear();
-                    commandHandler.message.Append($"Well, seems like your System.Reflection based command invocation was not as robust as you thought, Markus. {MentionUser(500953493918449674)}");
+                    commandHandler.message.Append($"You have to wait **{((nextAvailableCall.Hours < 0) ? (nextAvailableCall.Hours + "h ") : "")}{nextAvailableCall.Minutes}min and {nextAvailableCall.Seconds}s**");
                     commandHandler.Send<PorterType>(platform);
                     return;
                 }
-                if (commandHandler.success && attribute.Cooldown > 0)
-                {
-                    commandHandler.player.Timestamps["lastCalled" + pair.Key.Name] = DateTime.Now;
-                }
+            }
+            try
+            {
+                pair.Key.Invoke(commandHandler, parameters);
+            }
+            catch (ArgumentException)
+            {
+                commandHandler.message.Clear();
+                commandHandler.message.Append($"Well, seems like your System.Reflection based command invocation was not as robust as you thought, Markus. {MentionUser(500953493918449674)}");
                 commandHandler.Send<PorterType>(platform);
                 return;
             }
+            if (commandHandler.success && attribute.Cooldown > 0)
+            {
+                commandHandler.player.Timestamps["lastCalled" + pair.Key.Name] = DateTime.Now;
+            }
+            commandHandler.Send<PorterType>(platform);
+            return;
+        }
         commandHandler.Unknown<PorterType>(platform);
     }
 

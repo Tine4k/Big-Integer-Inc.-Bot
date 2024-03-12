@@ -24,8 +24,8 @@ public class ConsolePorter : IPorter
         
         while (true)
         {
-            lastUsed = DateTime.Now;
             string? message = Console.ReadLine();
+            lastUsed = DateTime.Now;
             if (message is null) continue;
             if (message.Equals("stop", StringComparison.OrdinalIgnoreCase)) break;
             string[] commandMessage = message.Split(' ');

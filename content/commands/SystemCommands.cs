@@ -6,9 +6,9 @@ public partial class CommandHandler
     [Command(CommandCategory.System)]
     public void Help()
     {
-        message.Append("**List of all available commands:**\n");
+        message.AppendLine("**List of all available commands:**");
         foreach (MethodBase command in CommandHandler.LoadedCommands.Keys.Where(method => !method.IsVirtual).ToArray()) 
-        message.Append(Config.prefix + command.Name.ToLower() + '\n');
+        message.AppendLine(Config.prefix + command.Name.ToLower());
 
     }
 }
